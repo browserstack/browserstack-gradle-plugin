@@ -3,7 +3,7 @@ plugins {
     id "com.gradle.plugin-publish" version "0.9.10"
 }
 
-version '1.0.01'
+version '1.0'
 
 pluginBundle {
   website = 'https://www.browserstack.com'
@@ -11,7 +11,7 @@ pluginBundle {
 
   plugins {
     myTestPluginInfo {
-      id = 'com.browserstack.espresso'
+      id = 'com.browserstack.gradle'
       displayName = 'Espresso Plugin'
       description = 'Runs espresso tests on BrowserStack'
       tags = ['espresso', 'test', 'browserstack', 'app', 'automate', 'app-automate', 'appautomate']

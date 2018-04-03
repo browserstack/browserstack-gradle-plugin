@@ -3,10 +3,8 @@
 Add to build.gradle:
 
     plugins {
-    id: com.browserstack.espresso
+    id: com.browserstack.gradle
     }
-
-    apply plugin: com.browserstack.espresso.EspressoPlugin
 
     runOnBrowserstack {
       username = "<username>"
