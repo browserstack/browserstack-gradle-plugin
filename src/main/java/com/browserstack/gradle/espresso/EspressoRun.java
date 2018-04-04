@@ -124,8 +124,7 @@ public class EspressoRun extends DefaultTask {
         this.local = local;
     }
 
-    @Input
-    private String getBuildParams() {
+    private String constructBuildParams() {
         JSONObject params = new JSONObject();
 
         params.put("app", app);
@@ -241,7 +240,7 @@ public class EspressoRun extends DefaultTask {
 
     private void executeTest() throws Exception {
         try {
-            HttpURLConnection con = HttpUtils.sendPost(host + Constants.BUILD_PATH, basicAuth(), getBuildParams(), null);
+            HttpURLConnection con = HttpUtils.sendPost(host + Constants.BUILD_PATH, basicAuth(), constructBuildParams(), null);
             int responseCode = con.getResponseCode();
             System.out.println("Response Code : " + responseCode);
 
