@@ -20,6 +20,9 @@ public class EspressoPlugin implements Plugin<Project> {
             task.setAnnotations(new String[0]);
             task.setPackages(new String[0]);
             task.setSizes(new String[0]);
+
+            task.setCallbackURL(null);
+            task.setLocalIdentifier(null);
         });
     }
 }

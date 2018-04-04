@@ -10,7 +10,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import java.net.HttpURLConnection;
-import java.net.URL;
 
 import java.util.Base64;
 import java.util.ArrayList;
