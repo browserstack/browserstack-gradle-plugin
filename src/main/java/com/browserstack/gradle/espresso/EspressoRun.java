@@ -3,6 +3,7 @@ package com.browserstack.gradle.espresso;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.Input;
+import org.gradle.api.tasks.Optional;
 
 
 import java.nio.file.Files;
@@ -22,7 +23,11 @@ import com.browserstack.gradle.Constants;
 public class EspressoRun extends DefaultTask {
 
     @Input
-    private String username, accessKey, app, testSuite, callbackURL, localIdentifier, host;
+    private String username, accessKey, app, testSuite, host;
+
+    @Optional
+    @Input
+    private String callbackURL, localIdentifier;
 
     private Path debugApkPath, testApkPath;
 
