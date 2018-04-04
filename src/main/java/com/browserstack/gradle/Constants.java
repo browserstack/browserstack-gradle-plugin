@@ -2,7 +2,7 @@ package com.browserstack.gradle;
 
 public class Constants {
 
-    public static final String BROWSERSTACK_API_HOST = "api.browserstack.com",
+    public static final String BROWSERSTACK_API_HOST = "https://api.browserstack.com",
                                 BUILD_PATH = "/app-automate/espresso/build",
                                 APP_UPLOAD_PATH = "/app-automate/upload",
                                 TEST_SUITE_UPLOAD_PATH = "/app-automate/espresso/test-suite";
