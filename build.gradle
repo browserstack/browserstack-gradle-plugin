@@ -1,21 +1,21 @@
 plugins {
     id 'java-gradle-plugin'
-    id "com.gradle.plugin-publish" version "0.9.10"
+    id 'com.gradle.plugin-publish' version '0.9.10'
 }
 
-version '1.0'
+version '1.1'
 
 pluginBundle {
-  website = 'https://www.browserstack.com'
-  vcsUrl = 'https://github.com/browserstack/browserstack-gradle-plugin'
+    website = 'https://www.browserstack.com'
+    vcsUrl = 'https://github.com/browserstack/browserstack-gradle-plugin'
 
-  plugins {
-    myTestPluginInfo {
-      id = 'com.browserstack.gradle'
-      displayName = 'Espresso Plugin'
-      description = 'Runs espresso tests on BrowserStack'
-      tags = ['espresso', 'test', 'browserstack', 'app', 'automate', 'app-automate', 'appautomate']
-      version = '1.0'
+    plugins {
+        myTestPluginInfo {
+            id = 'com.browserstack.gradle'
+            displayName = 'BrowserStack\'s Gradle Plugin'
+            description = 'Runs Espresso tests on BrowserStack'
+            tags = ['espresso', 'test', 'browserstack', 'app', 'automate', 'app-automate', 'appautomate']
+            version = '1.1'
+        }
     }
-  }
 }

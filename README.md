@@ -1,15 +1,23 @@
 # browserstack-gradle-plugin
 
+This repository contains the source code for BrowserStack's Gradle plugin.
+
+<br/>
+
+>Note: For now this plugin supports Espresso tests.
+
+## Espresso
+
 Add to build.gradle:
 
     plugins {
-    id: com.browserstack.gradle
+        id: com.browserstack.gradle
     }
 
-    runOnBrowserstack {
-      username = "<username>"
-      accessKey = "<accessKey>"
-      devices = ['Google Pixel-7.1']
+    runDebugBuildOnBrowserstack {
+        username = "<username>"
+        accessKey = "<accessKey>"
+        devices = ['Google Pixel-7.1']
     }
 
 
@@ -33,9 +41,9 @@ Supported parameters:
 
 > Note: List of supported devices and be found [here](https://api.browserstack.com/app-automate/espresso/devices.json) (basic auth required).
 
-To run Espresso test on BrowserStack using this plugin, use the following command:
+To run an Espresso test on BrowserStack using this plugin, use the following command:
 
-    gradle runOnBrowserStack
+    gradle runDebugBuildOnBrowserstack
 
 This will execute the following:
 
