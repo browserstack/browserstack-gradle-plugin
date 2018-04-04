@@ -147,7 +147,7 @@ public class EspressoRun extends DefaultTask {
     }
 
     private String basicAuth() {
-        return Base64.getEncoder().encodeToString((username + ":" + accessKey).getBytes());
+        return "Basic " + Base64.getEncoder().encodeToString((username + ":" + accessKey).getBytes());
     }
 
     private static Path findMostRecentPath(List<Path> paths) {
