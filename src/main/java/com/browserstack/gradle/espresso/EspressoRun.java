@@ -35,7 +35,7 @@ public class EspressoRun extends DefaultTask {
     private String[] devices, classes, annotations, packages, sizes;
 
     @Input
-    private boolean video, deviceLogs, local;
+    private boolean video, deviceLogs, local, networkLogs;
 
     public String getUsername() { 
         return username;
@@ -119,6 +119,13 @@ public class EspressoRun extends DefaultTask {
     }
     public void setDeviceLogs(boolean deviceLogs) {
         this.deviceLogs = deviceLogs;
+    }
+
+    public boolean getNetworkLogs() {
+        return networkLogs;
+    }
+    public void setNetworkLogs(boolean networkLogs) {
+        this.networkLogs = networkLogs;
     }
 
     public boolean getLocal() {
