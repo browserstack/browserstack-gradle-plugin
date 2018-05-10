@@ -30,6 +30,7 @@ Supported parameters:
     local: boolean
     localIdentifier: String
     deviceLogs: boolean
+    networkLogs: boolean
     classes: String[]
     annotations: String[]
     packages: String[]
