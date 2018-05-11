@@ -142,6 +142,9 @@ public class EspressoRun extends DefaultTask {
         params.put("testSuite", testSuite);
         params.put("devices", devices);
 
+        params.put("video", video);
+        params.put("deviceLogs", deviceLogs);
+        params.put("networkLogs", networkLogs);
 
         params.put("class", classes);
         params.put("package", packages);
