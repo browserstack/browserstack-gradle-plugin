@@ -156,6 +156,9 @@ public class EspressoRun extends DefaultTask {
 
         params.put("callbackURL", callbackURL);
 
+        // for monitoring, not for external use
+        params.put("browserstack.source", "gradlePlugin");
+
         return params.toString();
     }
 
