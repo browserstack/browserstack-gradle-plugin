@@ -35,6 +35,7 @@ Supported parameters:
     packages: String[]
     sizes: String[]
     callbackURL: String
+    networkProfile: String
 
 
 > Note: username, accessKey and devices are compulsory parameters. Visit https://www.browserstack.com/app-automate/espresso/get-started to get started with Espresso Tests on BrowserStack and also to know more about the above mentioned parameters.
