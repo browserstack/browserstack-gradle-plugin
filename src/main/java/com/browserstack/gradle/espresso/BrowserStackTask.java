@@ -20,22 +20,25 @@ import com.browserstack.json.JSONObject;
 import com.browserstack.httputils.HttpUtils;
 import com.browserstack.gradle.Constants;
 
-public class EspressoRun extends DefaultTask {
 
-    @Input
-    private String username, accessKey, app, testSuite, host;
+public class BrowserStackTask extends DefaultTask{
 
-    @Optional
-    @Input
-    private String callbackURL, localIdentifier;
+  private Path debugApkPath, testApkPath;
+  
+  @Input
+  private String[] classes, annotations, packages, sizes;
 
-    private Path debugApkPath, testApkPath;
+  @Optional
+  @Input
+  private String callbackURL, localIdentifier;
 
-    @Input
-    private String[] devices, classes, annotations, packages, sizes;
+  @Input
+  private boolean video, deviceLogs, local;
 
-    @Input
-    private boolean video, deviceLogs, local;
+
+
+  @Input
+  private String username, accessKey, app, host;
 
     public String getUsername() { 
         return username;
@@ -51,32 +54,11 @@ public class EspressoRun extends DefaultTask {
         this.accessKey = accessKey;
     }
 
-    public String getCallbackURL() {
-        return callbackURL;
-    }
-    public void setCallbackURL(String callbackURL) {
-        this.callbackURL = callbackURL;
-    }
-
-    public String getLocalIdentifier() {
-        return localIdentifier;
-    }
-    public void setLocalIdentifier(String localIdentifier) {
-        this.localIdentifier = localIdentifier;
-    }
-
     public String getHost() {
         return host;
     }
     public void setHost(String host) {
         this.host = host;
-    }
-
-    public String[] getDevices() {
-        return devices;
-    }
-    public void setDevices(String[] devices) {
-        this.devices = devices;
     }
 
     public String[] getClasses() {
@@ -100,11 +82,29 @@ public class EspressoRun extends DefaultTask {
         this.packages = packages;
     }
 
+    public Path getTestApkPath() {
+        return testApkPath;
+    }
+
     public String[] getSizes() {
         return sizes;
     }
     public void setSizes(String[] sizes) {
         this.sizes = sizes;
+    }
+
+    public String getCallbackURL() {
+        return callbackURL;
+    }
+    public void setCallbackURL(String callbackURL) {
+        this.callbackURL = callbackURL;
+    }
+
+    public String getLocalIdentifier() {
+        return localIdentifier;
+    }
+    public void setLocalIdentifier(String localIdentifier) {
+        this.localIdentifier = localIdentifier;
     }
 
     public boolean getVideo() {
@@ -128,13 +128,11 @@ public class EspressoRun extends DefaultTask {
         this.local = local;
     }
 
-    private String constructBuildParams() {
+
+    protected JSONObject constructDefaultBuildParams() {
         JSONObject params = new JSONObject();
 
         params.put("app", app);
-        params.put("testSuite", testSuite);
-        params.put("devices", devices);
-
 
         params.put("class", classes);
         params.put("package", packages);
@@ -146,14 +144,34 @@ public class EspressoRun extends DefaultTask {
 
         params.put("callbackURL", callbackURL);
 
-        return params.toString();
+        return params;
     }
 
-    private String basicAuth() {
+    public String uploadApp(String appUploadPath) throws Exception {
+        try {
+            HttpURLConnection con = HttpUtils.sendPost(host + appUploadPath, basicAuth(), null, debugApkPath.toString());
+            int responseCode = con.getResponseCode();
+            System.out.println("App upload Response Code : " + responseCode);
+
+            JSONObject response = new JSONObject(HttpUtils.getResponse(con, responseCode));
+
+            if(responseCode == 200){
+                app = (String) response.get("app_url");
+                return app;
+            } else {
+                throw new Exception("App upload failed");
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public  String basicAuth() {
         return "Basic " + Base64.getEncoder().encodeToString((username + ":" + accessKey).getBytes());
     }
 
-    private static Path findMostRecentPath(List<Path> paths) {
+    public  static Path findMostRecentPath(List<Path> paths) {
         long mostRecentTime = 0L;
         Path mostRecentPath = null;
         for (Path p: paths) {
@@ -165,7 +183,7 @@ public class EspressoRun extends DefaultTask {
         return mostRecentPath;
     }
 
-    private void locateApks() throws Exception {
+    public  void locateApks() throws Exception {
         String dir = System.getProperty("user.dir");
         List<Path> appApkFiles = new ArrayList<>();
         List<Path> testApkFiles = new ArrayList<>();
@@ -196,71 +214,10 @@ public class EspressoRun extends DefaultTask {
         }
     }
 
-    private void verifyParams() throws Exception {
-        if(username == null || accessKey == null || devices == null) {
-            throw new Exception("`username`, `accessKey` and `devices` are compulsory");
+    public  void verifyParams() throws Exception {
+        if(username == null || accessKey == null) {
+            throw new Exception("`username` and  `accessKey` are compulsory");
         }
     }
 
-    private void uploadApp() throws Exception {
-        try {
-            HttpURLConnection con = HttpUtils.sendPost(host + Constants.APP_UPLOAD_PATH, basicAuth(), null, debugApkPath.toString());
-            int responseCode = con.getResponseCode();
-            System.out.println("App upload Response Code : " + responseCode);
-
-            JSONObject response = new JSONObject(HttpUtils.getResponse(con, responseCode));
-
-            if(responseCode == 200){
-                app = (String) response.get("app_url");
-            } else {
-                throw new Exception("App upload failed");
-            }
-
-        } catch (Exception e){
-            e.printStackTrace();
-            throw e;
-        }
-    }
-
-    private void uploadTestSuite() throws Exception {
-        try {
-            HttpURLConnection con = HttpUtils.sendPost(host + Constants.TEST_SUITE_UPLOAD_PATH, basicAuth(), null, testApkPath.toString());
-            int responseCode = con.getResponseCode();
-            System.out.println("TestSuite upload Response Code : " + responseCode);
-
-            JSONObject response = new JSONObject(HttpUtils.getResponse(con, responseCode));
-
-            if(responseCode == 200){
-                testSuite = (String) response.get("test_url");
-            } else {
-                throw new Exception("TestSuite upload failed");
-            }
-
-        } catch (Exception e){
-            e.printStackTrace();
-            throw e;
-        }
-    }
-
-    private void executeTest() throws Exception {
-        try {
-            HttpURLConnection con = HttpUtils.sendPost(host + Constants.BUILD_PATH, basicAuth(), constructBuildParams(), null);
-            int responseCode = con.getResponseCode();
-            System.out.println("Response Code : " + responseCode);
-
-            JSONObject response = new JSONObject(HttpUtils.getResponse(con, responseCode));
-        } catch (Exception e){
-            e.printStackTrace();
-            throw e;
-        }
-    }
-
-    @TaskAction
-    void uploadAndExecuteTest() throws Exception {
-        verifyParams();
-        locateApks();
-        uploadApp();
-        uploadTestSuite();
-        executeTest();
-    }
 }
