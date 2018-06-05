@@ -24,5 +24,17 @@ public class EspressoPlugin implements Plugin<Project> {
             task.setCallbackURL(null);
             task.setLocalIdentifier(null);
         });
+
+        project.getTasks().create("uploadBuildToBrowserstackAppLive", AppLiveTask.class, (task) -> {
+            task.dependsOn("assembleDebug");
+
+            task.setHost(Constants.BROWSERSTACK_API_HOST);
+
+            task.setClasses(new String[0]);
+            task.setAnnotations(new String[0]);
+            task.setPackages(new String[0]);
+            task.setSizes(new String[0]);
+
+        });
     }
 }
