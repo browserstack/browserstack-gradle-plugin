@@ -7,7 +7,7 @@ public class AppLiveTask extends BrowserStackTask {
 
   private void displayTestURL(String app_url){
     String app_hashed_id = app_url.substring(5);
-    System.out.println("Starting testing at " + Constants.APP_LIVE_HOST + "/#app_hashed_id=" + app_hashed_id);
+    System.out.println("Start testing at " + Constants.APP_LIVE_HOST + "/#app_hashed_id=" + app_hashed_id);
   }
 
   @TaskAction
