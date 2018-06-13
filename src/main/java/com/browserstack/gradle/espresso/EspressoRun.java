@@ -27,7 +27,7 @@ public class EspressoRun extends DefaultTask {
 
     @Optional
     @Input
-    private String callbackURL, localIdentifier;
+    private String callbackURL, localIdentifier, networkProfile;
 
     private Path debugApkPath, testApkPath;
 
