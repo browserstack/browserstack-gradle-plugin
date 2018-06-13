@@ -27,7 +27,7 @@ public class EspressoRun extends DefaultTask {
 
     @Optional
     @Input
-    private String callbackURL, localIdentifier;
+    private String callbackURL, localIdentifier, networkProfile;
 
     private Path debugApkPath, testApkPath;
 
@@ -127,6 +127,12 @@ public class EspressoRun extends DefaultTask {
     public void setLocal(boolean local) {
         this.local = local;
     }
+    public String getNetworkProfile() {
+        return networkProfile;
+    }
+    public void setNetworkProfile(String profile) {
+        this.networkProfile = profile;
+    }
 
     private String constructBuildParams() {
         JSONObject params = new JSONObject();
@@ -143,6 +149,8 @@ public class EspressoRun extends DefaultTask {
 
         params.put("local", local);
         params.put("localIdentifier", localIdentifier);
+
+        params.put("networkProfile", networkProfile);
 
         params.put("callbackURL", callbackURL);
 
