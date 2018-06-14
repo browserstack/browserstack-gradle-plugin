@@ -35,7 +35,7 @@ public class EspressoRun extends DefaultTask {
     private String[] devices, classes, annotations, packages, sizes;
 
     @Input
-    private boolean video, deviceLogs, local;
+    private boolean video, deviceLogs, local, networkLogs;
 
     public String getUsername() { 
         return username;
@@ -121,6 +121,13 @@ public class EspressoRun extends DefaultTask {
         this.deviceLogs = deviceLogs;
     }
 
+    public boolean getNetworkLogs() {
+        return networkLogs;
+    }
+    public void setNetworkLogs(boolean networkLogs) {
+        this.networkLogs = networkLogs;
+    }
+
     public boolean getLocal() {
         return local;
     }
@@ -135,6 +142,9 @@ public class EspressoRun extends DefaultTask {
         params.put("testSuite", testSuite);
         params.put("devices", devices);
 
+        params.put("video", video);
+        params.put("deviceLogs", deviceLogs);
+        params.put("networkLogs", networkLogs);
 
         params.put("class", classes);
         params.put("package", packages);
@@ -145,6 +155,9 @@ public class EspressoRun extends DefaultTask {
         params.put("localIdentifier", localIdentifier);
 
         params.put("callbackURL", callbackURL);
+
+        // for monitoring, not for external use
+        params.put("browserstack.source", "gradlePlugin");
 
         return params.toString();
     }
