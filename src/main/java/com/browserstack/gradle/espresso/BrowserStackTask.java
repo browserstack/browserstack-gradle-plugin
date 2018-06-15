@@ -219,7 +219,8 @@ public class BrowserStackTask extends DefaultTask{
             throw new Exception("unable to find DebugApp apk");
         }
 
-        if(testApkPath == null) {
+        //Dont raise error for testApkPath if AppLive task
+        if(testApkPath == null && !(this instanceof AppLiveTask)) {
             throw new Exception("unable to find TestApp apk");
         }
     }
