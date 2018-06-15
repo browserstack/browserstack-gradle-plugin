@@ -12,6 +12,7 @@ public class Constants {
 
     public static final boolean DEFAULT_VIDEO = true,
                                 DEFAULT_DEVICE_LOGS = true,
+                                DEFAULT_NETWORK_LOGS = false,
                                 DEFAULT_LOCAL = false;
 
     public static final int APP_SEARCH_MAX_DEPTH = 10;

@@ -33,9 +33,7 @@ public class BrowserStackTask extends DefaultTask{
   private String callbackURL, localIdentifier;
 
   @Input
-  private boolean video, deviceLogs, local;
-
-
+  private boolean video, deviceLogs, local, networkLogs;
 
   @Input
   private String username, accessKey, app, host;
@@ -121,6 +119,13 @@ public class BrowserStackTask extends DefaultTask{
         this.deviceLogs = deviceLogs;
     }
 
+    public boolean getNetworkLogs() {
+        return networkLogs;
+    }
+    public void setNetworkLogs(boolean networkLogs) {
+        this.networkLogs = networkLogs;
+    }
+
     public boolean getLocal() {
         return local;
     }
@@ -133,6 +138,9 @@ public class BrowserStackTask extends DefaultTask{
         JSONObject params = new JSONObject();
 
         params.put("app", app);
+        params.put("video", video);
+        params.put("deviceLogs", deviceLogs);
+        params.put("networkLogs", networkLogs);
 
         params.put("class", classes);
         params.put("package", packages);
@@ -143,6 +151,8 @@ public class BrowserStackTask extends DefaultTask{
         params.put("localIdentifier", localIdentifier);
 
         params.put("callbackURL", callbackURL);
+        // for monitoring, not for external use
+        params.put("browserstack.source", "gradlePlugin");
 
         return params;
     }

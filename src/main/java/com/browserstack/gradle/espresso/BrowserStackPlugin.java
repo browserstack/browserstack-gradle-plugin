@@ -15,6 +15,7 @@ public class BrowserStackPlugin implements Plugin<Project> {
             task.setLocal(Constants.DEFAULT_LOCAL);
             task.setVideo(Constants.DEFAULT_VIDEO);
             task.setDeviceLogs(Constants.DEFAULT_DEVICE_LOGS);
+            task.setNetworkLogs(Constants.DEFAULT_NETWORK_LOGS);
 
             task.setClasses(new String[0]);
             task.setAnnotations(new String[0]);
