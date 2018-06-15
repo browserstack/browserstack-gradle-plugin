@@ -13,7 +13,7 @@ def setup_repo
 end
 
 def run_basic_espresso_test
-  gradle_command = "gradle runDebugBuildOnBrowserstack"
+  gradle_command = "gradle clean runDebugBuildOnBrowserstack"
   puts "Running #{gradle_command} with basic config"
   stdout = run_command(gradle_command)
   responses = stdout.lines.select{ |line| line.match(/app_url|test_url|build_id/)}
@@ -26,7 +26,7 @@ def run_basic_espresso_test
 end
 
 def run_app_live_test
-  gradle_command = "gradle uploadBuildToBrowserstackAppLive"
+  gradle_command = "gradle clean uploadBuildToBrowserstackAppLive"
   puts "Running #{gradle_command} with"
   stdout = run_command(gradle_command)
   responses = stdout.lines.select{ |line| line.match(/app_url|test_url|build_id/)}
