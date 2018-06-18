@@ -3,7 +3,7 @@ package com.browserstack.gradle.espresso;
 import org.gradle.api.tasks.TaskAction;
 import com.browserstack.gradle.Constants;
 
-public class AppLiveTask extends BrowserStackTask {
+public class AppUploadTask extends BrowserStackTask {
 
   private void displayTestURL(String app_url){
     String app_hashed_id = app_url.substring(5);

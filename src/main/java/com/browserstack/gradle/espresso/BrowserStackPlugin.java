@@ -26,7 +26,7 @@ public class BrowserStackPlugin implements Plugin<Project> {
             task.setLocalIdentifier(null);
         });
 
-        project.getTasks().create("uploadBuildToBrowserstackAppLive", AppLiveTask.class, (task) -> {
+        project.getTasks().create("uploadBuildToBrowserstackAppLive", AppUploadTask.class, (task) -> {
             task.dependsOn("assembleDebug");
 
             task.setHost(Constants.BROWSERSTACK_API_HOST);
