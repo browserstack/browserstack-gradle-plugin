@@ -1,9 +1,10 @@
-package com.browserstack.gradle.espresso;
+package com.browserstack.gradle;
 
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.Input;
 import java.net.HttpURLConnection;
 
+import java.nio.file.Path;
 import com.browserstack.json.JSONObject;
 import com.browserstack.httputils.HttpUtils;
 import com.browserstack.gradle.Constants;
@@ -11,10 +12,65 @@ import com.browserstack.gradle.Constants;
 public class EspressoTask extends BrowserStackTask {
 
     @Input
+    private String[] classes, annotations, packages, sizes;
+
+    @Input
+    private boolean video, deviceLogs, local, networkLogs;
+
+    @Input
     private String testSuite;
 
     @Input
     private String[] devices;
+
+    public String[] getClasses() {
+        return classes;
+    }
+    public void setClasses(String[] classes) {
+        this.classes = classes;
+    }
+
+    public String[] getAnnotations() {
+        return annotations;
+    }
+    public void setAnnotations(String[] annotations) {
+        this.annotations = annotations;
+    }
+
+    public String[] getPackages() {
+        return packages;
+    }
+    public void setPackages(String[] packages) {
+        this.packages = packages;
+    }
+
+    public String[] getSizes() {
+        return sizes;
+    }
+    public void setSizes(String[] sizes) {
+        this.sizes = sizes;
+    }
+
+    public boolean getVideo() {
+        return video;
+    }
+    public void setVideo(boolean video) {
+        this.video = video;
+    }
+
+    public boolean getDeviceLogs() {
+        return deviceLogs;
+    }
+    public void setDeviceLogs(boolean deviceLogs) {
+        this.deviceLogs = deviceLogs;
+    }
+
+    public boolean getNetworkLogs() {
+        return networkLogs;
+    }
+    public void setNetworkLogs(boolean networkLogs) {
+        this.networkLogs = networkLogs;
+    }
 
     public String[] getDevices() {
         return devices;
@@ -27,6 +83,12 @@ public class EspressoTask extends BrowserStackTask {
       JSONObject params = constructDefaultBuildParams();
       params.put("testSuite", testSuite);
       params.put("devices", devices);
+      params.put("class", classes);
+      params.put("package", packages);
+      params.put("size", sizes);
+      params.put("annotation", annotations);
+
+
       return params.toString();
     }
 

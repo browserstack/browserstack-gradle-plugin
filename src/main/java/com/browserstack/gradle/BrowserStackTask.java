@@ -1,7 +1,6 @@
-package com.browserstack.gradle.espresso;
+package com.browserstack.gradle;
 
 import org.gradle.api.DefaultTask;
-import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.Optional;
 
@@ -25,9 +24,6 @@ public class BrowserStackTask extends DefaultTask{
 
   private Path debugApkPath, testApkPath;
   
-  @Input
-  private String[] classes, annotations, packages, sizes;
-
   @Optional
   @Input
   private String callbackURL, localIdentifier;
@@ -59,38 +55,6 @@ public class BrowserStackTask extends DefaultTask{
         this.host = host;
     }
 
-    public String[] getClasses() {
-        return classes;
-    }
-    public void setClasses(String[] classes) {
-        this.classes = classes;
-    }
-
-    public String[] getAnnotations() {
-        return annotations;
-    }
-    public void setAnnotations(String[] annotations) {
-        this.annotations = annotations;
-    }
-
-    public String[] getPackages() {
-        return packages;
-    }
-    public void setPackages(String[] packages) {
-        this.packages = packages;
-    }
-
-    public Path getTestApkPath() {
-        return testApkPath;
-    }
-
-    public String[] getSizes() {
-        return sizes;
-    }
-    public void setSizes(String[] sizes) {
-        this.sizes = sizes;
-    }
-
     public String getCallbackURL() {
         return callbackURL;
     }
@@ -105,27 +69,6 @@ public class BrowserStackTask extends DefaultTask{
         this.localIdentifier = localIdentifier;
     }
 
-    public boolean getVideo() {
-        return video;
-    }
-    public void setVideo(boolean video) {
-        this.video = video;
-    }
-
-    public boolean getDeviceLogs() {
-        return deviceLogs;
-    }
-    public void setDeviceLogs(boolean deviceLogs) {
-        this.deviceLogs = deviceLogs;
-    }
-
-    public boolean getNetworkLogs() {
-        return networkLogs;
-    }
-    public void setNetworkLogs(boolean networkLogs) {
-        this.networkLogs = networkLogs;
-    }
-
     public boolean getLocal() {
         return local;
     }
@@ -133,6 +76,9 @@ public class BrowserStackTask extends DefaultTask{
         this.local = local;
     }
 
+    public Path getTestApkPath() {
+        return testApkPath;
+    }
 
     protected JSONObject constructDefaultBuildParams() {
         JSONObject params = new JSONObject();
@@ -141,11 +87,6 @@ public class BrowserStackTask extends DefaultTask{
         params.put("video", video);
         params.put("deviceLogs", deviceLogs);
         params.put("networkLogs", networkLogs);
-
-        params.put("class", classes);
-        params.put("package", packages);
-        params.put("size", sizes);
-        params.put("annotation", annotations);
 
         params.put("local", local);
         params.put("localIdentifier", localIdentifier);

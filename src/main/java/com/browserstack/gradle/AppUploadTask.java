@@ -1,4 +1,4 @@
-package com.browserstack.gradle.espresso;
+package com.browserstack.gradle;
 
 import org.gradle.api.tasks.TaskAction;
 import com.browserstack.gradle.Constants;

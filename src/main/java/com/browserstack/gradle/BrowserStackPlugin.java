@@ -1,4 +1,4 @@
-package com.browserstack.gradle.espresso;
+package com.browserstack.gradle;
 
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -28,14 +28,7 @@ public class BrowserStackPlugin implements Plugin<Project> {
 
         project.getTasks().create("uploadBuildToBrowserstackAppLive", AppUploadTask.class, (task) -> {
             task.dependsOn("assembleDebug");
-
             task.setHost(Constants.BROWSERSTACK_API_HOST);
-
-            task.setClasses(new String[0]);
-            task.setAnnotations(new String[0]);
-            task.setPackages(new String[0]);
-            task.setSizes(new String[0]);
-
         });
     }
 }

@@ -7,6 +7,7 @@ def run_command(s)
 end
 
 def setup_repo
+  puts "Setting up sample repo"
   run_command("git clone https://github.com/mohitmun/android-testing.git") 
   Dir.chdir "android-testing/ui/espresso/BasicSample"
   run_command("sed -i -e 's/PLUGIN_JAR_PATH/#{PLUGIN_JAR_PATH.gsub('/','\/')}/g' build.gradle")
@@ -17,7 +18,7 @@ def run_basic_espresso_test
   puts "Running #{gradle_command} with basic config"
   stdout = run_command(gradle_command)
   responses = stdout.lines.select{ |line| line.match(/app_url|test_url|build_id/)}
-  if responses.empty? && responses.count != 3
+  if responses.count != 3
     puts "✘ #{gradle_command} failed with error: #{stdout}".red
   else
     puts "✔ #{gradle_command} tests passed".green
@@ -50,6 +51,7 @@ def remove_repo
 end
 
 def build_plugin
+  puts "Building gradle plugin"
   run_command("gradle clean build")
 end
 
