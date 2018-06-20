@@ -2,7 +2,6 @@ package com.browserstack.gradle;
 
 import org.gradle.api.DefaultTask;
 import org.gradle.api.tasks.Input;
-import org.gradle.api.tasks.Optional;
 
 
 import java.nio.file.Files;
@@ -14,6 +13,8 @@ import java.net.HttpURLConnection;
 import java.util.Base64;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import com.browserstack.json.JSONObject;
 import com.browserstack.httputils.HttpUtils;
@@ -21,15 +22,6 @@ import com.browserstack.gradle.Constants;
 
 
 public class BrowserStackTask extends DefaultTask{
-
-  private Path debugApkPath, testApkPath;
-  
-  @Optional
-  @Input
-  private String callbackURL, localIdentifier;
-
-  @Input
-  private boolean video, deviceLogs, local, networkLogs;
 
   @Input
   private String username, accessKey, app, host;
@@ -55,52 +47,19 @@ public class BrowserStackTask extends DefaultTask{
         this.host = host;
     }
 
-    public String getCallbackURL() {
-        return callbackURL;
-    }
-    public void setCallbackURL(String callbackURL) {
-        this.callbackURL = callbackURL;
-    }
-
-    public String getLocalIdentifier() {
-        return localIdentifier;
-    }
-    public void setLocalIdentifier(String localIdentifier) {
-        this.localIdentifier = localIdentifier;
-    }
-
-    public boolean getLocal() {
-        return local;
-    }
-    public void setLocal(boolean local) {
-        this.local = local;
-    }
-
-    public Path getTestApkPath() {
-        return testApkPath;
-    }
-
     protected JSONObject constructDefaultBuildParams() {
         JSONObject params = new JSONObject();
 
         params.put("app", app);
-        params.put("video", video);
-        params.put("deviceLogs", deviceLogs);
-        params.put("networkLogs", networkLogs);
-
-        params.put("local", local);
-        params.put("localIdentifier", localIdentifier);
-
-        params.put("callbackURL", callbackURL);
         // for monitoring, not for external use
         params.put("browserstack.source", "gradlePlugin");
 
         return params;
     }
 
-    public String uploadApp(String appUploadPath) throws Exception {
+    public String uploadApp(String appUploadURLPath, Path debugApkPath) throws Exception {
         try {
-            HttpURLConnection con = HttpUtils.sendPost(host + appUploadPath, basicAuth(), null, debugApkPath.toString());
+            HttpURLConnection con = HttpUtils.sendPost(host + appUploadURLPath, basicAuth(), null, debugApkPath.toString());
             int responseCode = con.getResponseCode();
             System.out.println("App upload Response Code : " + responseCode);
 
@@ -134,7 +93,9 @@ public class BrowserStackTask extends DefaultTask{
         return mostRecentPath;
     }
 
-    public  void locateApks() throws Exception {
+    public  Map<String, Path> locateApks() throws Exception {
+        Path debugApkPath;
+        Path testApkPath;
         String dir = System.getProperty("user.dir");
         List<Path> appApkFiles = new ArrayList<>();
         List<Path> testApkFiles = new ArrayList<>();
@@ -164,6 +125,10 @@ public class BrowserStackTask extends DefaultTask{
         if(testApkPath == null && !(this instanceof AppUploadTask)) {
             throw new Exception("unable to find TestApp apk");
         }
+        Map<String, Path> apkFiles = new HashMap<>();
+        apkFiles.put("debugApkPath", debugApkPath);
+        apkFiles.put("testApkPath", testApkPath);
+        return apkFiles;
     }
 
     public  void verifyParams() throws Exception {

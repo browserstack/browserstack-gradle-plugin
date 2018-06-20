@@ -2,6 +2,8 @@ package com.browserstack.gradle;
 
 import org.gradle.api.tasks.TaskAction;
 import com.browserstack.gradle.Constants;
+import java.util.Map;
+import java.nio.file.Path;
 
 public class AppUploadTask extends BrowserStackTask {
 
@@ -13,8 +15,8 @@ public class AppUploadTask extends BrowserStackTask {
   @TaskAction
   void uploadAndExecuteTest() throws Exception {
     verifyParams();
-    locateApks();
-    String app_url = uploadApp(Constants.APP_LIVE_UPLOAD_PATH);
+    Map<String, Path> apkFiles = locateApks();
+    String app_url = uploadApp(Constants.APP_LIVE_UPLOAD_PATH, apkFiles.get("debugApkPath"));
     displayTestURL(app_url);
   }
 }

@@ -4,6 +4,8 @@ import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.Input;
 import java.net.HttpURLConnection;
 
+import java.util.Map;
+import org.gradle.api.tasks.Optional;
 import java.nio.file.Path;
 import com.browserstack.json.JSONObject;
 import com.browserstack.httputils.HttpUtils;
@@ -23,11 +25,36 @@ public class EspressoTask extends BrowserStackTask {
     @Input
     private String[] devices;
 
-    public String[] getClasses() {
+    @Optional
+    @Input
+    private String callbackURL, localIdentifier;
+
+    public String getCallbackURL() {
+        return callbackURL;
+    }
+    public void setCallbackURL(String callbackURL) {
+        this.callbackURL = callbackURL;
+    }
+
+    public String getLocalIdentifier() {
+        return localIdentifier;
+    }
+    public void setLocalIdentifier(String localIdentifier) {
+        this.localIdentifier = localIdentifier;
+    }
+
+    public boolean getLocal() {
+        return local;
+    }
+    public void setLocal(boolean local) {
+        this.local = local;
+    }
+
+   public String[] getClasses() {
         return classes;
     }
     public void setClasses(String[] classes) {
-        this.classes = classes;
+    this.classes = classes;
     }
 
     public String[] getAnnotations() {
@@ -87,14 +114,19 @@ public class EspressoTask extends BrowserStackTask {
       params.put("package", packages);
       params.put("size", sizes);
       params.put("annotation", annotations);
-
+      params.put("video", video);
+      params.put("deviceLogs", deviceLogs);
+      params.put("networkLogs", networkLogs);
+      params.put("local", local);
+      params.put("localIdentifier", localIdentifier);
+      params.put("callbackURL", callbackURL);
 
       return params.toString();
     }
 
-    private void uploadTestSuite() throws Exception {
+    private void uploadTestSuite(Path testApkPath) throws Exception {
         try {
-            HttpURLConnection con = HttpUtils.sendPost(getHost() + Constants.TEST_SUITE_UPLOAD_PATH, basicAuth(), null, getTestApkPath().toString());
+            HttpURLConnection con = HttpUtils.sendPost(getHost() + Constants.TEST_SUITE_UPLOAD_PATH, basicAuth(), null, testApkPath.toString());
             int responseCode = con.getResponseCode();
             System.out.println("TestSuite upload Response Code : " + responseCode);
 
@@ -140,9 +172,9 @@ public class EspressoTask extends BrowserStackTask {
     @TaskAction
     void uploadAndExecuteTest() throws Exception {
         verifyParams();
-        locateApks();
-        uploadApp(Constants.APP_AUTOMATE_UPLOAD_PATH);
-        uploadTestSuite();
+        Map<String, Path> apkFiles = locateApks();
+        uploadApp(Constants.APP_AUTOMATE_UPLOAD_PATH, apkFiles.get("debugApkPath"));
+        uploadTestSuite(apkFiles.get("testApkPath"));
         String build_id = executeTest();
         displayDashboardURL(build_id);
     }
