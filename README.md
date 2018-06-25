@@ -65,7 +65,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath 'com.browserstack.gradle:com.browserstack.gradle.gradle.plugin:1.1.2'
+    classpath 'com.browserstack.gradle:com.browserstack.gradle.gradle.plugin:2.0.0'
   }
 }
 ```
@@ -87,5 +87,5 @@ gradle clean build
 To install the plugin into local maven repo
 
 ```
-mvn install:install-file -Dfile=build/libs/browserstack-gradle-plugin-1.1.2.jar -DgroupId=com.browserstack -DartifactId=gradle -Dversion=1.1.2 -Dpackaging=jar -DgeneratePom=true -DcreateChecksum=true
+mvn install:install-file -Dfile=build/libs/browserstack-gradle-plugin-VERSION.jar -DgroupId=com.browserstack -DartifactId=gradle -Dversion=VERSION -Dpackaging=jar -DgeneratePom=true -DcreateChecksum=true
 ```
