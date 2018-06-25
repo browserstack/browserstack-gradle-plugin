@@ -55,7 +55,21 @@ def build_plugin
   run_command("gradle clean build")
 end
 
+def validate_env
+  missing_env_variables = []
+  requied_env_variables = ["ANDROID_HOME","BROWSERSTACK_USERNAME", "BROWSERSTACK_ACCESS_KEY"]
+  requied_env_variables.each do |env_variable|
+    if ENV[env_variable].nil?
+       missing_env_variables += [env_variable]
+    end
+  end
+  if !missing_env_variables.empty?
+    raise "Please export #{missing_env_variables.join(',')}"
+  end
+end
+
 def test
+  validate_env
   build_plugin
   setup_repo
   run_tests
