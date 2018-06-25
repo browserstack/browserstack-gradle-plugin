@@ -1,13 +1,13 @@
-package com.browserstack.gradle.espresso;
+package com.browserstack.gradle;
 
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 
 import com.browserstack.gradle.Constants;
 
-public class EspressoPlugin implements Plugin<Project> {
+public class BrowserStackPlugin implements Plugin<Project> {
     public void apply(Project project) {
-        project.getTasks().create("runDebugBuildOnBrowserstack", EspressoRun.class, (task) -> {
+        project.getTasks().create("runDebugBuildOnBrowserstack", EspressoTask.class, (task) -> {
             task.dependsOn("assembleDebug", "assembleDebugAndroidTest");
 
             task.setHost(Constants.BROWSERSTACK_API_HOST);
@@ -24,6 +24,11 @@ public class EspressoPlugin implements Plugin<Project> {
 
             task.setCallbackURL(null);
             task.setLocalIdentifier(null);
+        });
+
+        project.getTasks().create("uploadBuildToBrowserstackAppLive", AppUploadTask.class, (task) -> {
+            task.dependsOn("assembleDebug");
+            task.setHost(Constants.BROWSERSTACK_API_HOST);
         });
     }
 }

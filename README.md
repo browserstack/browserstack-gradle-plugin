@@ -52,3 +52,40 @@ This will execute the following:
  2. Find the latest apks in the app directory recursively.
  3. Upload both the apks on BrowserStack platform.
  4. Execute Espresso test using the uploaded apps on the devices mentioned.
+
+### Using this plugin in android studio
+
+Add this plugin to your `buildscript`:
+
+```
+buildscript {
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+  }
+  dependencies {
+    classpath 'com.browserstack.gradle:com.browserstack.gradle.gradle.plugin:2.0.0'
+  }
+}
+```
+
+and apply it in your module build.gradle 
+
+```
+apply plugin: 'com.browserstack.gradle'
+```
+
+### Development
+
+Build the plugin
+
+```
+gradle clean build
+```
+
+To install the plugin into local maven repo
+
+```
+mvn install:install-file -Dfile=build/libs/browserstack-gradle-plugin-VERSION.jar -DgroupId=com.browserstack -DartifactId=gradle -Dversion=VERSION -Dpackaging=jar -DgeneratePom=true -DcreateChecksum=true
+```
