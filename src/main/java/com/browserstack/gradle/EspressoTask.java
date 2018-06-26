@@ -14,7 +14,7 @@ import com.browserstack.gradle.Constants;
 public class EspressoTask extends BrowserStackTask {
 
     @Input
-    private String[] classes, annotations, packages, sizes;
+    private String[] classes, annotations, packages, sizes, otherApps;
 
     @Input
     private boolean video, deviceLogs, local, networkLogs;
@@ -78,6 +78,13 @@ public class EspressoTask extends BrowserStackTask {
         this.sizes = sizes;
     }
 
+    public String[] getOtherApps() {
+        return otherApps;
+    }
+    public void setOtherApps(String[] otherApps) {
+        this.otherApps = otherApps;
+    }
+
     public boolean getVideo() {
         return video;
     }
@@ -114,6 +121,7 @@ public class EspressoTask extends BrowserStackTask {
       params.put("package", packages);
       params.put("size", sizes);
       params.put("annotation", annotations);
+      params.put("otherApps", otherApps);
       params.put("video", video);
       params.put("deviceLogs", deviceLogs);
       params.put("networkLogs", networkLogs);

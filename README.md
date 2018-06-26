@@ -35,6 +35,7 @@ Supported parameters:
     annotations: String[]
     packages: String[]
     sizes: String[]
+    otherApps: String[]
     callbackURL: String
 
 
