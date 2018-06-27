@@ -25,6 +25,9 @@ public class EspressoTask extends BrowserStackTask {
     @Input
     private String[] devices;
 
+    @Input
+    private JSONObject appStoreConfiguration;
+
     @Optional
     @Input
     private String callbackURL, localIdentifier;
@@ -106,6 +109,13 @@ public class EspressoTask extends BrowserStackTask {
         this.devices = devices;
     }
 
+    public JSONObject getAppStoreConfiguration() {
+        return appStoreConfiguration;
+    }
+    public void setAppStoreConfiguration(JSONObject appStoreConfiguration) {
+        this.appStoreConfiguration = appStoreConfiguration;
+    }
+
     private String constructBuildParams() {
       JSONObject params = constructDefaultBuildParams();
       params.put("testSuite", testSuite);
@@ -120,6 +130,7 @@ public class EspressoTask extends BrowserStackTask {
       params.put("local", local);
       params.put("localIdentifier", localIdentifier);
       params.put("callbackURL", callbackURL);
+      params.put("appStoreConfiguration", appStoreConfiguration);
 
       return params.toString();
     }

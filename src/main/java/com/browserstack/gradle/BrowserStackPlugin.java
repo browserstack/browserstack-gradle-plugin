@@ -3,6 +3,7 @@ package com.browserstack.gradle;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 
+import com.browserstack.json.JSONObject;
 import com.browserstack.gradle.Constants;
 
 public class BrowserStackPlugin implements Plugin<Project> {
@@ -21,6 +22,8 @@ public class BrowserStackPlugin implements Plugin<Project> {
             task.setAnnotations(new String[0]);
             task.setPackages(new String[0]);
             task.setSizes(new String[0]);
+
+            task.setAppStoreConfiguration(new JSONObject())
 
             task.setCallbackURL(null);
             task.setLocalIdentifier(null);
