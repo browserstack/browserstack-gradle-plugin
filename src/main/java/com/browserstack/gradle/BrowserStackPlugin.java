@@ -22,6 +22,8 @@ public class BrowserStackPlugin implements Plugin<Project> {
             task.setPackages(new String[0]);
             task.setSizes(new String[0]);
 
+            task.setOtherApps(new String[0]);
+
             task.setCallbackURL(null);
             task.setLocalIdentifier(null);
         });
