@@ -8,7 +8,8 @@ public class Constants {
                                 BUILD_PATH = "/app-automate/espresso/build",
                                 APP_AUTOMATE_UPLOAD_PATH = "/app-automate/upload",
                                 APP_LIVE_UPLOAD_PATH = "/app-live/upload",
-                                TEST_SUITE_UPLOAD_PATH = "/app-automate/espresso/test-suite";
+                                TEST_SUITE_UPLOAD_PATH = "/app-automate/espresso/test-suite",
+                                DEFAULT_NETWORK_PROFILE = null;
 
     public static final boolean DEFAULT_VIDEO = true,
                                 DEFAULT_DEVICE_LOGS = true,
