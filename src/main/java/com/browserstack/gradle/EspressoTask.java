@@ -27,7 +27,7 @@ public class EspressoTask extends BrowserStackTask {
 
     @Optional
     @Input
-    private String callbackURL, localIdentifier;
+    private String callbackURL, localIdentifier, networkProfile;
 
     public String getCallbackURL() {
         return callbackURL;
@@ -48,6 +48,14 @@ public class EspressoTask extends BrowserStackTask {
     }
     public void setLocal(boolean local) {
         this.local = local;
+    }
+
+    public String getNetworkProfile() {
+        return networkProfile;
+    }
+
+    public void setNetworkProfile(String profile) {
+        this.networkProfile = profile;
     }
 
    public String[] getClasses() {
@@ -127,6 +135,7 @@ public class EspressoTask extends BrowserStackTask {
       params.put("networkLogs", networkLogs);
       params.put("local", local);
       params.put("localIdentifier", localIdentifier);
+      params.put("networkProfile", networkProfile);
       params.put("callbackURL", callbackURL);
 
       return params.toString();
