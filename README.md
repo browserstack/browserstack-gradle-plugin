@@ -3,7 +3,7 @@
 This repository contains the source code for BrowserStack's Gradle plugin.
 
 <br/>
->Note: For now this plugin supports Espresso tests.
+> Note: For now this plugin supports Espresso tests.
 
 ## PURPOSE
 
