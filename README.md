@@ -3,39 +3,25 @@
 This repository contains the source code for BrowserStack's Gradle plugin.
 
 <br/>
-
 >Note: For now this plugin supports Espresso tests.
 
 ## PURPOSE
 
 This plugin consists of two types of tasks:
 
-1. Builds, uploads and starts espresso tests on BrowserStack AppAutomate.
+1. Builds, uploads and starts Espresso tests on BrowserStack AppAutomate.
 2. Builds and uploads apk to BrowserStack AppLive for manual testing.
 
 ## USAGE
 
 ### Add to build.gradle
 
-#### Add plugin dependency to build.gradle
+#### Add plugin dependency to module's build.gradle
 
 ```
-buildscript {
-  repositories {
-    maven {
-      url "https://plugins.gradle.org/m2/"
-    }
-  }
-  dependencies {
-    classpath 'com.browserstack.gradle:com.browserstack.gradle.gradle.plugin:2.3.0'
-  }
+plugins {
+    id "com.browserstack.gradle" version "2.3.0"
 }
-```
-
-#### Apply plugin to module's build.gradle
-
-```
-apply plugin: 'com.browserstack.gradle'
 ```
 
 #### Add browserStackConfig parameters to module's build.gradle
@@ -51,13 +37,19 @@ browserStackConfig {
 ### Tasks
 
 #### Espresso test task
-Builds, uploads and start espresso tests on BrowserStack AppAutomate.
+Builds, uploads and start Espresso tests on BrowserStack AppAutomate.
 
 ##### Gradle command
 
 gradle clean execute${buildVariantName}TestsOnBrowserstack
 
-> Note: Replace ${buildVariantName} with your build variant name, for example if your productFlavor name is "phone" and you want to test debug build type of this variant then command will be gradle clean executePhoneDebugTestsOnBrowserstack.
+For running tests on a project with no variants, you can simply run following command for uploading and running tests on debug apk:
+
+```
+gradle clean executeDebugTestsOnBrowserstack 
+```
+
+And for projects with productFlavors, replace ${buildVariantName} with your build variant name, for example if your productFlavor name is "phone" and you want to test debug build type of this variant then command will be gradle clean executePhoneDebugTestsOnBrowserstack.
 
 ##### Supported browserStackConfig parameters
 
@@ -96,7 +88,13 @@ gradle clean execute${buildVariantName}TestsOnBrowserstack
 
 gradle clean upload${buildVariantName}ToBrowserstackAppLive
 
-> Note: Replace ${buildVariantName} with your build variant name, for example if your productFlavor name is "phone" and you want to upload debug build type of this variant then command will be gradle clean uploadPhoneDebugToBrowserstackAppLive.
+For running tests on a project with no variants, you can simply run following command for uploading debug apk:
+
+```
+gradle clean uploadDebugToBrowserstackAppLive 
+```
+
+And for projects with productFlavors, replace ${buildVariantName} with your build variant name, for example if your productFlavor name is "phone" and you want to upload debug build type of this variant then command will be gradle clean uploadPhoneDebugToBrowserstackAppLive.
 
 ##### Supported browserStackConfig parameters
 
