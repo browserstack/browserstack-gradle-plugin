@@ -3,7 +3,7 @@ plugins {
     id 'com.gradle.plugin-publish' version '0.9.10'
 }
 
-version '2.2.0'
+version '2.3.0'
 
 pluginBundle {
     website = 'https://www.browserstack.com'
@@ -18,4 +18,13 @@ pluginBundle {
             version = '2.2.0'
         }
     }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies{
+    // https://mvnrepository.com/artifact/com.android.tools.build/gradle
+    compile group: 'com.android.tools.build', name: 'gradle', version: '2.3.0'
 }
