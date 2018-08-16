@@ -1,4 +1,4 @@
-PLUGIN_JAR_PATH=`pwd`.strip+"/build/libs/browserstack-gradle-plugin-2.2.0.jar"
+PLUGIN_JAR_PATH=`pwd`.strip+"/build/libs/browserstack-gradle-plugin-2.3.0.jar"
 PWD=`pwd`.strip
 
 def run_command(s)
@@ -6,15 +6,25 @@ def run_command(s)
   return stdout
 end
 
+def print_separator
+  puts "***************************************************"
+end
+
 def setup_repo
   puts "Setting up sample repo"
-  run_command("git clone https://github.com/mohitmun/android-testing.git") 
-  Dir.chdir "android-testing/ui/espresso/BasicSample"
+  run_command("git clone https://github.com/raghuhit/espresso-browserstack.git")
+  Dir.chdir "espresso-browserstack"
   run_command("sed -i -e 's/PLUGIN_JAR_PATH/#{PLUGIN_JAR_PATH.gsub('/','\/')}/g' build.gradle")
 end
 
-def run_basic_espresso_test
-  gradle_command = "gradle clean runDebugBuildOnBrowserstack"
+def setup_repo_with_app_variants
+  puts "Adding gradle file with flavors."
+  run_command("rm app/build.gradle")
+  run_command("mv app/build-with-flavours.gradle app/build.gradle")
+end
+
+def run_basic_espresso_test(gradle_command)
+  # gradle_command = "gradle clean runDebugBuildOnBrowserstack"
   puts "Running #{gradle_command} with basic config"
   stdout = run_command(gradle_command)
   responses = stdout.lines.select{ |line| line.match(/app_url|test_url|build_id/)}
@@ -26,9 +36,9 @@ def run_basic_espresso_test
   end
 end
 
-def run_app_live_test
-  gradle_command = "gradle clean uploadBuildToBrowserstackAppLive"
-  puts "Running #{gradle_command} with"
+def run_app_live_test(gradle_command)
+  # gradle_command = "gradle clean uploadBuildToBrowserstackAppLive"
+  puts "Running #{gradle_command}"
   stdout = run_command(gradle_command)
   responses = stdout.lines.select{ |line| line.match(/app_url|test_url|build_id/)}
   if responses.empty?
@@ -40,14 +50,33 @@ def run_app_live_test
 end
 
 def run_tests
-  run_basic_espresso_test
+  puts "Running old tests"
+  run_basic_espresso_test("gradle clean runDebugBuildOnBrowserstack")
+  print_separator
   puts "\n"
-  run_app_live_test
+  run_app_live_test("gradle clean uploadBuildToBrowserstackAppLive")
+  print_separator
+
+  puts "\nRunning new tests"
+  run_basic_espresso_test("gradle clean executeDebugTestsOnBrowserstack")
+  print_separator
+  puts "\n"
+  run_app_live_test("gradle clean uploadDebugToBrowserstackAppLive")
+  print_separator
+end
+
+def run_tests_with_flavors
+  puts "Running tests with flavors"
+  run_basic_espresso_test("gradle clean executePhoneDebugTestsOnBrowserstack")
+  print_separator
+  puts "\n"
+  run_app_live_test("gradle clean uploadPhoneDebugToBrowserstackAppLive")
+  print_separator
 end
 
 def remove_repo
   Dir.chdir PWD
-  run_command("rm -rf android-testing")
+  run_command("rm -rf espresso-browserstack")
 end
 
 def build_plugin
@@ -73,6 +102,8 @@ def test
   build_plugin
   setup_repo
   run_tests
+  setup_repo_with_app_variants
+  run_tests_with_flavors
   remove_repo
 end
 

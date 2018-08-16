@@ -6,4 +6,4 @@ build/
 bin/
 .idea/
 out/
-
+espresso-browserstack/

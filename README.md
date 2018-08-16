@@ -114,6 +114,7 @@ gradle clean upload${buildVariantName}ToBrowserstackAppLive
 
 > Note: You can also set the values of username and accessKey in environment variables with names BROWSERSTACK_USERNAME and BROWSERSTACK_ACCESS_KEY, respectively. If you do this, then there is no need to set this parameters in browserStackConfig block.
 
+> Note: You can also see all possible tasks by running "gradle tasks -all"
 
 ### Development
 
