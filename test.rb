@@ -7,13 +7,14 @@ def run_command(s)
 end
 
 def print_separator
-  puts "***************************************************"
+  puts "\n******************************************************************************************************"
 end
 
 def setup_repo
   puts "Setting up sample repo"
-  run_command("git clone https://github.com/raghuhit/espresso-browserstack.git")
+  run_command("git clone https://github.com/browserstack/espresso-browserstack.git")
   Dir.chdir "espresso-browserstack"
+  run_command("git checkout gradlePluginTestBranch")
   run_command("sed -i -e 's/PLUGIN_JAR_PATH/#{PLUGIN_JAR_PATH.gsub('/','\/')}/g' build.gradle")
 end
 
