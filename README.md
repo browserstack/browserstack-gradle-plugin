@@ -50,7 +50,7 @@ browserStackConfig {
 
 ### Tasks
 
-#### Espresso test task
+..*#### Espresso test task
 Builds, uploads and start espresso tests on BrowserStack AppAutomate.
 
 ##### Gradle command
@@ -90,7 +90,7 @@ gradle clean execute${buildVariantName}TestsOnBrowserstack
  3. Upload both the apks on BrowserStack AppAutomate platform.
  4. Execute Espresso test using the uploaded apps on the devices mentioned.
 
-#### Upload app to AppLive
+..*#### Upload to AppLive task
 
 ##### Gradle command
 
