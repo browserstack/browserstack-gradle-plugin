@@ -7,9 +7,9 @@ public class Tools {
   }
 
   public static String capitalize(String variantName) throws Exception {
-    if(isStringEmpty(variantName)){
+    if (isStringEmpty(variantName)) {
       throw new Exception("Null or empty variantName passed.");
     }
-    return variantName.substring(0,1).toUpperCase()+variantName.substring(1);
+    return variantName.substring(0, 1).toUpperCase() + variantName.substring(1);
   }
 }

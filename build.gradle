@@ -24,7 +24,7 @@ repositories {
     mavenCentral()
 }
 
-dependencies{
+dependencies {
     // https://mvnrepository.com/artifact/com.android.tools.build/gradle
     compile group: 'com.android.tools.build', name: 'gradle', version: '2.3.0'
 }
