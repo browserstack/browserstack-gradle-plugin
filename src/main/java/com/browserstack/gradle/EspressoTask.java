@@ -191,7 +191,7 @@ public class EspressoTask extends BrowserStackTask {
   public void verifyParams() throws Exception {
     super.verifyParams();
     if (devices == null) {
-      throw new Exception("`devices` is compulsory");
+      throw new Exception("`devices` is mandatory");
     }
   }
 
