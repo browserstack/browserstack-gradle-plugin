@@ -75,7 +75,7 @@ gradle clean executePhoneDebugTestsOnBrowserstack
 
 > Note: username, accessKey and devices are mandatory parameters. Visit https://www.browserstack.com/app-automate/espresso/get-started to get started with Espresso Tests on BrowserStack and also to know more about the above mentioned parameters.
 
-> Note: List of supported devices and be found [here](https://api.browserstack.com/app-automate/espresso/devices.json) (basic auth required). 
+> Note: List of supported devices and be found [here](https://api.browserstack.com/app-automate/espresso/devices.json) (basic auth required). For example :``` curl -u "$BROWSERSTACK_USERNAME:$BROWSERSTACK_ACCESS_KEY" https://api-cloud.browserstack.com/app-automate/devices.json ```
 
 > Note: You can also set the values of username and accessKey in environment variables with names BROWSERSTACK_USERNAME and BROWSERSTACK_ACCESS_KEY, respectively. If you do this, then there is no need to set this parameters in browserStackConfig block.
 
