@@ -4,8 +4,6 @@ This repository contains the source code for BrowserStack's Gradle plugin.
 
 <br/>
 
-> Note: For now this plugin supports Espresso tests.
-
 ## PURPOSE
 
 This plugin consists of two types of tasks:
@@ -47,10 +45,15 @@ gradle clean execute${buildVariantName}TestsOnBrowserstack
 For running tests on a project with no variants, you can simply run following command for uploading and running tests on debug apk:
 
 ```
-gradle clean executeDebugTestsOnBrowserstack 
+gradle clean executeDebugTestsOnBrowserstack
 ```
 
-And for projects with productFlavors, replace ${buildVariantName} with your build variant name, for example if your productFlavor name is "phone" and you want to test debug build type of this variant then command will be gradle clean executePhoneDebugTestsOnBrowserstack.
+And for projects with productFlavors, replace ${buildVariantName} with your build variant name, for example if your productFlavor name is "phone" and you want to test debug build type of this variant then command will be
+
+```
+gradle clean executePhoneDebugTestsOnBrowserstack
+
+```
 
 ##### Supported browserStackConfig parameters
 
@@ -70,7 +73,7 @@ And for projects with productFlavors, replace ${buildVariantName} with your buil
     callbackURL: String
     networkProfile: String
 
-> Note: username, accessKey and devices are compulsory parameters. Visit https://www.browserstack.com/app-automate/espresso/get-started to get started with Espresso Tests on BrowserStack and also to know more about the above mentioned parameters.
+> Note: username, accessKey and devices are mandatory parameters. Visit https://www.browserstack.com/app-automate/espresso/get-started to get started with Espresso Tests on BrowserStack and also to know more about the above mentioned parameters.
 
 > Note: List of supported devices and be found [here](https://api.browserstack.com/app-automate/espresso/devices.json) (basic auth required). 
 
@@ -102,7 +105,7 @@ And for projects with productFlavors, replace ${buildVariantName} with your buil
     username: String
     accessKey: String
 
-> Note: username and accessKey are compulsory parameters.
+> Note: username and accessKey are mandatory parameters.
 
 ##### Internal steps
 
@@ -111,7 +114,7 @@ And for projects with productFlavors, replace ${buildVariantName} with your buil
  3. Upload the apk on BrowserStack AppLive platform.
  
 
-> Note: You can also set the values of username and accessKey in environment variables with names BROWSERSTACK_USERNAME and BROWSERSTACK_ACCESS_KEY, respectively. If you do this, then there is no need to set this parameters in browserStackConfig block.
+> Note: You can also set the values of username and accessKey in environment variables with names BROWSERSTACK_USERNAME and BROWSERSTACK_ACCESS_KEY, respectively. If you do this, then there is no need to set these parameters in browserStackConfig block.
 
 > Note: You can also see all possible tasks by running "gradle tasks -all"
 
