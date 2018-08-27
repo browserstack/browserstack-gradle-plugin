@@ -4,3 +4,6 @@ build/
 .classpath
 .settings/
 bin/
+.idea/
+out/
+espresso-browserstack/

@@ -4,24 +4,58 @@ This repository contains the source code for BrowserStack's Gradle plugin.
 
 <br/>
 
->Note: For now this plugin supports Espresso tests.
+## PURPOSE
 
-## Espresso
+This plugin consists of two types of tasks:
 
-Add to build.gradle:
+1. Builds, uploads and starts Espresso tests on BrowserStack AppAutomate.
+2. Builds and uploads apk to BrowserStack AppLive for manual testing.
 
-    plugins {
-        id: com.browserstack.gradle
-    }
+## USAGE
 
-    runDebugBuildOnBrowserstack {
-        username = "<username>"
-        accessKey = "<accessKey>"
-        devices = ['Google Pixel-7.1']
-    }
+### Add to build.gradle
 
+#### Add plugin dependency to module's build.gradle
 
-Supported parameters:
+```
+plugins {
+    id "com.browserstack.gradle" version "2.3.0"
+}
+```
+
+#### Add browserStackConfig parameters to module's build.gradle
+
+```
+browserStackConfig {
+    username = "<browserstack_username>"
+    accessKey = "<browserstack_access_key>"
+    devices = ['Google Pixel-7.1']
+}
+```
+
+### Tasks
+
+#### Espresso test task
+Builds, uploads and start Espresso tests on BrowserStack AppAutomate.
+
+##### Gradle command
+
+gradle clean execute${buildVariantName}TestsOnBrowserstack
+
+For running tests on a project with no variants, you can simply run following command for uploading and running tests on debug apk:
+
+```
+gradle clean executeDebugTestsOnBrowserstack
+```
+
+And for projects with productFlavors, replace ${buildVariantName} with your build variant name, for example if your productFlavor name is "phone" and you want to test debug build type of this variant then command will be
+
+```
+gradle clean executePhoneDebugTestsOnBrowserstack
+
+```
+
+##### Supported browserStackConfig parameters
 
     username: String
     accessKey: String
@@ -39,44 +73,50 @@ Supported parameters:
     callbackURL: String
     networkProfile: String
 
+> Note: username, accessKey and devices are mandatory parameters. Visit https://www.browserstack.com/app-automate/espresso/get-started to get started with Espresso Tests on BrowserStack and also to know more about the above mentioned parameters.
 
-> Note: username, accessKey and devices are compulsory parameters. Visit https://www.browserstack.com/app-automate/espresso/get-started to get started with Espresso Tests on BrowserStack and also to know more about the above mentioned parameters.
+> Note: List of supported devices and be found [here](https://api.browserstack.com/app-automate/espresso/devices.json) (basic auth required). For example :``` curl -u "$BROWSERSTACK_USERNAME:$BROWSERSTACK_ACCESS_KEY" https://api-cloud.browserstack.com/app-automate/devices.json ```
 
-> Note: List of supported devices and be found [here](https://api.browserstack.com/app-automate/espresso/devices.json) (basic auth required).
+> Note: You can also set the values of username and accessKey in environment variables with names BROWSERSTACK_USERNAME and BROWSERSTACK_ACCESS_KEY, respectively. If you do this, then there is no need to set this parameters in browserStackConfig block.
 
-To run an Espresso test on BrowserStack using this plugin, use the following command:
+##### Internal steps
 
-    gradle runDebugBuildOnBrowserstack
-
-This will execute the following:
-
- 1. Build debug and test apks, as dependencies are declared on `assembleDebug` and `assembleDebugAndroidTest` tasks.
+ 1. Build debug and test apks, as dependencies are declared on `assemble${buildvariantName}` and `assemble${buildvariantName}AndroidTest` tasks.
  2. Find the latest apks in the app directory recursively.
- 3. Upload both the apks on BrowserStack platform.
+ 3. Upload both the apks on BrowserStack AppAutomate platform.
  4. Execute Espresso test using the uploaded apps on the devices mentioned.
 
-### Using this plugin in android studio
+#### Upload to AppLive task
 
-Add this plugin to your `buildscript`:
+##### Gradle command
 
-```
-buildscript {
-  repositories {
-    maven {
-      url "https://plugins.gradle.org/m2/"
-    }
-  }
-  dependencies {
-    classpath 'com.browserstack.gradle:com.browserstack.gradle.gradle.plugin:2.2.0'
-  }
-}
-```
+gradle clean upload${buildVariantName}ToBrowserstackAppLive
 
-and apply it in your module build.gradle 
+For running tests on a project with no variants, you can simply run following command for uploading debug apk:
 
 ```
-apply plugin: 'com.browserstack.gradle'
+gradle clean uploadDebugToBrowserstackAppLive 
 ```
+
+And for projects with productFlavors, replace ${buildVariantName} with your build variant name, for example if your productFlavor name is "phone" and you want to upload debug build type of this variant then command will be gradle clean uploadPhoneDebugToBrowserstackAppLive.
+
+##### Supported browserStackConfig parameters
+
+    username: String
+    accessKey: String
+
+> Note: username and accessKey are mandatory parameters.
+
+##### Internal steps
+
+ 1. Build debug and test apks, as dependencies are declared on `assemble${buildvariantName}` .
+ 2. Find the latest apk in the app directory recursively.
+ 3. Upload the apk on BrowserStack AppLive platform.
+ 
+
+> Note: You can also set the values of username and accessKey in environment variables with names BROWSERSTACK_USERNAME and BROWSERSTACK_ACCESS_KEY, respectively. If you do this, then there is no need to set these parameters in browserStackConfig block.
+
+> Note: You can also see all possible tasks by running "gradle tasks -all"
 
 ### Development
 

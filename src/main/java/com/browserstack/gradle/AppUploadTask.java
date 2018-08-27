@@ -7,7 +7,7 @@ import java.nio.file.Path;
 
 public class AppUploadTask extends BrowserStackTask {
 
-  private void displayTestURL(String app_url){
+  private void displayTestURL(String app_url) {
     String app_hashed_id = app_url.substring(5);
     System.out.println("Start testing at " + Constants.APP_LIVE_HOST + "/#app_hashed_id=" + app_hashed_id);
   }
