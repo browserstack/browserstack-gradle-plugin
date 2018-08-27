@@ -10,12 +10,13 @@ pluginBundle {
     vcsUrl = 'https://github.com/browserstack/browserstack-gradle-plugin'
 
     plugins {
-        myTestPluginInfo {
+        browserstackPlugin {
             id = 'com.browserstack.gradle'
             displayName = 'BrowserStack\'s Gradle Plugin'
             description = 'Runs Espresso tests on BrowserStack'
-            tags = ['espresso', 'test', 'browserstack', 'app', 'automate', 'app-automate', 'appautomate']
-            version = '2.2.0'
+            tags = ['espresso', 'test', 'browserstack', 'app', 'automate', 
+                'app-automate', 'appautomate', 'app-live', 'applive']
+            version = '2.3.0'
         }
     }
 }
