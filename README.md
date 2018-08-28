@@ -2,8 +2,6 @@
 
 This repository contains the source code for BrowserStack's Gradle plugin.
 
-<br/>
-
 ## PURPOSE
 
 This plugin consists of two types of tasks:
@@ -18,9 +16,18 @@ This plugin consists of two types of tasks:
 #### Add plugin dependency to module's build.gradle
 
 ```
-plugins {
-    id "com.browserstack.gradle" version "2.3.0"
+buildscript {
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+  }
+  dependencies {
+    classpath "gradle.plugin.com.browserstack.gradle:browserstack-gradle-plugin:2.3.0"
+  }
 }
+
+apply plugin: "com.browserstack.gradle"
 ```
 
 #### Add browserStackConfig parameters to module's build.gradle
