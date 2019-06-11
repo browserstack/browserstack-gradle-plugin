@@ -93,6 +93,16 @@ public class BrowserStackPlugin implements Plugin<Project> {
 
         task.setCallbackURL(browserStackConfigExtension.getCallbackURL());
         task.setLocalIdentifier(browserStackConfigExtension.getLocalIdentifier());
+        task.setAllowDeviceMockServer(browserStackConfigExtension.getAllowDeviceMockServer());
+        task.setDisableAnimations(browserStackConfigExtension.getDisableAnimations());
+        task.setAppStoreConfiguration(browserStackConfigExtension.getAppStoreConfiguration());
+        task.setTimezone(browserStackConfigExtension.getTimezone());
+        task.setCustomBuildName(browserStackConfigExtension.getCustomBuildName());
+        task.setCustomBuildNotifyURL(browserStackConfigExtension.getCustomBuildNotifyURL());
+        task.setGeoLocation(browserStackConfigExtension.getGeoLocation());
+        task.setLanguage(browserStackConfigExtension.getLanguage());
+        task.setLocale(browserStackConfigExtension.getLocale());
+        task.setDeviceOrientation(browserStackConfigExtension.getDeviceOrienation());
       });
 
       project.getTasks().create("upload" + appVariantName + "ToBrowserstackAppLive", AppUploadTask.class, (task) -> {

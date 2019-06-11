@@ -79,6 +79,18 @@ gradle clean executePhoneDebugTestsOnBrowserstack
     otherApps: String[]
     callbackURL: String
     networkProfile: String
+    timezone: String
+    appStoreConfiguration: String[] // First entry in the array will be username and second will be password.
+    enableSpoonFramework: boolean
+    disableAnimations: boolean
+    allowDeviceMockServer: boolean
+    customBuildName: String
+    customBuildNotifyURL: String
+    geoLocation: String
+    language: String
+    locale: String
+    deviceOrientation: String
+
 
 > Note: username, accessKey and devices are mandatory parameters. Visit https://www.browserstack.com/app-automate/espresso/get-started to get started with Espresso Tests on BrowserStack and also to know more about the above mentioned parameters.
 

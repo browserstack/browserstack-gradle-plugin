@@ -1,5 +1,8 @@
 package com.browserstack.gradle;
 
+import java.util.HashMap;
+import java.util.Map;
+
 // This class is for getting browserstack configuration from gradle file.
 public class BrowserStackConfigExtension {
 
@@ -13,9 +16,13 @@ public class BrowserStackConfigExtension {
   private boolean local = Constants.DEFAULT_LOCAL;
   private boolean networkLogs = Constants.DEFAULT_NETWORK_LOGS;
 
+  private boolean enableSpoonFramework, allowDeviceMockServer, disableAnimations;
+
+  private String[] appStoreConfiguration;
+
   String[] devices;
 
-  private String callbackURL, localIdentifier, networkProfile;
+  private String callbackURL, localIdentifier, networkProfile, timeZone, customBuildName, customBuildNotifyURL, geoLocation, language, locale, deviceOrientation;
 
   public String getUsername() {
     return username;
@@ -92,6 +99,53 @@ public class BrowserStackConfigExtension {
     return networkProfile;
   }
 
+  public boolean getEnableSpoonFramework() {
+    return enableSpoonFramework;
+  }
+
+  public boolean getAllowDeviceMockServer() {
+    return allowDeviceMockServer;
+  }
+
+  public boolean getDisableAnimations() {
+    return disableAnimations;
+  }
+
+  public HashMap getAppStoreConfiguration() {
+    HashMap<String, String> appStoreConfig = new HashMap<String,String>();
+    appStoreConfig.put("username", appStoreConfiguration[0]);
+    appStoreConfig.put("password", appStoreConfiguration[1]);
+    return appStoreConfig;
+  }
+
+  public String getTimezone() {
+    return timeZone;
+  }
+
+  public String getCustomBuildName() {
+    return customBuildName;
+  }
+
+  public String getCustomBuildNotifyURL() {
+    return customBuildNotifyURL;
+  }
+
+  public String getGeoLocation() {
+    return geoLocation;
+  }
+
+  public String getLanguage() {
+    return language;
+  }
+
+  public String getLocale() {
+    return locale;
+  }
+
+  public String getDeviceOrienation() {
+    return deviceOrientation;
+  }
+
   public void setUsername(String username) {
     this.username = username;
   }
@@ -150,5 +204,49 @@ public class BrowserStackConfigExtension {
 
   public void setNetworkProfile(String networkProfile) {
     this.networkProfile = networkProfile;
+  }
+
+  public void setAllowDeviceMockServer(boolean allowDeviceMockServer) {
+    this.allowDeviceMockServer = allowDeviceMockServer;
+  }
+
+  public void setDisableAnimations(boolean disableAnimations) {
+    this.disableAnimations = disableAnimations;
+  }
+
+  public void setEnableSpoonFramework(boolean enableSpoonFramework) {
+    this.enableSpoonFramework = enableSpoonFramework;
+  }
+
+  public void setAppStoreConfiguration(String[] appStoreConfiguration) {
+    this.appStoreConfiguration = appStoreConfiguration;
+  }
+
+  public void setTimezone(String timeZone) {
+    this.timeZone = timeZone;
+  }
+
+  public void setCustomBuildName(String customBuildName) {
+    this.customBuildName = customBuildName;
+  }
+
+  public void setCustomBuildNotifyURL(String customBuildNotifyURL) {
+    this.customBuildNotifyURL = customBuildNotifyURL;
+  }
+
+  public void setGeoLocation(String geoLocation) {
+    this.geoLocation = geoLocation;
+  }
+
+  public void setLanguage(String language) {
+    this.language = language;
+  }
+
+  public void setLocale(String locale) {
+    this.locale = locale;
+  }
+
+  public void setDeviceOrientation(String deviceOrientation) {
+    this.deviceOrientation = deviceOrientation;
   }
 }
