@@ -301,6 +301,7 @@ public class EspressoTask extends BrowserStackTask {
     if (devices == null) {
       throw new Exception("`devices` is mandatory");
     }
+
   }
 
   private void displayDashboardURL(String build_id) {

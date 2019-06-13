@@ -1,7 +1,6 @@
 package com.browserstack.gradle;
 
 import java.util.HashMap;
-import java.util.Map;
 
 // This class is for getting browserstack configuration from gradle file.
 public class BrowserStackConfigExtension {
@@ -111,7 +110,10 @@ public class BrowserStackConfigExtension {
     return disableAnimations;
   }
 
-  public HashMap getAppStoreConfiguration() {
+  public HashMap getAppStoreConfiguration() throws Exception {
+    if (appStoreConfiguration.length < 2) {
+      throw new Exception("Username and password for appstore should be provided.");
+    }
     HashMap<String, String> appStoreConfig = new HashMap<String,String>();
     appStoreConfig.put("username", appStoreConfiguration[0]);
     appStoreConfig.put("password", appStoreConfiguration[1]);

@@ -95,7 +95,11 @@ public class BrowserStackPlugin implements Plugin<Project> {
         task.setLocalIdentifier(browserStackConfigExtension.getLocalIdentifier());
         task.setAllowDeviceMockServer(browserStackConfigExtension.getAllowDeviceMockServer());
         task.setDisableAnimations(browserStackConfigExtension.getDisableAnimations());
-        task.setAppStoreConfiguration(browserStackConfigExtension.getAppStoreConfiguration());
+        try {
+          task.setAppStoreConfiguration(browserStackConfigExtension.getAppStoreConfiguration());
+        } catch (Exception e) {
+          return;
+        }
         task.setTimezone(browserStackConfigExtension.getTimezone());
         task.setCustomBuildName(browserStackConfigExtension.getCustomBuildName());
         task.setCustomBuildNotifyURL(browserStackConfigExtension.getCustomBuildNotifyURL());
