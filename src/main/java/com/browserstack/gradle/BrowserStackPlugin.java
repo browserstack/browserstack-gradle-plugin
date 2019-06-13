@@ -98,6 +98,7 @@ public class BrowserStackPlugin implements Plugin<Project> {
         try {
           task.setAppStoreConfiguration(browserStackConfigExtension.getAppStoreConfiguration());
         } catch (Exception e) {
+          System.out.print("ERROR: " + e.getMessage());
           return;
         }
         task.setTimezone(browserStackConfigExtension.getTimezone());
