@@ -111,12 +111,15 @@ public class BrowserStackConfigExtension {
   }
 
   public HashMap getAppStoreConfiguration() throws Exception {
-    if (appStoreConfiguration.length < 2) {
-      throw new Exception("Username and password for appstore should be provided.");
-    }
     HashMap<String, String> appStoreConfig = new HashMap<String,String>();
-    appStoreConfig.put("username", appStoreConfiguration[0]);
-    appStoreConfig.put("password", appStoreConfiguration[1]);
+    if (appStoreConfiguration != null) {
+      if (appStoreConfiguration.length < 2) {
+        throw new Exception("Username and password for appstore should be provided.");
+      }
+
+      appStoreConfig.put("username", appStoreConfiguration[0]);
+      appStoreConfig.put("password", appStoreConfiguration[1]);
+    }
     return appStoreConfig;
   }
 
