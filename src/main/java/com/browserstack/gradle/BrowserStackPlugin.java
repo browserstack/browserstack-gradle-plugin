@@ -101,6 +101,8 @@ public class BrowserStackPlugin implements Plugin<Project> {
           System.out.println("ERROR: " + e.getMessage());
           System.exit(1);
         }
+
+        task.setEnableSpoonFramework(browserStackConfigExtension.getEnableSpoonFramework());
         task.setTimezone(browserStackConfigExtension.getTimezone());
         task.setCustomBuildName(browserStackConfigExtension.getCustomBuildName());
         task.setCustomBuildNotifyURL(browserStackConfigExtension.getCustomBuildNotifyURL());
