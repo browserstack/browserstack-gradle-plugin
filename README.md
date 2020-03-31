@@ -23,7 +23,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath "gradle.plugin.com.browserstack.gradle:browserstack-gradle-plugin:2.3.2"
+    classpath "gradle.plugin.com.browserstack.gradle:browserstack-gradle-plugin:2.3.3"
   }
 }
 
@@ -114,7 +114,7 @@ gradle clean upload${buildVariantName}ToBrowserstackAppLive
 For running tests on a project with no variants, you can simply run following command for uploading debug apk:
 
 ```
-gradle clean uploadDebugToBrowserstackAppLive 
+gradle clean uploadDebugToBrowserstackAppLive
 ```
 
 And for projects with productFlavors, replace ${buildVariantName} with your build variant name, for example if your productFlavor name is "phone" and you want to upload debug build type of this variant then command will be gradle clean uploadPhoneDebugToBrowserstackAppLive.
@@ -131,7 +131,7 @@ And for projects with productFlavors, replace ${buildVariantName} with your buil
  1. Build debug and test apks, as dependencies are declared on `assemble${buildvariantName}` .
  2. Find the latest apk in the app directory recursively.
  3. Upload the apk on BrowserStack AppLive platform.
- 
+
 
 > Note: You can also set the values of username and accessKey in environment variables with names BROWSERSTACK_USERNAME and BROWSERSTACK_ACCESS_KEY, respectively. If you do this, then there is no need to set these parameters in browserStackConfig block.
 
