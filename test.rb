@@ -24,19 +24,6 @@ def setup_repo_with_app_variants
   run_command("mv app/build-with-flavours.gradle app/build.gradle")
 end
 
-def run_basic_espresso_test(gradle_command)
-  # gradle_command = "gradle clean runDebugBuildOnBrowserstack"
-  puts "Running #{gradle_command} with basic config"
-  stdout = run_command(gradle_command)
-  responses = stdout.lines.select{ |line| line.match(/app_url|test_url|build_id/)}
-  if responses.count != 3
-    puts "✘ #{gradle_command} failed with error: #{stdout}".red
-  else
-    puts "✔ #{gradle_command} tests passed".green
-    puts responses.join("\n")
-  end
-end
-
 def run_app_live_test(gradle_command)
   # gradle_command = "gradle clean uploadBuildToBrowserstackAppLive"
   puts "Running #{gradle_command}"
@@ -48,22 +35,6 @@ def run_app_live_test(gradle_command)
     puts "✔ #{gradle_command} tests passed".green
     puts responses.join("\n")
   end
-end
-
-def run_tests
-  puts "Running old tests"
-  run_basic_espresso_test("gradle clean runDebugBuildOnBrowserstack")
-  print_separator
-  puts "\n"
-  run_app_live_test("gradle clean uploadBuildToBrowserstackAppLive")
-  print_separator
-
-  puts "\nRunning new tests"
-  run_basic_espresso_test("gradle clean executeDebugTestsOnBrowserstack")
-  print_separator
-  puts "\n"
-  run_app_live_test("gradle clean uploadDebugToBrowserstackAppLive")
-  print_separator
 end
 
 def run_tests_with_flavors
