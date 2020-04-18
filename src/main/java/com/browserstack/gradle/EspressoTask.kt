@@ -55,7 +55,7 @@ open class EspressoTask @Inject constructor(
             put("networkProfile", extension.networkProfile)
             put("callbackURL", extension.callbackURL)
             put("timezone", extension.timeZone)
-            put("appStoreConfiguration", extension.appStoreConfiguration)
+            put("appStoreConfiguration", extension.appStoreConfigurationMap)
             put("enableSpoonFramework", extension.enableSpoonFramework)
             put("disableAnimations", extension.disableAnimations)
             put("allowDeviceMockServer", extension.allowDeviceMockServer)
