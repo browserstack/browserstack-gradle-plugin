@@ -3,7 +3,7 @@ plugins {
     id 'com.gradle.plugin-publish' version '0.11.0'
 }
 
-version '2.3.3'
+version '2.3.4'
 
 pluginBundle {
     website = 'https://www.browserstack.com'

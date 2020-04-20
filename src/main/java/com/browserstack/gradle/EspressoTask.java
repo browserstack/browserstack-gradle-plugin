@@ -27,7 +27,7 @@ public class EspressoTask extends BrowserStackTask {
 
   @Optional
   @Input
-  private String callbackURL, localIdentifier, networkProfile, timeZone, customBuildName, customBuildNotifyURL, geoLocation, language, locale, deviceOrientation;
+  private String callbackURL, localIdentifier, networkProfile, timeZone, customBuildName, customBuildNotifyURL, geoLocation, language, locale, deviceOrientation, projectName;
 
   @Optional
   @Input
@@ -85,6 +85,10 @@ public class EspressoTask extends BrowserStackTask {
     return deviceOrientation;
   }
 
+  public String getProjectName() {
+    return projectName;
+  }
+
   public void setAllowDeviceMockServer(boolean allowDeviceMockServer) {
     this.allowDeviceMockServer = allowDeviceMockServer;
   }
@@ -131,6 +135,10 @@ public class EspressoTask extends BrowserStackTask {
 
   public void setCallbackURL(String callbackURL) {
     this.callbackURL = callbackURL;
+  }
+
+  public void setProjectName(String project) {
+    this.projectName = projectName;
   }
 
   public String getLocalIdentifier() {
@@ -256,6 +264,7 @@ public class EspressoTask extends BrowserStackTask {
     params.put("language", language);
     params.put("locale", locale);
     params.put("deviceOrientation", deviceOrientation);
+    params.put("project", projectName);
 
     return params.toString();
   }

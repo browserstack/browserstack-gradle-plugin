@@ -21,7 +21,7 @@ public class BrowserStackConfigExtension {
 
   String[] devices;
 
-  private String callbackURL, localIdentifier, networkProfile, timeZone, customBuildName, customBuildNotifyURL, geoLocation, language, locale, deviceOrientation;
+  private String callbackURL, localIdentifier, networkProfile, timeZone, customBuildName, customBuildNotifyURL, geoLocation, language, locale, deviceOrientation, projectName;
 
   public String getUsername() {
     return username;
@@ -151,6 +151,10 @@ public class BrowserStackConfigExtension {
     return deviceOrientation;
   }
 
+  public String getProjectName() {
+    return projectName;
+  }
+
   public void setUsername(String username) {
     this.username = username;
   }
@@ -253,5 +257,9 @@ public class BrowserStackConfigExtension {
 
   public void setDeviceOrientation(String deviceOrientation) {
     this.deviceOrientation = deviceOrientation;
+  }
+
+  public void setProjectName(String project) {
+    this.projectName = projectName;
   }
 }
