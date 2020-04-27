@@ -110,6 +110,7 @@ public class BrowserStackPlugin implements Plugin<Project> {
         task.setLanguage(browserStackConfigExtension.getLanguage());
         task.setLocale(browserStackConfigExtension.getLocale());
         task.setDeviceOrientation(browserStackConfigExtension.getDeviceOrienation());
+        task.setProjectName(browserStackConfigExtension.getProjectName());
       });
 
       project.getTasks().create("upload" + appVariantName + "ToBrowserstackAppLive", AppUploadTask.class, (task) -> {
