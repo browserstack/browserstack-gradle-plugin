@@ -259,7 +259,7 @@ public class BrowserStackConfigExtension {
     this.deviceOrientation = deviceOrientation;
   }
 
-  public void setProjectName(String project) {
+  public void setProjectName(String projectName) {
     this.projectName = projectName;
   }
 }

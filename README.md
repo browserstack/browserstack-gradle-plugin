@@ -90,6 +90,7 @@ gradle clean executePhoneDebugTestsOnBrowserstack
     language: String
     locale: String
     deviceOrientation: String
+    projectName: String
 
 
 > Note: username, accessKey and devices are mandatory parameters. Visit https://www.browserstack.com/app-automate/espresso/get-started to get started with Espresso Tests on BrowserStack and also to know more about the above mentioned parameters.

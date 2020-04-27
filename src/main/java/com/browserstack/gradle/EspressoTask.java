@@ -137,7 +137,7 @@ public class EspressoTask extends BrowserStackTask {
     this.callbackURL = callbackURL;
   }
 
-  public void setProjectName(String project) {
+  public void setProjectName(String projectName) {
     this.projectName = projectName;
   }
 
