@@ -239,6 +239,8 @@ public class EspressoTask extends BrowserStackTask {
 
   private String constructBuildParams() {
     JSONObject params = constructDefaultBuildParams();
+    System.out.println("Config file path");
+    System.out.println(this.getConfigFilePath());
     params.put("testSuite", testSuite);
     params.put("devices", devices);
     params.put("class", classes);

@@ -8,6 +8,8 @@ public class BrowserStackConfigExtension {
   private String username = System.getenv("BROWSERSTACK_USERNAME");
   private String accessKey = System.getenv("BROWSERSTACK_ACCESS_KEY");
 
+  private String configFilePath;
+
   private String[] classes, annotations, packages, sizes, otherApps;
 
   private boolean video = Constants.DEFAULT_VIDEO;
@@ -29,6 +31,10 @@ public class BrowserStackConfigExtension {
 
   public String getAccessKey() {
     return accessKey;
+  }
+
+  public String getConfigFilePath() {
+    return configFilePath;
   }
 
   public String[] getClasses() {
@@ -161,6 +167,10 @@ public class BrowserStackConfigExtension {
 
   public void setAccessKey(String accessKey) {
     this.accessKey = accessKey;
+  }
+
+  public void setConfigFilePath(String filePath) {
+    this.configFilePath = filePath;
   }
 
   public void setClasses(String[] classes) {

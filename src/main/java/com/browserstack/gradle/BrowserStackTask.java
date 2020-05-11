@@ -21,6 +21,7 @@ public class BrowserStackTask extends DefaultTask {
   @Input
   private String username, accessKey;
 
+  private String configFilePath;
 
   private String app, host;
 
@@ -46,6 +47,13 @@ public class BrowserStackTask extends DefaultTask {
     this.accessKey = accessKey;
   }
 
+  public void setConfigFilePath(String filePath) {
+    this.configFilePath = filePath;
+  }
+
+  public String getConfigFilePath() {
+    return configFilePath;
+  }
   public String getHost() {
     return host;
   }
