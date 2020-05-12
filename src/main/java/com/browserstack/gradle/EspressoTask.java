@@ -1,7 +1,6 @@
  package com.browserstack.gradle;
 
 import org.gradle.api.tasks.TaskAction;
-import org.gradle.api.tasks.Input;
 import java.io.FileReader;
 import java.net.HttpURLConnection;
 import java.util.Map;
@@ -11,18 +10,8 @@ import com.browserstack.httputils.HttpUtils;
 import org.json.simple.parser.JSONParser;
 
  public class EspressoTask extends BrowserStackTask {
-  @Input
-  private String[] devices;
-
   private String testSuite;
 
-  public String[] getDevices() {
-    return devices;
-  }
-
-  public void setDevices(String[] devices) {
-    this.devices = devices;
-  }
 
   private String constructBuildParams() {
     JSONObject params = constructDefaultBuildParams();
@@ -32,11 +21,10 @@ import org.json.simple.parser.JSONParser;
 
     try {
       Object obj = jsonParser.parse(new FileReader(getConfigFilePath()));
+      org.json.simple.JSONObject jsonObject = (org.json.simple.JSONObject) obj;
 
       params.put("testSuite", testSuite);
-      params.put("devices", devices);
 
-      org.json.simple.JSONObject jsonObject = (org.json.simple.JSONObject) obj;
       caps = (org.json.simple.JSONObject) jsonObject.get("caps");
 
       for (Object o : caps.keySet()) {
@@ -84,14 +72,6 @@ import org.json.simple.parser.JSONParser;
       e.printStackTrace();
       throw e;
     }
-  }
-
-  public void verifyParams() throws Exception {
-    super.verifyParams();
-    if (devices == null) {
-      throw new Exception("`devices` is mandatory");
-    }
-
   }
 
   private void displayDashboardURL(String build_id) {

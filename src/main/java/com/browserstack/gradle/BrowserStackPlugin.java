@@ -56,12 +56,9 @@ public class BrowserStackPlugin implements Plugin<Project> {
         task.dependsOn("assemble" + appVariantName, "assemble" + appVariantName + "AndroidTest");
 
         task.setAppVariantBaseName(applicationVariant.getBaseName());
-
         task.setUsername(browserStackConfigExtension.getUsername());
         task.setAccessKey(browserStackConfigExtension.getAccessKey());
-        task.setDevices(browserStackConfigExtension.getDevices());
         task.setConfigFilePath(browserStackConfigExtension.getConfigFilePath());
-
         task.setHost(Constants.BROWSERSTACK_API_HOST);
       });
 
