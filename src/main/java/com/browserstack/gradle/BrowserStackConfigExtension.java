@@ -10,8 +10,6 @@ public class BrowserStackConfigExtension {
 
   private String configFilePath;
 
-  String[] devices;
-
   public String getUsername() {
     return username;
   }
@@ -24,19 +22,6 @@ public class BrowserStackConfigExtension {
     return configFilePath;
   }
 
-
-
-
-
-
-  public String[] getDevices() {
-    return devices;
-  }
-
-
-
-
-
   public void setUsername(String username) {
     this.username = username;
   }
@@ -47,9 +32,5 @@ public class BrowserStackConfigExtension {
 
   public void setConfigFilePath(String filePath) {
     this.configFilePath = filePath;
-  }
-
-  public void setDevices(String[] devices) {
-    this.devices = devices;
   }
 }
