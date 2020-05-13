@@ -14,26 +14,6 @@ public class BrowserStackPlugin implements Plugin<Project> {
     BrowserStackConfigExtension browserStackConfigExtension = project.getExtensions()
         .create("browserStackConfig", BrowserStackConfigExtension.class);
 
-    // This will be deprecated
-    project.getTasks().create("runDebugBuildOnBrowserstack", EspressoTask.class, (task) -> {
-      System.out.println("WARNING: Task 'runDebugBuildOnBrowserstack' is deprecated now. Please use new task "
-          + "'executeDebugTestsOnBrowserStack' instead of this. Please refer "
-          + "https://github.com/browserstack/browserstack-gradle-plugin/blob/master/README.md for more details.");
-      task.dependsOn("assembleDebug", "assembleDebugAndroidTest");
-
-      task.setHost(Constants.BROWSERSTACK_API_HOST);
-
-    });
-
-    // This will be deprecated
-    project.getTasks().create("uploadBuildToBrowserstackAppLive", AppUploadTask.class, (task) -> {
-      System.out.println("WARNING: Task 'uploadBuildToBrowserstackAppLive' is deprecated now. Please use new task "
-          + "'uploadDebugToBrowserstackAppLive' instead of this. Please refer "
-          + "https://github.com/browserstack/browserstack-gradle-plugin/blob/master/README.md for more details.");
-      task.dependsOn("assembleDebug");
-      task.setHost(Constants.BROWSERSTACK_API_HOST);
-    });
-
     // Get android appExtension
     AppExtension appExtension = (AppExtension) project.getExtensions().getByName("android");
 

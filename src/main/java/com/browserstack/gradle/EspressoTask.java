@@ -25,11 +25,9 @@ import org.json.simple.parser.JSONParser;
 
       params.put("testSuite", testSuite);
 
-      caps = (org.json.simple.JSONObject) jsonObject.get("caps");
-
-      for (Object o : caps.keySet()) {
+      for (Object o : jsonObject.keySet()) {
         String key = (String) o;
-        params.put(key, caps.get(key));
+        params.put(key, jsonObject.get(key));
       }
     } catch (Exception e) {
       e.printStackTrace();
@@ -59,7 +57,7 @@ import org.json.simple.parser.JSONParser;
     }
   }
 
-  private String executeTest() throws Exception {
+  private void executeTest() throws Exception {
     try {
       HttpURLConnection con = HttpUtils
           .sendPost(getHost() + Constants.BUILD_PATH, basicAuth(), constructBuildParams(), null);
@@ -67,7 +65,15 @@ import org.json.simple.parser.JSONParser;
       System.out.println("Response Code : " + responseCode);
 
       JSONObject response = new JSONObject(HttpUtils.getResponse(con, responseCode));
-      return response.getString("build_id");
+
+      if (responseCode == 200) {
+          String build_id = response.getString("build_id");
+          displayDashboardURL(build_id);
+          return;
+      }
+
+      return;
+
     } catch (Exception e) {
       e.printStackTrace();
       throw e;
@@ -84,7 +90,6 @@ import org.json.simple.parser.JSONParser;
     Map<String, Path> apkFiles = locateApks();
     uploadApp(Constants.APP_AUTOMATE_UPLOAD_PATH, apkFiles.get("debugApkPath"));
     uploadTestSuite(apkFiles.get("testApkPath"));
-    String build_id = executeTest();
-    displayDashboardURL(build_id);
+    executeTest();
   }
 }

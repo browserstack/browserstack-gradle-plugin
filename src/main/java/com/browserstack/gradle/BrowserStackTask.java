@@ -19,9 +19,7 @@ import org.gradle.api.tasks.Input;
 public class BrowserStackTask extends DefaultTask {
 
   @Input
-  private String username, accessKey;
-
-  private String configFilePath;
+  private String username, accessKey, configFilePath;
 
   private String app, host;
 
@@ -150,8 +148,8 @@ public class BrowserStackTask extends DefaultTask {
   }
 
   public void verifyParams() throws Exception {
-    if (username == null || accessKey == null) {
-      throw new Exception("`username` and  `accessKey` are compulsory");
+    if (username == null || accessKey == null || configFilePath == null) {
+      throw new Exception("`username`, `accessKey` and `configFilePath` are compulsory");
     }
   }
 }
