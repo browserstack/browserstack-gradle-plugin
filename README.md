@@ -36,7 +36,7 @@ apply plugin: "com.browserstack.gradle"
 browserStackConfig {
     username = "<browserstack_username>"
     accessKey = "<browserstack_access_key>"
-    configFilePath = '/path/to/config_json_file/<file_name>.json'
+    configFilePath = '<path/to/your/json/configFile>'
 }
 ```
 
@@ -56,7 +56,8 @@ browserStackConfig {
   }
 }
 ```
-Complete list of supported caps can be found [here](https://www.browserstack.com/app-automate/espresso/get-started#getting-started)
+> Note: To view the list of all supported parameters for Espresso tests on BrowserStack, visit complete list of API parameters section inside our [Espresso Get Started documentation](https://www.browserstack.com/app-automate/espresso/get-started)
+
 ### Tasks
 
 #### Espresso test task
