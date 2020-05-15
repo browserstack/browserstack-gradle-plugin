@@ -30,7 +30,8 @@ import org.json.simple.parser.JSONParser;
         params.put(key, jsonObject.get(key));
       }
     } catch (Exception e) {
-      e.printStackTrace();
+        System.out.println("Config file parsing failed with below error: ");
+        e.printStackTrace();
     }
 
     return params.toString();
