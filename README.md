@@ -36,9 +36,27 @@ apply plugin: "com.browserstack.gradle"
 browserStackConfig {
     username = "<browserstack_username>"
     accessKey = "<browserstack_access_key>"
-    devices = ['Google Pixel-7.1']
+    configFilePath = '<path/to/your/json/configFile>'
 }
 ```
+
+#### Sample Config file
+```
+{
+  "caps": {
+    "devices": [
+      "Google Pixel-7.1"
+    ],
+    "deviceLogs": true,
+    "networkLogs": true,
+    "project": "Awesome gradle plugin build",
+    "shards": {
+      "numberOfShards": 3
+    }
+  }
+}
+```
+> Note: To view the list of all supported parameters for Espresso tests on BrowserStack, visit complete list of API parameters section inside our [Espresso Get Started documentation](https://www.browserstack.com/app-automate/espresso/get-started)
 
 ### Tasks
 
@@ -66,31 +84,7 @@ gradle clean executePhoneDebugTestsOnBrowserstack
 
     username: String
     accessKey: String
-    devices: String[]
-    video: boolean
-    local: boolean
-    localIdentifier: String
-    deviceLogs: boolean
-    networkLogs: boolean
-    classes: String[]
-    annotations: String[]
-    packages: String[]
-    sizes: String[]
-    otherApps: String[]
-    callbackURL: String
-    networkProfile: String
-    timezone: String
-    appStoreConfiguration: String[] // First entry in the array will be username and second will be password.
-    enableSpoonFramework: boolean
-    disableAnimations: boolean
-    allowDeviceMockServer: boolean
-    customBuildName: String
-    customBuildNotifyURL: String
-    geoLocation: String
-    language: String
-    locale: String
-    deviceOrientation: String
-    projectName: String
+    configFilePath: String # Filepath that has capabilities specifed to run the build
 
 
 > Note: username, accessKey and devices are mandatory parameters. Visit https://www.browserstack.com/app-automate/espresso/get-started to get started with Espresso Tests on BrowserStack and also to know more about the above mentioned parameters.

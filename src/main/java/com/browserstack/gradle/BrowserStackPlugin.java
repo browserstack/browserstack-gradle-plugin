@@ -14,41 +14,6 @@ public class BrowserStackPlugin implements Plugin<Project> {
     BrowserStackConfigExtension browserStackConfigExtension = project.getExtensions()
         .create("browserStackConfig", BrowserStackConfigExtension.class);
 
-    // This will be deprecated
-    project.getTasks().create("runDebugBuildOnBrowserstack", EspressoTask.class, (task) -> {
-      System.out.println("WARNING: Task 'runDebugBuildOnBrowserstack' is deprecated now. Please use new task "
-          + "'executeDebugTestsOnBrowserStack' instead of this. Please refer "
-          + "https://github.com/browserstack/browserstack-gradle-plugin/blob/master/README.md for more details.");
-      task.dependsOn("assembleDebug", "assembleDebugAndroidTest");
-
-      task.setHost(Constants.BROWSERSTACK_API_HOST);
-
-      task.setLocal(Constants.DEFAULT_LOCAL);
-      task.setVideo(Constants.DEFAULT_VIDEO);
-      task.setDeviceLogs(Constants.DEFAULT_DEVICE_LOGS);
-      task.setNetworkLogs(Constants.DEFAULT_NETWORK_LOGS);
-      task.setNetworkProfile(Constants.DEFAULT_NETWORK_PROFILE);
-
-      task.setClasses(new String[0]);
-      task.setAnnotations(new String[0]);
-      task.setPackages(new String[0]);
-      task.setSizes(new String[0]);
-
-      task.setOtherApps(new String[0]);
-
-      task.setCallbackURL(null);
-      task.setLocalIdentifier(null);
-    });
-
-    // This will be deprecated
-    project.getTasks().create("uploadBuildToBrowserstackAppLive", AppUploadTask.class, (task) -> {
-      System.out.println("WARNING: Task 'uploadBuildToBrowserstackAppLive' is deprecated now. Please use new task "
-          + "'uploadDebugToBrowserstackAppLive' instead of this. Please refer "
-          + "https://github.com/browserstack/browserstack-gradle-plugin/blob/master/README.md for more details.");
-      task.dependsOn("assembleDebug");
-      task.setHost(Constants.BROWSERSTACK_API_HOST);
-    });
-
     // Get android appExtension
     AppExtension appExtension = (AppExtension) project.getExtensions().getByName("android");
 
@@ -71,46 +36,10 @@ public class BrowserStackPlugin implements Plugin<Project> {
         task.dependsOn("assemble" + appVariantName, "assemble" + appVariantName + "AndroidTest");
 
         task.setAppVariantBaseName(applicationVariant.getBaseName());
-
         task.setUsername(browserStackConfigExtension.getUsername());
         task.setAccessKey(browserStackConfigExtension.getAccessKey());
-        task.setDevices(browserStackConfigExtension.getDevices());
-
+        task.setConfigFilePath(browserStackConfigExtension.getConfigFilePath());
         task.setHost(Constants.BROWSERSTACK_API_HOST);
-
-        task.setLocal(browserStackConfigExtension.isLocal());
-        task.setVideo(browserStackConfigExtension.isVideo());
-        task.setDeviceLogs(browserStackConfigExtension.isDeviceLogs());
-        task.setNetworkLogs(browserStackConfigExtension.isNetworkLogs());
-        task.setNetworkProfile(browserStackConfigExtension.getNetworkProfile());
-
-        task.setClasses(browserStackConfigExtension.getClasses());
-        task.setAnnotations(browserStackConfigExtension.getAnnotations());
-        task.setPackages(browserStackConfigExtension.getPackages());
-        task.setSizes(browserStackConfigExtension.getSizes());
-
-        task.setOtherApps(browserStackConfigExtension.getOtherApps());
-
-        task.setCallbackURL(browserStackConfigExtension.getCallbackURL());
-        task.setLocalIdentifier(browserStackConfigExtension.getLocalIdentifier());
-        task.setAllowDeviceMockServer(browserStackConfigExtension.getAllowDeviceMockServer());
-        task.setDisableAnimations(browserStackConfigExtension.getDisableAnimations());
-        try {
-          task.setAppStoreConfiguration(browserStackConfigExtension.getAppStoreConfiguration());
-        } catch (Exception e) {
-          System.out.println("ERROR: " + e.getMessage());
-          System.exit(1);
-        }
-
-        task.setEnableSpoonFramework(browserStackConfigExtension.getEnableSpoonFramework());
-        task.setTimezone(browserStackConfigExtension.getTimezone());
-        task.setCustomBuildName(browserStackConfigExtension.getCustomBuildName());
-        task.setCustomBuildNotifyURL(browserStackConfigExtension.getCustomBuildNotifyURL());
-        task.setGeoLocation(browserStackConfigExtension.getGeoLocation());
-        task.setLanguage(browserStackConfigExtension.getLanguage());
-        task.setLocale(browserStackConfigExtension.getLocale());
-        task.setDeviceOrientation(browserStackConfigExtension.getDeviceOrienation());
-        task.setProjectName(browserStackConfigExtension.getProjectName());
       });
 
       project.getTasks().create("upload" + appVariantName + "ToBrowserstackAppLive", AppUploadTask.class, (task) -> {
