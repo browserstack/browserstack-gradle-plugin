@@ -23,7 +23,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath "gradle.plugin.com.browserstack.gradle:browserstack-gradle-plugin:2.3.3"
+    classpath "gradle.plugin.com.browserstack.gradle:browserstack-gradle-plugin:3.0.0"
   }
 }
 
