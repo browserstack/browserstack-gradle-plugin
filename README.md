@@ -87,7 +87,7 @@ gradle clean executePhoneDebugTestsOnBrowserstack
     configFilePath: String # Filepath that has capabilities specifed to run the build
 
 
-> Note: username, accessKey and devices are mandatory parameters. Visit https://www.browserstack.com/app-automate/espresso/get-started to get started with Espresso Tests on BrowserStack and also to know more about the above mentioned parameters.
+> Note: username, accessKey and configFilePath are mandatory parameters. Visit https://www.browserstack.com/app-automate/espresso/get-started to get started with Espresso Tests on BrowserStack and also to know more about the above mentioned parameters.
 
 > Note: List of supported devices and be found [here](https://api.browserstack.com/app-automate/espresso/devices.json) (basic auth required). For example :``` curl -u "$BROWSERSTACK_USERNAME:$BROWSERSTACK_ACCESS_KEY" https://api-cloud.browserstack.com/app-automate/devices.json ```
 
