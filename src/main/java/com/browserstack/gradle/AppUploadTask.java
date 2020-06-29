@@ -16,7 +16,7 @@ public class AppUploadTask extends BrowserStackTask {
     String username = this.getUsername();
     String accessKey = this.getAccessKey();
     if (username == null || accessKey == null) {
-      throw new Exception("`username`, `accessKey` and `configFilePath` are compulsory");
+      throw new Exception("`username`, `accessKey` are compulsory");
     }
   }
 
