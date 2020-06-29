@@ -12,6 +12,14 @@ public class AppUploadTask extends BrowserStackTask {
     System.out.println("Start testing at " + Constants.APP_LIVE_HOST + "/#app_hashed_id=" + app_hashed_id);
   }
 
+  public void verifyParams() throws Exception {
+    String username = this.getUsername();
+    String accessKey = this.getAccessKey();
+    if (username == null || accessKey == null) {
+      throw new Exception("`username`, `accessKey` and `configFilePath` are compulsory");
+    }
+  }
+
   @TaskAction
   void uploadAndExecuteTest() throws Exception {
     verifyParams();
