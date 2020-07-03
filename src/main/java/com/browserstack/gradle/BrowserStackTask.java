@@ -19,7 +19,7 @@ import org.gradle.api.tasks.Input;
 public class BrowserStackTask extends DefaultTask {
 
   @Input
-  private String username, accessKey, configFilePath;
+  private String username, accessKey;
 
   private String app, host;
 
@@ -45,13 +45,6 @@ public class BrowserStackTask extends DefaultTask {
     this.accessKey = accessKey;
   }
 
-  public void setConfigFilePath(String filePath) {
-    this.configFilePath = filePath;
-  }
-
-  public String getConfigFilePath() {
-    return configFilePath;
-  }
   public String getHost() {
     return host;
   }
@@ -145,11 +138,5 @@ public class BrowserStackTask extends DefaultTask {
   private boolean isValidFile(Path filePath, BasicFileAttributes fileAttr) {
     return fileAttr.isRegularFile() && filePath.toString().endsWith(".apk") && filePath.getFileName().toString()
         .contains(appVariantBaseName);
-  }
-
-  public void verifyParams() throws Exception {
-    if (username == null || accessKey == null || configFilePath == null) {
-      throw new Exception("`username`, `accessKey` and `configFilePath` are compulsory");
-    }
   }
 }
