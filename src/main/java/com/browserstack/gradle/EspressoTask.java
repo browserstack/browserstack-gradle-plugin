@@ -8,9 +8,22 @@ import java.nio.file.Path;
 import com.browserstack.json.JSONObject;
 import com.browserstack.httputils.HttpUtils;
 import org.json.simple.parser.JSONParser;
+import org.gradle.api.tasks.Input;
 
- public class EspressoTask extends BrowserStackTask {
+public class EspressoTask extends BrowserStackTask {
+
+  @Input
+  private String configFilePath;
+
   private String testSuite;
+
+  public void setConfigFilePath(String filePath) {
+    this.configFilePath = filePath;
+  }
+
+  public String getConfigFilePath() {
+    return configFilePath;
+  }
 
 
   private String constructBuildParams() {
@@ -83,6 +96,14 @@ import org.json.simple.parser.JSONParser;
 
   private void displayDashboardURL(String build_id) {
     System.out.println("View build status at " + Constants.APP_AUTOMATE_HOST + "/builds/" + build_id);
+  }
+
+  public void verifyParams() throws Exception {
+    String username = this.getUsername();
+    String accessKey = this.getAccessKey();
+    if (username == null || accessKey == null || configFilePath == null) {
+      throw new Exception("`username`, `accessKey` and `configFilePath` are compulsory");
+    }
   }
 
   @TaskAction
