@@ -43,10 +43,10 @@ browserStackConfig {
 #### Sample Config file
 ```
 {
-  "caps": {
-    "devices": [
+  "devices": [
       "Google Pixel-7.1"
     ],
+  "caps": {
     "deviceLogs": true,
     "networkLogs": true,
     "project": "Awesome gradle plugin build",
