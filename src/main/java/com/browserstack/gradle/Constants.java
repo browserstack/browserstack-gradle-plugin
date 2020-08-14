@@ -5,10 +5,10 @@ public class Constants {
     public static final String BROWSERSTACK_API_HOST = "https://api-cloud.browserstack.com",
                                 APP_LIVE_HOST = "https://app-live.browserstack.com",
                                 APP_AUTOMATE_HOST = "https://app-automate.browserstack.com",
-                                BUILD_PATH = "/app-automate/espresso/build",
-                                APP_AUTOMATE_UPLOAD_PATH = "/app-automate/upload",
+                                BUILD_PATH = "/app-automate/espresso/v2/build",
+                                APP_AUTOMATE_UPLOAD_PATH = "/app-automate/espresso/v2/app",
                                 APP_LIVE_UPLOAD_PATH = "/app-live/upload",
-                                TEST_SUITE_UPLOAD_PATH = "/app-automate/espresso/test-suite",
+                                TEST_SUITE_UPLOAD_PATH = "/app-automate/espresso/v2/test-suite",
                                 DEFAULT_NETWORK_PROFILE = null;
 
     public static final boolean DEFAULT_VIDEO = true,

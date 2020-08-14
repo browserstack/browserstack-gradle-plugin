@@ -1,4 +1,4 @@
-PLUGIN_JAR_PATH=`pwd`.strip+"/build/libs/browserstack-gradle-plugin-2.3.0.jar"
+PLUGIN_JAR_PATH=`pwd`.strip+"/build/libs/browserstack-gradle-plugin-3.0.2.jar"
 PWD=`pwd`.strip
 
 def run_command(s)
@@ -28,7 +28,7 @@ def run_basic_espresso_test(gradle_command)
   # gradle_command = "gradle clean runDebugBuildOnBrowserstack"
   puts "Running #{gradle_command} with basic config"
   stdout = run_command(gradle_command)
-  responses = stdout.lines.select{ |line| line.match(/app_url|test_url|build_id/)}
+  responses = stdout.lines.select{ |line| line.match(/app_url|test_suite_url|build_id/)}
   if responses.count != 3
     puts "✘ #{gradle_command} failed with error: #{stdout}".red
   else
@@ -41,7 +41,7 @@ def run_app_live_test(gradle_command)
   # gradle_command = "gradle clean uploadBuildToBrowserstackAppLive"
   puts "Running #{gradle_command}"
   stdout = run_command(gradle_command)
-  responses = stdout.lines.select{ |line| line.match(/app_url|test_url|build_id/)}
+  responses = stdout.lines.select{ |line| line.match(/app_url|test_suite_url|build_id/)}
   if responses.empty?
     puts "✘ #{gradle_command} failed with error: #{stdout}".red
   else
