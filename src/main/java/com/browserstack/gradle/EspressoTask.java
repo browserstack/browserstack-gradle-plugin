@@ -60,7 +60,7 @@ public class EspressoTask extends BrowserStackTask {
       JSONObject response = new JSONObject(HttpUtils.getResponse(con, responseCode));
 
       if (responseCode == 200) {
-        testSuite = (String) response.get("test_url");
+        testSuite = (String) response.get("test_suite_url");
       } else {
         throw new Exception("TestSuite upload failed");
       }
