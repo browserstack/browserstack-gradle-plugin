@@ -21,6 +21,7 @@ public class BrowserStackTask extends DefaultTask {
   @Input
   private String username, accessKey;
 
+  @Input
   private String app, host;
 
   private String appVariantBaseName = "debug";
