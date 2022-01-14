@@ -1,5 +1,6 @@
 package com.browserstack.gradle;
 
+import com.android.annotations.NonNull;
 import com.browserstack.httputils.HttpUtils;
 import com.browserstack.json.JSONObject;
 import java.net.HttpURLConnection;
@@ -14,9 +15,13 @@ import java.util.List;
 import java.util.Map;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.tasks.Input;
-
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class BrowserStackTask extends DefaultTask {
+
+  public static final String KEY_FILE_DEBUG = "debugApkPath";
+  public static final String KEY_FILE_TEST = "testApkPath";
 
   @Input
   private String username, accessKey;
@@ -64,7 +69,10 @@ public class BrowserStackTask extends DefaultTask {
     return params;
   }
 
-  public String uploadApp(String appUploadURLPath, Path debugApkPath) throws Exception {
+  public String uploadApp(
+          @NotNull String appUploadURLPath,
+          @NotNull Path debugApkPath
+  ) throws Exception {
     try {
       HttpURLConnection con = HttpUtils.sendPost(host + appUploadURLPath, basicAuth(), null, debugApkPath.toString());
       int responseCode = con.getResponseCode();
@@ -100,7 +108,7 @@ public class BrowserStackTask extends DefaultTask {
     return mostRecentPath;
   }
 
-  public Map<String, Path> locateApks() throws Exception {
+  public Map<String, Path> locateApks(boolean ignoreTestPath) throws Exception {
     Path debugApkPath;
     Path testApkPath;
     String dir = System.getProperty("user.dir");
@@ -127,12 +135,12 @@ public class BrowserStackTask extends DefaultTask {
     }
 
     //Dont raise error for testApkPath if AppLive task
-    if (testApkPath == null && !(this instanceof AppUploadTask)) {
+    if (!ignoreTestPath && testApkPath == null) {
       throw new Exception("unable to find TestApp apk");
     }
     Map<String, Path> apkFiles = new HashMap<>();
-    apkFiles.put("debugApkPath", debugApkPath);
-    apkFiles.put("testApkPath", testApkPath);
+    apkFiles.put(KEY_FILE_DEBUG, debugApkPath);
+    apkFiles.put(KEY_FILE_TEST, testApkPath);
     return apkFiles;
   }
 
