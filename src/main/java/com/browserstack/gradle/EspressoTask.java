@@ -109,9 +109,10 @@ public class EspressoTask extends BrowserStackTask {
   @TaskAction
   void uploadAndExecuteTest() throws Exception {
     verifyParams();
-    Map<String, Path> apkFiles = locateApks();
-    uploadApp(Constants.APP_AUTOMATE_UPLOAD_PATH, apkFiles.get("debugApkPath"));
-    uploadTestSuite(apkFiles.get("testApkPath"));
+    final boolean ignoreTestPath = false;
+    Map<String, Path> apkFiles = locateApks(ignoreTestPath);
+    uploadApp(Constants.APP_AUTOMATE_ESPRESSO_UPLOAD_PATH, apkFiles.get(BrowserStackTask.KEY_FILE_DEBUG));
+    uploadTestSuite(apkFiles.get(BrowserStackTask.KEY_FILE_TEST));
     executeTest();
   }
 }

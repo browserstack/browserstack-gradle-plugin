@@ -6,7 +6,8 @@ public class Constants {
                                 APP_LIVE_HOST = "https://app-live.browserstack.com",
                                 APP_AUTOMATE_HOST = "https://app-automate.browserstack.com",
                                 BUILD_PATH = "/app-automate/espresso/v2/build",
-                                APP_AUTOMATE_UPLOAD_PATH = "/app-automate/espresso/v2/app",
+                                APP_AUTOMATE_ESPRESSO_UPLOAD_PATH = "/app-automate/espresso/v2/app",
+                                APP_AUTOMATE_UPLOAD_PATH = "/app-automate/upload",
                                 APP_LIVE_UPLOAD_PATH = "/app-live/upload",
                                 TEST_SUITE_UPLOAD_PATH = "/app-automate/espresso/v2/test-suite",
                                 DEFAULT_NETWORK_PROFILE = null;
