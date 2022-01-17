@@ -1,6 +1,7 @@
 # browserstack-gradle-plugin
 
 This repository contains the source code for BrowserStack's Gradle plugin.
+**Temporary repository until PR is complete in original repository**
 
 ## PURPOSE
 
