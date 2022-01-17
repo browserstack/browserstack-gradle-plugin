@@ -1,14 +1,11 @@
 package com.browserstack.httputils;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
-import java.io.FileInputStream;
-import java.io.File;
-
 import java.util.Arrays;
 
 public class HttpUtils {
@@ -19,7 +16,11 @@ public class HttpUtils {
 
     private static final int BYTE_READ_BUFFER_SIZE = 8192;
 
-    private static void writeApp(DataOutputStream wr, String appPath) throws Exception {
+    private static void writeApp(
+            @NotNull DataOutputStream wr,
+            @NotNull String appPath
+    ) throws Exception {
+        System.out.println("Attaching file: " + appPath);
         File file = new File(appPath);
         FileInputStream in = new FileInputStream(appPath);
 
@@ -57,34 +58,75 @@ public class HttpUtils {
         }
     }
 
-    public static HttpURLConnection sendPost(String url, String authorization, String body, String appPath) throws Exception {
+    private static void writeCustomId(
+            @NotNull DataOutputStream wr,
+            @NotNull String customId
+    ) throws Exception {
+        try {
+            System.out.println("Attaching custom id: " + customId);
+            String contentDisposition = "Content-Disposition: form-data; name=\"custom_id\"";
+            wr.writeBytes(DASHDASH);
+            wr.writeBytes(BOUNDARY);
+            wr.writeBytes(NEWLINE);
+            wr.writeBytes(contentDisposition);
+            wr.writeBytes(NEWLINE);
+            wr.writeBytes(NEWLINE);
+            wr.writeBytes(customId);
+            wr.writeBytes(NEWLINE);
+
+            wr.writeBytes(DASHDASH);
+            wr.writeBytes(BOUNDARY);
+            wr.writeBytes(DASHDASH);
+            wr.writeBytes(NEWLINE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static HttpURLConnection sendPostApp(
+            @NotNull String url,
+            @Nullable String authorization,
+            @NotNull String appPath,
+            @Nullable String customId
+    ) throws Exception {
+        URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        con.setRequestMethod("POST");
+        if (authorization != null) {
+            con.setRequestProperty("Authorization", authorization);
+        }
+        final String contentType = "multipart/form-data; boundary=" + BOUNDARY;
+        con.setRequestProperty("Content-Type", contentType);
+        con.setDoOutput(true);
+        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+        writeApp(wr, appPath);
+        if (customId != null) {
+            writeCustomId(wr, customId);
+        }
+        wr.flush();
+        wr.close();
+        return con;
+    }
+
+    public static HttpURLConnection sendPostBody(
+            @NotNull String url,
+            @Nullable String authorization,
+            @NotNull String body
+    ) throws Exception {
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("POST");
 
-        if(authorization != null)
+        if (authorization != null) {
             con.setRequestProperty("Authorization", authorization);
-
-        String contentType;
-        if(appPath == null)
-            contentType = "application/json";
-        else
-            contentType = "multipart/form-data; boundary=" + BOUNDARY;
-
+        }
+        final String contentType = "application/json";
         con.setRequestProperty("Content-Type", contentType);
-
         con.setDoOutput(true);
         DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-
-        if(appPath == null) {
-            wr.writeBytes(body);
-        } else {
-            writeApp(wr, appPath);
-        }
-
+        wr.writeBytes(body);
         wr.flush();
         wr.close();
-
         return con;
     }
 

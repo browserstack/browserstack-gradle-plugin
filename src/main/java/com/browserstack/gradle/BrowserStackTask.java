@@ -24,7 +24,7 @@ public class BrowserStackTask extends DefaultTask {
   public static final String KEY_FILE_TEST = "testApkPath";
 
   @Input
-  private String username, accessKey;
+  protected String username, accessKey, customId;
 
   @Input
   private String app, host;
@@ -51,6 +51,10 @@ public class BrowserStackTask extends DefaultTask {
     this.accessKey = accessKey;
   }
 
+  public void setCustomId(String customId) {
+    this.customId = customId;
+  }
+
   public String getHost() {
     return host;
   }
@@ -74,7 +78,13 @@ public class BrowserStackTask extends DefaultTask {
           @NotNull Path debugApkPath
   ) throws Exception {
     try {
-      HttpURLConnection con = HttpUtils.sendPost(host + appUploadURLPath, basicAuth(), null, debugApkPath.toString());
+      final String customId = this.customId;
+      HttpURLConnection con = HttpUtils.sendPostApp(
+              host + appUploadURLPath,
+              basicAuth(),
+              debugApkPath.toString(),
+              customId
+      );
       int responseCode = con.getResponseCode();
       System.out.println("App upload Response Code : " + responseCode);
 

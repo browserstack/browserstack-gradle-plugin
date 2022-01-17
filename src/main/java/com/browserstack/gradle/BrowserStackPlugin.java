@@ -41,6 +41,7 @@ public class BrowserStackPlugin implements Plugin<Project> {
         task.setAppVariantBaseName(applicationVariant.getBaseName());
         task.setUsername(browserStackConfigExtension.getUsername());
         task.setAccessKey(browserStackConfigExtension.getAccessKey());
+        task.setCustomId(browserStackConfigExtension.getCustomId());
         task.setConfigFilePath(browserStackConfigExtension.getConfigFilePath());
         task.setHost(Constants.BROWSERSTACK_API_HOST);
       });
@@ -53,6 +54,7 @@ public class BrowserStackPlugin implements Plugin<Project> {
         task.setHost(Constants.BROWSERSTACK_API_HOST);
         task.setUsername(browserStackConfigExtension.getUsername());
         task.setAccessKey(browserStackConfigExtension.getAccessKey());
+        task.setCustomId(browserStackConfigExtension.getCustomId());
       });
 
       project.getTasks().create("upload" + appVariantName + "ToBrowserstackAppAutomate", AppAutomateUploadTask.class, (task) -> {
@@ -66,7 +68,7 @@ public class BrowserStackPlugin implements Plugin<Project> {
 
         task.setUsername(browserStackConfigExtension.getUsername());
         task.setAccessKey(browserStackConfigExtension.getAccessKey());
-
+        task.setCustomId(browserStackConfigExtension.getCustomId());
       });
     });
   }
