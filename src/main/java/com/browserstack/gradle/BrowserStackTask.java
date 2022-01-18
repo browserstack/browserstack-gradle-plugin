@@ -1,6 +1,5 @@
 package com.browserstack.gradle;
 
-import com.android.annotations.NonNull;
 import com.browserstack.httputils.HttpUtils;
 import com.browserstack.json.JSONObject;
 import java.net.HttpURLConnection;
@@ -16,7 +15,6 @@ import java.util.Map;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.tasks.Input;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class BrowserStackTask extends DefaultTask {
 
@@ -94,7 +92,13 @@ public class BrowserStackTask extends DefaultTask {
         app = (String) response.get("app_url");
         return app;
       } else {
-        throw new Exception("App upload failed");
+        throw new Exception(
+                String.format(
+                        "App upload failed (%d): %s",
+                        responseCode,
+                        con.getResponseMessage()
+                )
+        );
       }
     } catch (Exception e) {
 //      e.printStackTrace();

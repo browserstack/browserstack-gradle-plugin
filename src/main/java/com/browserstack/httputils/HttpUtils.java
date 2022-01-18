@@ -3,106 +3,51 @@ package com.browserstack.httputils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Arrays;
 
 public class HttpUtils {
 
-    private static final String BOUNDARY = "----------------------------------",
-                                DASHDASH = "--",
-                                NEWLINE = "\r\n";
-
-    private static final int BYTE_READ_BUFFER_SIZE = 8192;
-
-    private static void writeApp(
-            @NotNull DataOutputStream wr,
-            @NotNull String appPath
-    ) throws Exception {
-        System.out.println("Attaching file: " + appPath);
-        File file = new File(appPath);
-        FileInputStream in = new FileInputStream(appPath);
-
-        try {
-
-            String contentDisposition = "Content-Disposition: form-data; name=\"file\"; filename=\"" + file.getName() + "\"";
-            String contentType = "Content-Type: application/octet-stream";
-
-            wr.writeBytes(DASHDASH);
-            wr.writeBytes(BOUNDARY);
-            wr.writeBytes(NEWLINE);
-            wr.writeBytes(contentDisposition);
-            wr.writeBytes(NEWLINE);
-            wr.writeBytes(contentType);
-            wr.writeBytes(NEWLINE);
-            wr.writeBytes(NEWLINE);
-
-            byte[] buff = new byte[BYTE_READ_BUFFER_SIZE];
-
-            for(int bytes; (bytes = in.read(buff)) > 0; wr.write(buff)) {
-                if (bytes < BYTE_READ_BUFFER_SIZE) {
-                    buff = Arrays.copyOfRange(buff, 0, bytes);
-                }
-            }
-
-            wr.writeBytes(NEWLINE);
-            wr.writeBytes(DASHDASH);
-            wr.writeBytes(BOUNDARY);
-            wr.writeBytes(DASHDASH);
-            wr.writeBytes(NEWLINE);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            in.close();
-        }
-    }
-
-    private static void writeCustomId(
-            @NotNull DataOutputStream wr,
-            @NotNull String customId
-    ) throws Exception {
-        try {
-            System.out.println("Attaching custom id: " + customId);
-            String contentDisposition = "Content-Disposition: form-data; name=\"custom_id\"";
-            wr.writeBytes(DASHDASH);
-            wr.writeBytes(BOUNDARY);
-            wr.writeBytes(NEWLINE);
-            wr.writeBytes(contentDisposition);
-            wr.writeBytes(NEWLINE);
-            wr.writeBytes(NEWLINE);
-            wr.writeBytes(customId);
-            wr.writeBytes(NEWLINE);
-
-            wr.writeBytes(DASHDASH);
-            wr.writeBytes(BOUNDARY);
-            wr.writeBytes(DASHDASH);
-            wr.writeBytes(NEWLINE);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
+    /**
+     * Uploads a file and binds custom data
+     * @param url endpoint url
+     * @param authorization authorization token
+     * @param appPath raw file path
+     * @param customId optional 'custom_id'
+     * @return connection
+     * @throws IOException error connecting / sending request
+     */
     public static HttpURLConnection sendPostApp(
             @NotNull String url,
             @Nullable String authorization,
             @NotNull String appPath,
             @Nullable String customId
-    ) throws Exception {
+    ) throws IOException {
+        final RequestBoundary requestBoundary = RequestBoundary.generate();
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         con.setRequestMethod("POST");
         if (authorization != null) {
             con.setRequestProperty("Authorization", authorization);
         }
-        final String contentType = "multipart/form-data; boundary=" + BOUNDARY;
+        final String contentType = "multipart/form-data; boundary=" + requestBoundary.getBoundary();
         con.setRequestProperty("Content-Type", contentType);
         con.setDoOutput(true);
+        System.out.printf("Request method: %s\n", con.getRequestMethod());
+        System.out.printf("Request properties: %s\n", con.getRequestProperties());
         DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-        writeApp(wr, appPath);
-        if (customId != null) {
-            writeCustomId(wr, customId);
-        }
+        final MultipartRequestComposer requestComposer = MultipartRequestComposer.Builder
+                .newInstance(requestBoundary)
+                .addWriter(new OutputWriterDataStream(wr))
+                //.addWriter(new OutputWriterLogger()) // For debug purposes
+                .putFileFromPath(appPath)
+                .putCustomId(customId)
+                .build();
+        requestComposer.write();
         wr.flush();
         wr.close();
         return con;
@@ -136,7 +81,7 @@ public class HttpUtils {
         String inputLine;
         StringBuffer response = new StringBuffer();
 
-        while((inputLine = in.readLine()) != null) {
+        while ((inputLine = in.readLine()) != null) {
             response.append(inputLine);
         }
         in.close();
@@ -144,5 +89,4 @@ public class HttpUtils {
         System.out.println(response.toString());
         return response.toString();
     }
-
 }
