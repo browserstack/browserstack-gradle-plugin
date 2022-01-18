@@ -11,6 +11,11 @@ public class BrowserStackConfigExtension {
   private String configFilePath;
   private String customId;
 
+  /**
+   * Enables debugging with more verbose logs
+   */
+  private boolean isDebug = false;
+
   public String getUsername() {
     return username;
   }
@@ -27,6 +32,10 @@ public class BrowserStackConfigExtension {
     return customId;
   }
 
+  public boolean isDebug() {
+    return isDebug;
+  }
+
   public void setUsername(String username) {
     this.username = username;
   }
@@ -41,5 +50,9 @@ public class BrowserStackConfigExtension {
 
   public void setCustomId(String customId) {
     this.customId = customId;
+  }
+
+  public void setDebug(boolean debug) {
+    isDebug = debug;
   }
 }

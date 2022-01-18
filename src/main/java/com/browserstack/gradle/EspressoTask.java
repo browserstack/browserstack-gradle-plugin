@@ -54,6 +54,7 @@ public class EspressoTask extends BrowserStackTask {
     try {
       final String customId = this.customId;
       HttpURLConnection con = HttpUtils.sendPostApp(
+              isDebug,
               getHost() + Constants.TEST_SUITE_UPLOAD_PATH,
               basicAuth(),
               testApkPath.toString(),

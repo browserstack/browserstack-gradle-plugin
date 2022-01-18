@@ -14,6 +14,7 @@ public class HttpUtils {
 
     /**
      * Uploads a file and binds custom data
+     * @param isDebug enabled debugging logs when forming a request:
      * @param url endpoint url
      * @param authorization authorization token
      * @param appPath raw file path
@@ -22,11 +23,13 @@ public class HttpUtils {
      * @throws IOException error connecting / sending request
      */
     public static HttpURLConnection sendPostApp(
+            boolean isDebug,
             @NotNull String url,
             @Nullable String authorization,
             @NotNull String appPath,
             @Nullable String customId
     ) throws IOException {
+        final OutputWriterDebug debugWriter = OutputWriterDebug.withDebugEnabled(isDebug);
         final RequestBoundary requestBoundary = RequestBoundary.generate();
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -37,13 +40,13 @@ public class HttpUtils {
         final String contentType = "multipart/form-data; boundary=" + requestBoundary.getBoundary();
         con.setRequestProperty("Content-Type", contentType);
         con.setDoOutput(true);
-        System.out.printf("Request method: %s\n", con.getRequestMethod());
-        System.out.printf("Request properties: %s\n", con.getRequestProperties());
+        debugWriter.write(String.format("Request method: %s\n", con.getRequestMethod()));
+        debugWriter.write(String.format("Request properties: %s\n", con.getRequestProperties()));
         DataOutputStream wr = new DataOutputStream(con.getOutputStream());
         final MultipartRequestComposer requestComposer = MultipartRequestComposer.Builder
                 .newInstance(requestBoundary)
                 .addWriter(new OutputWriterDataStream(wr))
-                //.addWriter(new OutputWriterLogger()) // For debug purposes
+                .addWriter(debugWriter)
                 .putFileFromPath(appPath)
                 .putCustomId(customId)
                 .build();

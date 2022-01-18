@@ -27,6 +27,8 @@ public class BrowserStackTask extends DefaultTask {
   @Input
   private String app, host;
 
+  protected boolean isDebug;
+
   private String appVariantBaseName = "debug";
 
   public void setAppVariantBaseName(String appVariantBaseName) {
@@ -51,6 +53,10 @@ public class BrowserStackTask extends DefaultTask {
 
   public void setCustomId(String customId) {
     this.customId = customId;
+  }
+
+  public void setDebug(boolean debug) {
+    isDebug = debug;
   }
 
   public String getHost() {
@@ -78,6 +84,7 @@ public class BrowserStackTask extends DefaultTask {
     try {
       final String customId = this.customId;
       HttpURLConnection con = HttpUtils.sendPostApp(
+              isDebug,
               host + appUploadURLPath,
               basicAuth(),
               debugApkPath.toString(),
