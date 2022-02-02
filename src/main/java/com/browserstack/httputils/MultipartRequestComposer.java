@@ -1,5 +1,7 @@
 package com.browserstack.httputils;
 
+import com.android.annotations.NonNull;
+import com.browserstack.json.JSONObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -7,15 +9,19 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Generates a multipart request
  */
 public class MultipartRequestComposer {
 
+    public static final String KEY_CUSTOM_ID = "custom_id";
     private static final String KEY_FILE = "file";
-    private static final String KEY_CUSTOM_ID = "custom_id";
+    private static final String KEY_DATA = "data";
 
     @NotNull private final OutputWriter writer;
     @NotNull private final String boundary;
@@ -56,7 +62,22 @@ public class MultipartRequestComposer {
                 );
                 writer.writeBytes(Files.readAllBytes(filePath));
                 writer.write("\r\n");
-            } else {
+            }
+            if (entry.getValue() instanceof Map) {
+                final Map<String, Object> entryAsDataMap = ((Map<String, Object>) entry.getValue());
+                final JSONObject internalEntriesAsJson = new JSONObject();
+                for (Map.Entry<String, Object> internalEntry : entryAsDataMap.entrySet()) {
+                    internalEntriesAsJson.put(internalEntry.getKey(), internalEntry.getValue());
+                }
+                writer.write(
+                        String.format(
+                                "name=\"%s\"\r\n\r\n%s\r\n",
+                                entry.getKey(),
+                                internalEntriesAsJson.toString()
+                        )
+                );
+            }
+            if (entry.getValue() instanceof String) {
                 final String entryAsString = ((String) entry.getValue());
                 writer.write(
                         String.format(
@@ -111,10 +132,43 @@ public class MultipartRequestComposer {
             return this;
         }
 
-        public Builder putCustomId(@Nullable String customId) {
-            if (customId != null) {
-                this.dataMap.put(KEY_CUSTOM_ID, customId);
+        public Builder putCustomId(
+                @Nullable String customId
+        ) {
+            return putKeyValue(KEY_CUSTOM_ID, customId);
+        }
+
+        public Builder putCustomIdAsInternal(
+                @Nullable String customId
+        ) {
+            return putInternalKeyValue(KEY_CUSTOM_ID, customId);
+        }
+
+        public Builder putKeyValue(
+                @NonNull String key,
+                @Nullable String value
+        ) {
+            if (value != null) {
+                this.dataMap.put(key, value);
             }
+            return this;
+        }
+
+        public Builder putInternalKeyValue(
+                @NonNull String key,
+                @Nullable String value
+        ) {
+            if (value == null) {
+                return this;
+            }
+            final Map<String, Object> internalMap;
+            if (this.dataMap.containsKey(KEY_DATA)) {
+                internalMap = ((Map<String, Object>)this.dataMap.get(KEY_DATA));
+            } else {
+                internalMap = new HashMap<>();
+            }
+            internalMap.put(key, value);
+            this.dataMap.put(KEY_DATA, internalMap);
             return this;
         }
 

@@ -15,6 +15,7 @@ public class HttpUtils {
     /**
      * Uploads a file and binds custom data
      * @param isDebug enabled debugging logs when forming a request:
+     * @param wrapPropsAsDataMap indicates all additional properties to be wrapped into internal data map
      * @param url endpoint url
      * @param authorization authorization token
      * @param appPath raw file path
@@ -24,6 +25,7 @@ public class HttpUtils {
      */
     public static HttpURLConnection sendPostApp(
             boolean isDebug,
+            boolean wrapPropsAsDataMap,
             @NotNull String url,
             @Nullable String authorization,
             @NotNull String appPath,
@@ -43,14 +45,19 @@ public class HttpUtils {
         debugWriter.write(String.format("Request method: %s\n", con.getRequestMethod()));
         debugWriter.write(String.format("Request properties: %s\n", con.getRequestProperties()));
         DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-        final MultipartRequestComposer requestComposer = MultipartRequestComposer.Builder
+        final MultipartRequestComposer.Builder multipartRequestBuilder = MultipartRequestComposer.Builder
                 .newInstance(requestBoundary)
                 .addWriter(new OutputWriterDataStream(wr))
                 .addWriter(debugWriter)
-                .putFileFromPath(appPath)
-                .putCustomId(customId)
-                .build();
-        requestComposer.write();
+                .putFileFromPath(appPath);
+        if (wrapPropsAsDataMap) {
+            multipartRequestBuilder.putCustomIdAsInternal(customId);
+        } else {
+            multipartRequestBuilder.putCustomId(customId);
+        }
+        multipartRequestBuilder
+                .build()
+                .write();
         wr.flush();
         wr.close();
         return con;
@@ -78,7 +85,7 @@ public class HttpUtils {
         return con;
     }
 
-    public static String getResponse(HttpURLConnection con, int responseCode) throws Exception {
+    public static String getResponse(HttpURLConnection con, int responseCode) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(responseCode == 200 ? con.getInputStream() : con.getErrorStream()));
 
         String inputLine;

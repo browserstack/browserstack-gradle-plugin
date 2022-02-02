@@ -2,6 +2,7 @@ package com.browserstack.gradle;
 
 import org.gradle.api.tasks.TaskAction;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Map;
 
@@ -24,8 +25,13 @@ public class AppAutomateUploadTask extends BrowserStackTask {
   void upload() throws Exception {
     verifyParams();
     final boolean ignoreTestPath = true;
+    final boolean wrapPropsAsInternal = false;
     Map<String, Path> apkFiles = locateApks(ignoreTestPath);
-    String app_url = uploadApp(Constants.APP_AUTOMATE_UPLOAD_PATH, apkFiles.get(BrowserStackTask.KEY_FILE_DEBUG));
+    String app_url = uploadApp(
+            wrapPropsAsInternal,
+            Constants.APP_AUTOMATE_UPLOAD_PATH,
+            apkFiles.get(BrowserStackTask.KEY_FILE_DEBUG)
+    );
     displayTestURL(app_url);
   }
 }

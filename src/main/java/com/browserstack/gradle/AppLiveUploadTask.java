@@ -24,8 +24,13 @@ public class AppLiveUploadTask extends BrowserStackTask {
   void uploadAndExecuteTest() throws Exception {
     verifyParams();
     final boolean ignoreTestPath = true;
+    final boolean wrapPropsAsInternal = true;
     Map<String, Path> apkFiles = locateApks(ignoreTestPath);
-    String app_url = uploadApp(Constants.APP_LIVE_UPLOAD_PATH, apkFiles.get(BrowserStackTask.KEY_FILE_DEBUG));
+    String app_url = uploadApp(
+            wrapPropsAsInternal,
+            Constants.APP_LIVE_UPLOAD_PATH,
+            apkFiles.get(BrowserStackTask.KEY_FILE_DEBUG)
+    );
     displayTestURL(app_url);
   }
 }

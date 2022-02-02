@@ -53,8 +53,10 @@ public class EspressoTask extends BrowserStackTask {
   private void uploadTestSuite(Path testApkPath) throws Exception {
     try {
       final String customId = this.customId;
+      final boolean wrapPropsAsInternal = false;
       HttpURLConnection con = HttpUtils.sendPostApp(
               isDebug,
+              wrapPropsAsInternal,
               getHost() + Constants.TEST_SUITE_UPLOAD_PATH,
               basicAuth(),
               testApkPath.toString(),
@@ -119,8 +121,13 @@ public class EspressoTask extends BrowserStackTask {
   void uploadAndExecuteTest() throws Exception {
     verifyParams();
     final boolean ignoreTestPath = false;
+    final boolean wrapPropsAsInternal = false;
     Map<String, Path> apkFiles = locateApks(ignoreTestPath);
-    uploadApp(Constants.APP_AUTOMATE_ESPRESSO_UPLOAD_PATH, apkFiles.get(BrowserStackTask.KEY_FILE_DEBUG));
+    uploadApp(
+            wrapPropsAsInternal,
+            Constants.APP_AUTOMATE_ESPRESSO_UPLOAD_PATH,
+            apkFiles.get(BrowserStackTask.KEY_FILE_DEBUG)
+    );
     uploadTestSuite(apkFiles.get(BrowserStackTask.KEY_FILE_TEST));
     executeTest();
   }
