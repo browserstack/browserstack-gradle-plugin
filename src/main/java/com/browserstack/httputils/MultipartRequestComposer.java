@@ -19,7 +19,6 @@ import java.util.Map;
  */
 public class MultipartRequestComposer {
 
-    public static final String KEY_CUSTOM_ID = "custom_id";
     private static final String KEY_FILE = "file";
     private static final String KEY_DATA = "data";
 
@@ -64,9 +63,9 @@ public class MultipartRequestComposer {
                 writer.write("\r\n");
             }
             if (entry.getValue() instanceof Map) {
-                final Map<String, Object> entryAsDataMap = ((Map<String, Object>) entry.getValue());
+                final Map<String, String> entryAsDataMap = ((Map<String, String>) entry.getValue());
                 final JSONObject internalEntriesAsJson = new JSONObject();
-                for (Map.Entry<String, Object> internalEntry : entryAsDataMap.entrySet()) {
+                for (Map.Entry<String, String> internalEntry : entryAsDataMap.entrySet()) {
                     internalEntriesAsJson.put(internalEntry.getKey(), internalEntry.getValue());
                 }
                 writer.write(
@@ -106,6 +105,8 @@ public class MultipartRequestComposer {
         @NotNull private final RequestBoundary boundary;
         @NotNull private final List<OutputWriter> writers = new ArrayList<>();
         @NotNull private final Map<String, Object> dataMap = new HashMap<>();
+        @NotNull private final Map<String, String> propertyMap = new HashMap<>();
+        private boolean wrapProperiesAsInternalDataMap = false;
 
         public static Builder newInstance(
                 @NotNull RequestBoundary requestBoundary
@@ -132,47 +133,44 @@ public class MultipartRequestComposer {
             return this;
         }
 
-        public Builder putCustomId(
-                @Nullable String customId
-        ) {
-            return putKeyValue(KEY_CUSTOM_ID, customId);
-        }
-
-        public Builder putCustomIdAsInternal(
-                @Nullable String customId
-        ) {
-            return putInternalKeyValue(KEY_CUSTOM_ID, customId);
-        }
-
         public Builder putKeyValue(
                 @NonNull String key,
                 @Nullable String value
         ) {
             if (value != null) {
-                this.dataMap.put(key, value);
+                this.propertyMap.put(key, value);
             }
             return this;
         }
 
-        public Builder putInternalKeyValue(
-                @NonNull String key,
-                @Nullable String value
+        public Builder putProperties(
+                @NonNull Map<String, String> properties
         ) {
-            if (value == null) {
-                return this;
+            for (Map.Entry<String, String> entry : properties.entrySet()) {
+                if (entry.getValue() != null) {
+                    this.propertyMap.put(entry.getKey(), entry.getValue());
+                }
             }
-            final Map<String, Object> internalMap;
-            if (this.dataMap.containsKey(KEY_DATA)) {
-                internalMap = ((Map<String, Object>)this.dataMap.get(KEY_DATA));
-            } else {
-                internalMap = new HashMap<>();
-            }
-            internalMap.put(key, value);
-            this.dataMap.put(KEY_DATA, internalMap);
+            return this;
+        }
+
+        /**
+         * Indicates to either wrap all additional properties as an internal data map
+         * or use as regular properties when forming a reuqest
+         * @param isWrapEnabled is wrapping enabled
+         * @return builder
+         */
+        public Builder wrapProperiesAsInternalDataMap(boolean isWrapEnabled) {
+            this.wrapProperiesAsInternalDataMap = isWrapEnabled;
             return this;
         }
 
         public MultipartRequestComposer build() {
+            if (wrapProperiesAsInternalDataMap) {
+                this.dataMap.put(KEY_DATA, this.propertyMap);
+            } else {
+                this.dataMap.putAll(propertyMap);
+            }
             return new MultipartRequestComposer(this);
         }
     }

@@ -20,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class BrowserStackTask extends DefaultTask {
 
+  public static final String KEY_EXTRA_CUSTOM_ID = "custom_id";
   public static final String KEY_FILE_DEBUG = "debugApkPath";
   public static final String KEY_FILE_TEST = "testApkPath";
 
@@ -93,14 +94,15 @@ public class BrowserStackTask extends DefaultTask {
           @NotNull Path debugApkPath
   ) throws IOException {
     try {
-      final String customId = this.customId;
+      final Map<String, String> extraProperties = new HashMap<>();
+      extraProperties.put(KEY_EXTRA_CUSTOM_ID, this.customId);
       HttpURLConnection con = HttpUtils.sendPostApp(
               isDebug,
               wrapPropsAsInternal,
               host + appUploadURLPath,
               basicAuth(),
               debugApkPath.toString(),
-              customId
+              extraProperties
       );
       int responseCode = con.getResponseCode();
       System.out.println("App upload Response Code : " + responseCode);

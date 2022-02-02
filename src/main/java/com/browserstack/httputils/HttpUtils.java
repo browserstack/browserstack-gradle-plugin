@@ -1,5 +1,6 @@
 package com.browserstack.httputils;
 
+import com.android.annotations.NonNull;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -9,27 +10,28 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Map;
 
 public class HttpUtils {
 
     /**
      * Uploads a file and binds custom data
      * @param isDebug enabled debugging logs when forming a request:
-     * @param wrapPropsAsDataMap indicates all additional properties to be wrapped into internal data map
+     * @param wrapPropsAsInternalDataMap indicates extra properties to be wrapped into internal data map
      * @param url endpoint url
      * @param authorization authorization token
      * @param appPath raw file path
-     * @param customId optional 'custom_id'
+     * @param properties extra properties bind to request
      * @return connection
      * @throws IOException error connecting / sending request
      */
     public static HttpURLConnection sendPostApp(
             boolean isDebug,
-            boolean wrapPropsAsDataMap,
+            boolean wrapPropsAsInternalDataMap,
             @NotNull String url,
             @Nullable String authorization,
             @NotNull String appPath,
-            @Nullable String customId
+            @NonNull Map<String, String> properties
     ) throws IOException {
         final OutputWriterDebug debugWriter = OutputWriterDebug.withDebugEnabled(isDebug);
         final RequestBoundary requestBoundary = RequestBoundary.generate();
@@ -49,12 +51,10 @@ public class HttpUtils {
                 .newInstance(requestBoundary)
                 .addWriter(new OutputWriterDataStream(wr))
                 .addWriter(debugWriter)
-                .putFileFromPath(appPath);
-        if (wrapPropsAsDataMap) {
-            multipartRequestBuilder.putCustomIdAsInternal(customId);
-        } else {
-            multipartRequestBuilder.putCustomId(customId);
-        }
+                .putFileFromPath(appPath)
+                .putProperties(properties)
+                .wrapProperiesAsInternalDataMap(wrapPropsAsInternalDataMap)
+                ;
         multipartRequestBuilder
                 .build()
                 .write();
