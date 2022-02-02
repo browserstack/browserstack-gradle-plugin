@@ -49,8 +49,7 @@ public class MultipartRequestComposer {
             if (entry.getValue() instanceof File) {
                 final File entryAsFile = ((File) entry.getValue());
                 final Path filePath = entryAsFile.toPath();
-                //final String contentType = Files.probeContentType(filePath);
-                final String contentType = "Content-Type: application/octet-stream";
+                final String contentType = "application/octet-stream";
                 writer.write(
                         String.format(
                                 "name=\"%s\"; filename=\"%s\"\r\nContent-Type: %s\r\n\r\n",
