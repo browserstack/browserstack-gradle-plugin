@@ -15,7 +15,6 @@ def setup_repo
   run_command("git clone https://github.com/browserstack/espresso-browserstack.git")
   Dir.chdir "espresso-browserstack"
   run_command("git checkout gradlePluginTestBranch")
-  run_command("sed -i -e 's/PLUGIN_JAR_PATH/#{PLUGIN_JAR_PATH.gsub('/','\/')}/g' build.gradle")
 end
 
 def setup_repo_with_app_variants
@@ -25,7 +24,6 @@ def setup_repo_with_app_variants
 end
 
 def run_basic_espresso_test(gradle_command)
-  # gradle_command = "gradle clean runDebugBuildOnBrowserstack"
   puts "Running #{gradle_command} with basic config"
   stdout = run_command(gradle_command)
   responses = stdout.lines.select{ |line| line.match(/app_url|test_suite_url|build_id/)}
@@ -38,7 +36,6 @@ def run_basic_espresso_test(gradle_command)
 end
 
 def run_app_live_test(gradle_command)
-  # gradle_command = "gradle clean uploadBuildToBrowserstackAppLive"
   puts "Running #{gradle_command}"
   stdout = run_command(gradle_command)
   responses = stdout.lines.select{ |line| line.match(/app_url|test_suite_url|build_id/)}
@@ -51,13 +48,6 @@ def run_app_live_test(gradle_command)
 end
 
 def run_tests
-  puts "Running old tests"
-  run_basic_espresso_test("gradle clean runDebugBuildOnBrowserstack")
-  print_separator
-  puts "\n"
-  run_app_live_test("gradle clean uploadBuildToBrowserstackAppLive")
-  print_separator
-
   puts "\nRunning new tests"
   run_basic_espresso_test("gradle clean executeDebugTestsOnBrowserstack")
   print_separator
