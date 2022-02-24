@@ -3,6 +3,7 @@
 import org.gradle.api.tasks.TaskAction;
 import java.io.FileReader;
 import java.net.HttpURLConnection;
+import java.util.HashMap;
 import java.util.Map;
 import java.nio.file.Path;
 import com.browserstack.json.JSONObject;
@@ -52,8 +53,17 @@ public class EspressoTask extends BrowserStackTask {
 
   private void uploadTestSuite(Path testApkPath) throws Exception {
     try {
-      HttpURLConnection con = HttpUtils
-          .sendPost(getHost() + Constants.TEST_SUITE_UPLOAD_PATH, basicAuth(), null, testApkPath.toString());
+      final boolean wrapPropsAsInternal = false;
+      final Map<String, String> extraProperties = new HashMap<>();
+      extraProperties.put(KEY_EXTRA_CUSTOM_ID, this.customId);
+      HttpURLConnection con = HttpUtils.sendPostApp(
+              isDebug,
+              wrapPropsAsInternal,
+              getHost() + Constants.TEST_SUITE_UPLOAD_PATH,
+              basicAuth(),
+              testApkPath.toString(),
+              extraProperties
+      );
       int responseCode = con.getResponseCode();
       System.out.println("TestSuite upload Response Code : " + responseCode);
 
@@ -73,8 +83,11 @@ public class EspressoTask extends BrowserStackTask {
 
   private void executeTest() throws Exception {
     try {
-      HttpURLConnection con = HttpUtils
-          .sendPost(getHost() + Constants.BUILD_PATH, basicAuth(), constructBuildParams(), null);
+      HttpURLConnection con = HttpUtils.sendPostBody(
+              getHost() + Constants.BUILD_PATH,
+              basicAuth(),
+              constructBuildParams()
+      );
       int responseCode = con.getResponseCode();
       System.out.println("Response Code : " + responseCode);
 
@@ -109,9 +122,15 @@ public class EspressoTask extends BrowserStackTask {
   @TaskAction
   void uploadAndExecuteTest() throws Exception {
     verifyParams();
-    Map<String, Path> apkFiles = locateApks();
-    uploadApp(Constants.APP_AUTOMATE_UPLOAD_PATH, apkFiles.get("debugApkPath"));
-    uploadTestSuite(apkFiles.get("testApkPath"));
+    final boolean ignoreTestPath = false;
+    final boolean wrapPropsAsInternal = false;
+    Map<String, Path> apkFiles = locateApks(ignoreTestPath);
+    uploadApp(
+            wrapPropsAsInternal,
+            Constants.APP_AUTOMATE_ESPRESSO_UPLOAD_PATH,
+            apkFiles.get(BrowserStackTask.KEY_FILE_DEBUG)
+    );
+    uploadTestSuite(apkFiles.get(BrowserStackTask.KEY_FILE_TEST));
     executeTest();
   }
 }

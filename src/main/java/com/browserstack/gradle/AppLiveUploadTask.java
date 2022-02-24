@@ -5,7 +5,7 @@ import com.browserstack.gradle.Constants;
 import java.util.Map;
 import java.nio.file.Path;
 
-public class AppUploadTask extends BrowserStackTask {
+public class AppLiveUploadTask extends BrowserStackTask {
 
   private void displayTestURL(String app_url) {
     String app_hashed_id = app_url.substring(5);
@@ -23,8 +23,14 @@ public class AppUploadTask extends BrowserStackTask {
   @TaskAction
   void uploadAndExecuteTest() throws Exception {
     verifyParams();
-    Map<String, Path> apkFiles = locateApks();
-    String app_url = uploadApp(Constants.APP_LIVE_UPLOAD_PATH, apkFiles.get("debugApkPath"));
+    final boolean ignoreTestPath = true;
+    final boolean wrapPropsAsInternal = true;
+    Map<String, Path> apkFiles = locateApks(ignoreTestPath);
+    String app_url = uploadApp(
+            wrapPropsAsInternal,
+            Constants.APP_LIVE_UPLOAD_PATH,
+            apkFiles.get(BrowserStackTask.KEY_FILE_DEBUG)
+    );
     displayTestURL(app_url);
   }
 }

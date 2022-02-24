@@ -7,3 +7,4 @@ bin/
 .idea/
 out/
 espresso-browserstack/
+.java-version

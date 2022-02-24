@@ -2,6 +2,8 @@ package com.browserstack.gradle;
 
 import com.browserstack.httputils.HttpUtils;
 import com.browserstack.json.JSONObject;
+
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,15 +16,21 @@ import java.util.List;
 import java.util.Map;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.tasks.Input;
-
+import org.jetbrains.annotations.NotNull;
 
 public class BrowserStackTask extends DefaultTask {
 
+  public static final String KEY_EXTRA_CUSTOM_ID = "custom_id";
+  public static final String KEY_FILE_DEBUG = "debugApkPath";
+  public static final String KEY_FILE_TEST = "testApkPath";
+
   @Input
-  private String username, accessKey;
+  protected String username, accessKey, customId;
 
   @Input
   private String app, host;
+
+  protected boolean isDebug;
 
   private String appVariantBaseName = "debug";
 
@@ -46,6 +54,14 @@ public class BrowserStackTask extends DefaultTask {
     this.accessKey = accessKey;
   }
 
+  public void setCustomId(String customId) {
+    this.customId = customId;
+  }
+
+  public void setDebug(boolean debug) {
+    isDebug = debug;
+  }
+
   public String getHost() {
     return host;
   }
@@ -64,9 +80,30 @@ public class BrowserStackTask extends DefaultTask {
     return params;
   }
 
-  public String uploadApp(String appUploadURLPath, Path debugApkPath) throws Exception {
+  /**
+   * Uploads app and binds properties to it
+   * @param wrapPropsAsInternal indicates if additional properties should be wrapped as internal data map
+   * @param appUploadURLPath remote path to upload app to
+   * @param debugApkPath app file path
+   * @return raw request response
+   * @throws IOException if uploading fails
+   */
+  public String uploadApp(
+          boolean wrapPropsAsInternal,
+          @NotNull String appUploadURLPath,
+          @NotNull Path debugApkPath
+  ) throws IOException {
     try {
-      HttpURLConnection con = HttpUtils.sendPost(host + appUploadURLPath, basicAuth(), null, debugApkPath.toString());
+      final Map<String, String> extraProperties = new HashMap<>();
+      extraProperties.put(KEY_EXTRA_CUSTOM_ID, this.customId);
+      HttpURLConnection con = HttpUtils.sendPostApp(
+              isDebug,
+              wrapPropsAsInternal,
+              host + appUploadURLPath,
+              basicAuth(),
+              debugApkPath.toString(),
+              extraProperties
+      );
       int responseCode = con.getResponseCode();
       System.out.println("App upload Response Code : " + responseCode);
 
@@ -76,9 +113,15 @@ public class BrowserStackTask extends DefaultTask {
         app = (String) response.get("app_url");
         return app;
       } else {
-        throw new Exception("App upload failed");
+        throw new IOException(
+                String.format(
+                        "App upload failed (%d): %s",
+                        responseCode,
+                        con.getResponseMessage()
+                )
+        );
       }
-    } catch (Exception e) {
+    } catch (IOException e) {
 //      e.printStackTrace();
       throw e;
     }
@@ -100,7 +143,7 @@ public class BrowserStackTask extends DefaultTask {
     return mostRecentPath;
   }
 
-  public Map<String, Path> locateApks() throws Exception {
+  public Map<String, Path> locateApks(boolean ignoreTestPath) throws IOException {
     Path debugApkPath;
     Path testApkPath;
     String dir = System.getProperty("user.dir");
@@ -123,16 +166,16 @@ public class BrowserStackTask extends DefaultTask {
     System.out.println("Most recent TestApp apk: " + testApkPath);
 
     if (debugApkPath == null) {
-      throw new Exception("unable to find DebugApp apk");
+      throw new IOException("unable to find DebugApp apk");
     }
 
     //Dont raise error for testApkPath if AppLive task
-    if (testApkPath == null && !(this instanceof AppUploadTask)) {
-      throw new Exception("unable to find TestApp apk");
+    if (!ignoreTestPath && testApkPath == null) {
+      throw new IOException("unable to find TestApp apk");
     }
     Map<String, Path> apkFiles = new HashMap<>();
-    apkFiles.put("debugApkPath", debugApkPath);
-    apkFiles.put("testApkPath", testApkPath);
+    apkFiles.put(KEY_FILE_DEBUG, debugApkPath);
+    apkFiles.put(KEY_FILE_TEST, testApkPath);
     return apkFiles;
   }
 

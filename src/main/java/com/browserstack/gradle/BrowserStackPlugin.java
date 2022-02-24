@@ -8,6 +8,7 @@ import org.gradle.api.Project;
 
 public class BrowserStackPlugin implements Plugin<Project> {
 
+  private static final String DEFAULT_GROUP = "BrowserStack";
 
   public void apply(Project project) {
 
@@ -33,25 +34,40 @@ public class BrowserStackPlugin implements Plugin<Project> {
       final String appVariantName = applicationVariantName;
 
       project.getTasks().create("execute" + appVariantName + "TestsOnBrowserstack", EspressoTask.class, (task) -> {
+        task.setGroup(DEFAULT_GROUP);
+        task.setDescription("Uploads app / tests to AppAutomate and executes them");
         task.dependsOn("assemble" + appVariantName, "assemble" + appVariantName + "AndroidTest");
-
         task.setAppVariantBaseName(applicationVariant.getBaseName());
         task.setUsername(browserStackConfigExtension.getUsername());
         task.setAccessKey(browserStackConfigExtension.getAccessKey());
+        task.setCustomId(browserStackConfigExtension.getCustomId());
         task.setConfigFilePath(browserStackConfigExtension.getConfigFilePath());
         task.setHost(Constants.BROWSERSTACK_API_HOST);
+        task.setDebug(browserStackConfigExtension.isDebug());
       });
 
-      project.getTasks().create("upload" + appVariantName + "ToBrowserstackAppLive", AppUploadTask.class, (task) -> {
+      project.getTasks().create("upload" + appVariantName + "ToBrowserstackAppLive", AppLiveUploadTask.class, (task) -> {
+        task.setGroup(DEFAULT_GROUP);
+        task.setDescription("Uploads app to AppLive");
         task.dependsOn("assemble" + appVariantName);
-
         task.setAppVariantBaseName(applicationVariant.getBaseName());
-
         task.setHost(Constants.BROWSERSTACK_API_HOST);
-
         task.setUsername(browserStackConfigExtension.getUsername());
         task.setAccessKey(browserStackConfigExtension.getAccessKey());
+        task.setCustomId(browserStackConfigExtension.getCustomId());
+        task.setDebug(browserStackConfigExtension.isDebug());
+      });
 
+      project.getTasks().create("upload" + appVariantName + "ToBrowserstackAppAutomate", AppAutomateUploadTask.class, (task) -> {
+        task.setGroup(DEFAULT_GROUP);
+        task.setDescription("Uploads app to AppAutomate");
+        task.dependsOn("assemble" + appVariantName);
+        task.setAppVariantBaseName(applicationVariant.getBaseName());
+        task.setHost(Constants.BROWSERSTACK_API_HOST);
+        task.setUsername(browserStackConfigExtension.getUsername());
+        task.setAccessKey(browserStackConfigExtension.getAccessKey());
+        task.setCustomId(browserStackConfigExtension.getCustomId());
+        task.setDebug(browserStackConfigExtension.isDebug());
       });
     });
   }
