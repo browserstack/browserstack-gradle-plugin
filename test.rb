@@ -1,4 +1,3 @@
-PLUGIN_JAR_PATH=`pwd`.strip+"/build/libs/browserstack-gradle-plugin-3.0.3.jar"
 PWD=`pwd`.strip
 
 def run_command(s)
