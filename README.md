@@ -2,10 +2,6 @@
 
 This repository contains the source code for BrowserStack's Gradle plugin.
 
-## (!) Temporary repo
-**This is only a temporary repository until original repository completes PR and everything will be merged.**
-
-Repository includes a couple of features that are needed for internal projects. 
 
 ## PURPOSE
 
