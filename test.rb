@@ -47,20 +47,20 @@ def run_app_live_test(gradle_command)
 end
 
 def run_tests
-  puts "\nRunning new tests"
-  run_basic_espresso_test("gradle clean executeDebugTestsOnBrowserstack")
+  puts "\nRunning new tests using ./gradlew"
+  run_basic_espresso_test("./gradlew clean executeDebugTestsOnBrowserstack")
   print_separator
   puts "\n"
-  run_app_live_test("gradle clean uploadDebugToBrowserstackAppLive")
+  run_app_live_test("./gradlew clean uploadDebugToBrowserstackAppLive")
   print_separator
 end
 
 def run_tests_with_flavors
-  puts "Running tests with flavors"
-  run_basic_espresso_test("gradle clean executePhoneDebugTestsOnBrowserstack")
+  puts "Running tests with flavors using ./gradlew"
+  run_basic_espresso_test("./gradlew clean executePhoneDebugTestsOnBrowserstack")
   print_separator
   puts "\n"
-  run_app_live_test("gradle clean uploadPhoneDebugToBrowserstackAppLive")
+  run_app_live_test("./gradlew clean uploadPhoneDebugToBrowserstackAppLive")
   print_separator
 end
 
@@ -70,8 +70,8 @@ def remove_repo
 end
 
 def build_plugin
-  puts "Building gradle plugin"
-  run_command("gradle clean build")
+  puts "Building gradle plugin using ./gradlew"
+  run_command("./gradlew clean build")
 end
 
 def validate_env

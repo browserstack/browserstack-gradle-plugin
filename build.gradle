@@ -4,7 +4,7 @@ plugins {
     id 'com.gradle.plugin-publish' version '0.11.0'
 }
 
-version '3.0.3-u3x'
+version '3.0.4'
 
 pluginBundle {
     website = 'https://www.browserstack.com'
@@ -17,17 +17,20 @@ pluginBundle {
             description = 'Runs Espresso tests on BrowserStack'
             tags = ['espresso', 'test', 'browserstack', 'app', 'automate',
                 'app-automate', 'appautomate', 'app-live', 'applive']
-            version = '3.0.3-u3x'
+            version = '3.0.4'
         }
     }
 }
 
 repositories {
+    maven { url 'https://maven.google.com' }
+   // google()
+    jcenter()
     mavenCentral()
 }
 
 dependencies {
     // https://mvnrepository.com/artifact/com.android.tools.build/gradle
-    compile group: 'com.android.tools.build', name: 'gradle', version: '2.3.0'
-    compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+    implementation group: 'com.android.tools.build', name: 'gradle', version: '2.3.0'
+    implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 }
