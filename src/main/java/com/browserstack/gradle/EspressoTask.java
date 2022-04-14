@@ -10,6 +10,7 @@ import com.browserstack.json.JSONObject;
 import com.browserstack.httputils.HttpUtils;
 import org.json.simple.parser.JSONParser;
 import org.gradle.api.tasks.Input;
+import org.gradle.api.tasks.options.Option;
 
 public class EspressoTask extends BrowserStackTask {
 
@@ -19,6 +20,11 @@ public class EspressoTask extends BrowserStackTask {
   private String testSuite;
 
   public void setConfigFilePath(String filePath) {
+    this.configFilePath = filePath;
+  }
+
+  @Option(option = "config-file", description = "Config file passed through command line.")
+  public void overrideConfigFilePath(String filePath) {
     this.configFilePath = filePath;
   }
 
