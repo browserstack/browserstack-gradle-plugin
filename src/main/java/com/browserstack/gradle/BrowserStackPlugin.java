@@ -69,6 +69,17 @@ public class BrowserStackPlugin implements Plugin<Project> {
         task.setCustomId(browserStackConfigExtension.getCustomId());
         task.setDebug(browserStackConfigExtension.isDebug());
       });
+
+      project.getTasks().create("simple" + appVariantName + "TaskForTesting", SimpleTask.class, (task) -> {
+        task.setGroup(DEFAULT_GROUP);
+        task.setDescription("simple task for testing");
+        task.setHost(Constants.BROWSERSTACK_API_HOST);
+        task.setUsername(browserStackConfigExtension.getUsername());
+        task.setAccessKey(browserStackConfigExtension.getAccessKey());
+        task.setCustomId(browserStackConfigExtension.getCustomId());
+        System.out.println("hello from the single task for testing");
+      });
+
     });
   }
 }
