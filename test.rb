@@ -51,6 +51,9 @@ def run_tests
   run_basic_espresso_test("./gradlew clean executeDebugTestsOnBrowserstack")
   print_separator
   puts "\n"
+  run_app_live_test("./gradlew clean uploadDebugToBrowserstackAppLive -PcustomId='abc123'")
+  print_separator
+  puts "\n"
   run_app_live_test("./gradlew clean uploadDebugToBrowserstackAppLive")
   print_separator
 end
