@@ -55,6 +55,12 @@ def run_tests
   print_separator
 end
 
+def run_tests_with_command_line_params
+  puts "\nRunning new tests using ./gradlew with command line arg"
+  run_app_live_test("./gradlew clean uploadDebugToBrowserstackAppLive --customId='abc123'")
+  print_separator
+end
+
 def run_tests_with_flavors
   puts "Running tests with flavors using ./gradlew"
   run_basic_espresso_test("./gradlew clean executePhoneDebugTestsOnBrowserstack")
@@ -92,6 +98,7 @@ def test
   build_plugin
   setup_repo
   run_tests
+  run_tests_with_command_line_params
   setup_repo_with_app_variants
   run_tests_with_flavors
   remove_repo

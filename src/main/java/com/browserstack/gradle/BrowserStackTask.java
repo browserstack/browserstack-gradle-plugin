@@ -17,6 +17,7 @@ import java.util.Map;
 import org.gradle.api.DefaultTask;
 import org.gradle.api.tasks.Input;
 import org.jetbrains.annotations.NotNull;
+import org.gradle.api.tasks.options.Option;
 
 public class BrowserStackTask extends DefaultTask {
 
@@ -55,6 +56,11 @@ public class BrowserStackTask extends DefaultTask {
   }
 
   public void setCustomId(String customId) {
+    this.customId = customId;
+  }
+
+  @Option(option = "customId", description = "CustomId passed through command line.")
+  public void overrideCustomId(String customId) {
     this.customId = customId;
   }
 

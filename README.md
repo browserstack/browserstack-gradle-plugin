@@ -111,6 +111,13 @@ For running tests on a project with no variants, you can simply run following co
 gradle clean uploadDebugToBrowserstackAppLive
 ```
 
+For uploading apps to AppLive / AppAutomate, you can pass customId through command line args as well
+
+```
+gradle clean uploadDebugToBrowserstackAppLive --customId='your-custom-id'
+
+```
+
 And for projects with productFlavors, replace ${buildVariantName} with your build variant name, for example if your productFlavor name is "phone" and you want to upload debug build type of this variant then command will be gradle clean uploadPhoneDebugToBrowserstackAppLive.
 
 ##### Supported browserStackConfig parameters
