@@ -10,7 +10,6 @@ import com.browserstack.json.JSONObject;
 import com.browserstack.httputils.HttpUtils;
 import org.json.simple.parser.JSONParser;
 import org.gradle.api.tasks.Input;
-import org.gradle.api.tasks.options.Option;
 
 public class EspressoTask extends BrowserStackTask {
 
@@ -21,11 +20,6 @@ public class EspressoTask extends BrowserStackTask {
 
   public void setConfigFilePath(String filePath) {
     this.configFilePath = filePath;
-  }
-
-  @Option(option = "customId", description = "CustomId passed through command line.")
-  public void overrideCustomId(String customId) {
-    this.customId = customId;
   }
 
   public String getConfigFilePath() {
