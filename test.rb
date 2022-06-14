@@ -11,7 +11,7 @@ end
 
 def setup_repo
   puts "Setting up sample repo"
-  run_command("git clone https://github.com/emalysz/espresso-browserstack.git")
+  run_command("git clone https://github.com/browserstack/espresso-browserstack.git")
   Dir.chdir "espresso-browserstack"
   run_command("git checkout gradlePluginTestBranch")
 end
@@ -57,7 +57,7 @@ end
 
 def run_tests_args
   puts "\nRunning new tests using ./gradlew with args"
-  run_basic_espresso_test("./gradlew clean executeDebugTestsOnBrowserstack --config-file='config-browserstack-2.json'")
+  run_basic_espresso_test("./gradlew clean executeDebugTestsOnBrowserstack --config-file='command-line-config-browserstack.json'")
   print_separator
 end
 
