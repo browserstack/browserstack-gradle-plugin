@@ -103,6 +103,7 @@ def test
   run_tests_args
   setup_repo_with_app_variants
   run_tests_with_flavors
+  remove_repo
 end
 
 class String
