@@ -66,7 +66,7 @@ Builds, uploads and start Espresso tests on BrowserStack AppAutomate.
 
 gradle clean execute${buildVariantName}TestsOnBrowserstack
 
-For running tests on a project with no variants, you can simply run following command for uploading and running tests on debug apk:
+For running tests on a project with no variants, you can simply run following command for building, uploading and running tests on debug apk:
 
 ```
 gradle clean executeDebugTestsOnBrowserstack
@@ -77,6 +77,12 @@ And for projects with productFlavors, replace ${buildVariantName} with your buil
 ```
 gradle clean executePhoneDebugTestsOnBrowserstack
 
+```
+
+For running tests on a project without rebuilding apk and test suite, you can simply run following command for uploading and running tests on debug apk:
+
+```
+gradle executeDebugTestsOnBrowserstack -PskipBuildingApks=true
 ```
 
 ##### Supported browserStackConfig parameters
