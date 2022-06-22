@@ -58,6 +58,7 @@ end
 def run_tests_args
   puts "\nRunning new tests using ./gradlew with args"
   run_basic_espresso_test("./gradlew clean executeDebugTestsOnBrowserstack --config-file='command-line-config-browserstack.json'")
+  run_basic_espresso_test("./gradlew executeDebugTestsOnBrowserstack -PskipBuildingApks=true")
   print_separator
 end
 
