@@ -36,7 +36,10 @@ public class BrowserStackPlugin implements Plugin<Project> {
       project.getTasks().create("execute" + appVariantName + "TestsOnBrowserstack", EspressoTask.class, (task) -> {
         task.setGroup(DEFAULT_GROUP);
         task.setDescription("Uploads app / tests to AppAutomate and executes them");
-        task.dependsOn("assemble" + appVariantName, "assemble" + appVariantName + "AndroidTest");
+        // Run Espresso tests without building the apk and test apk
+        if (!project.hasProperty("skipBuildingApks") ) {
+          task.dependsOn("assemble" + appVariantName, "assemble" + appVariantName + "AndroidTest");
+        }
         task.setAppVariantBaseName(applicationVariant.getBaseName());
         task.setUsername(browserStackConfigExtension.getUsername());
         task.setAccessKey(browserStackConfigExtension.getAccessKey());
