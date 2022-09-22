@@ -34,6 +34,8 @@ public class BrowserStackTask extends DefaultTask {
 
   private String appVariantBaseName = "debug";
 
+  public String command ;
+
   public void setAppVariantBaseName(String appVariantBaseName) {
     this.appVariantBaseName = appVariantBaseName;
   }
@@ -70,8 +72,11 @@ public class BrowserStackTask extends DefaultTask {
     this.host = host;
   }
 
-  protected JSONObject constructDefaultBuildParams() {
-    JSONObject params = new JSONObject();
+  public String getCommand() { return command; }
+
+  public void setCommand(String command) { this.command = command; }
+
+  protected JSONObject constructDefaultBuildParams() { JSONObject params = new JSONObject();
 
     params.put("app", app);
     // for monitoring, not for external use
@@ -149,16 +154,15 @@ public class BrowserStackTask extends DefaultTask {
     String dir = System.getProperty("user.dir");
     List<Path> appApkFiles = new ArrayList<>();
     List<Path> testApkFiles = new ArrayList<>();
-
     Files.find(Paths.get(dir), Constants.APP_SEARCH_MAX_DEPTH, (filePath, fileAttr) -> isValidFile(filePath, fileAttr))
         .forEach(f -> {
+
           if (f.toString().endsWith("-androidTest.apk")) {
             testApkFiles.add(f);
           } else {
             appApkFiles.add(f);
           }
         });
-
     debugApkPath = findMostRecentPath(appApkFiles);
     testApkPath = findMostRecentPath(testApkFiles);
 

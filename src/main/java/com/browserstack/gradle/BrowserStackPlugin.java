@@ -72,6 +72,23 @@ public class BrowserStackPlugin implements Plugin<Project> {
         task.setCustomId(browserStackConfigExtension.getCustomId());
         task.setDebug(browserStackConfigExtension.isDebug());
       });
+
+      project.getTasks().create(  appVariantName + "BrowserstackSyncCLI", SyncCLI.class, (task) -> {
+        task.setGroup(DEFAULT_GROUP);
+        task.setDescription("Test Browserstack Sync CLI");
+        task.dependsOn("assemble" + appVariantName);
+        task.setAppVariantBaseName(applicationVariant.getBaseName());
+        task.setHost(Constants.BROWSERSTACK_API_HOST);
+        task.setUsername(browserStackConfigExtension.getUsername());
+        task.setAccessKey(browserStackConfigExtension.getAccessKey());
+        task.setCustomId(browserStackConfigExtension.getCustomId());
+        task.setDebug(browserStackConfigExtension.isDebug());
+        if (project.hasProperty("command") ) {
+          System.out.println("Command found: " + project.findProperty("command").toString());
+          task.setCommand(project.property("command").toString());
+        }
+      });
+
     });
   }
 }
