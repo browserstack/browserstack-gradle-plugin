@@ -73,7 +73,7 @@ public class BrowserStackPlugin implements Plugin<Project> {
         task.setDebug(browserStackConfigExtension.isDebug());
       });
 
-      project.getTasks().create(  appVariantName + "BrowserstackSyncCLI", SyncCLI.class, (task) -> {
+      project.getTasks().create(  appVariantName + "BrowserstackSyncCLI", CLI.class, (task) -> {
         task.setGroup(DEFAULT_GROUP);
         task.setDescription("Test Browserstack Sync CLI");
         task.dependsOn("assemble" + appVariantName);

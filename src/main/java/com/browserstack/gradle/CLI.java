@@ -12,7 +12,7 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
-public class SyncCLI extends BrowserStackTask {
+public class CLI extends BrowserStackTask {
 
     private Boolean isWindows;
     private String directory = System.getProperty("user.dir");
@@ -31,7 +31,8 @@ public class SyncCLI extends BrowserStackTask {
 
     private boolean initialize() {
         setOS();
-        if (os.toLowerCase().startsWith("windows")) {
+        isWindows = isWindows();
+        if (isWindows) {
             fileName = fileName + ".exe";
             downloadedFileName = downloadedFileName + ".exe";
             String wowArch = System.getenv("PROCESSOR_ARCHITECTURE");
@@ -51,7 +52,6 @@ public class SyncCLI extends BrowserStackTask {
                 arch = Constants.ARCH_32_BIT;
             }
         }
-        isWindows = isWindows();
         if (!new File(directory, downloadedFileName).exists()) {
             install();
             try {
@@ -154,7 +154,6 @@ public class SyncCLI extends BrowserStackTask {
     private void install() {
         try {
             String URL = generateDownloadURL();
-            System.out.println(URL);
             URL url = new URL(URL);
             InputStream in = url.openStream();
             FileOutputStream fos = new FileOutputStream(new File(directory + "/" + downloadedFileName));
