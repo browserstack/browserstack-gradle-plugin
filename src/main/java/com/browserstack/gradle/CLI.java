@@ -132,7 +132,7 @@ public class CLI extends BrowserStackTask {
         List<String> list = new ArrayList<>();
         Matcher matcher = Pattern.compile("([^\"]\\S*|\".+?\")\\s*").matcher(command);
         while (matcher.find())
-            list.add(matcher.group(1)); // Add .replace("\"", "") to remove surrounding quotes.
+            list.add(matcher.group(1).replace("\"", "")); // Adding .replace("\"", "") to remove surrounding quotes.
 
         try {
             process = Runtime.getRuntime().exec(list.toArray(new String[0]), null, new File(directory));
