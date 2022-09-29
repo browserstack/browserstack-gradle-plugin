@@ -135,11 +135,7 @@ public class CLI extends BrowserStackTask {
             list.add(matcher.group(1)); // Add .replace("\"", "") to remove surrounding quotes.
 
         try {
-            if (isWindows) {
-                process = Runtime.getRuntime().exec(command.replace("\"", "").split(" "), null, new File(directory));
-            } else {
-                process = Runtime.getRuntime().exec(list.toArray(new String[0]), null, new File(directory));
-            }
+            process = Runtime.getRuntime().exec(list.toArray(new String[0]), null, new File(directory));
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(-1);
