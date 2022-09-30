@@ -95,7 +95,7 @@ def validate_env
 end
 
 
-def run_tests_args
+def run_cli_tests
   puts "\nRunning CLI tests using ./gradlew with args"
   run_basic_espresso_test("./gradlew browserstackCLIWrapper -Pcommand='help'");
   run_basic_espresso_test("./gradlew browserstackCLIWrapper -Pcommand='app-automate apps delete -a bs://3fc4eea395ea6efc69b74e8211ecf2eba8879373'")
