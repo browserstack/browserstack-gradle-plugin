@@ -97,10 +97,35 @@ end
 
 def run_cli_tests
   puts "\nRunning CLI tests using ./gradlew with args"
-  run_basic_espresso_test("./gradlew browserstackCLIWrapper -Pcommand='help'");
-  run_basic_espresso_test("./gradlew browserstackCLIWrapper -Pcommand='app-automate apps delete -a bs://3fc4eea395ea6efc69b74e8211ecf2eba8879373'")
+  run_cli_test_help_command("./gradlew browserstackCLIWrapper -Pcommand='help'");
+  run_cli_test_delete_command("./gradlew browserstackCLIWrapper -Pcommand='app-automate apps delete -a bs://3fc4eea395ea6efc69b74e8211ecf2eba8879373'")
   print_separator
 end
+
+def run_cli_test_help_command(gradle_command)
+  puts "Running #{gradle_command}"
+  stdout = run_command(gradle_command)
+  responses = stdout.lines.select{ |line| line.match(/BrowserStack-cli|authenticate|app-automate/)}
+  if responses.count != 3
+    puts "✘ #{gradle_command} failed with error: #{stdout}".red
+  else
+    puts "✔ #{gradle_command} tests passed".green
+    puts responses.join("\n")
+  end
+end
+
+def run_cli_test_delete_command(gradle_command)
+  puts "Running #{gradle_command}"
+  stdout = run_command(gradle_command)
+  responses = stdout.lines.select{ |line| line.match(/BROWSERSTACK_APP_NOT_FOUND/)}
+  if responses.count != 1
+    puts "✘ #{gradle_command} failed with error: #{stdout}".red
+  else
+    puts "✔ #{gradle_command} tests passed".green
+    puts responses.join("\n")
+  end
+end
+
 
 def test
   validate_env
@@ -110,9 +135,9 @@ def test
   remove_repo
   setup_repo
   run_tests_args
+  run_cli_tests
   setup_repo_with_app_variants
   run_tests_with_flavors
-  run_cli_tests
   remove_repo
 end
 
