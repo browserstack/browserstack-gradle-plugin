@@ -34,6 +34,7 @@ public class BrowserStackTask extends DefaultTask {
 
   private String appVariantBaseName = "debug";
 
+  @Input
   public String command ;
 
   public void setAppVariantBaseName(String appVariantBaseName) {
