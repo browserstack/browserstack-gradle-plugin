@@ -85,6 +85,13 @@ For running tests on a project without rebuilding apk and test suite, you can si
 gradle executeDebugTestsOnBrowserstack -PskipBuildingApks=true
 ```
 
+For specifying a config file from the command line, you can simply run the following command:
+
+```
+gradle clean executeDebugTestsOnBrowserstack --config-file='config-browserstack.json'
+```
+Note, this will override the entry within configFilePath.
+
 ##### Supported browserStackConfig parameters
 
     username: String
