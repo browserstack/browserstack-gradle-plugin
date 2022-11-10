@@ -85,11 +85,38 @@ For running tests on a project without rebuilding apk and test suite, you can si
 gradle executeDebugTestsOnBrowserstack -PskipBuildingApks=true
 ```
 
+For specifying a config file from the command line, you can simply run the following command:
+
+```
+gradle clean executeDebugTestsOnBrowserstack --config-file='config-browserstack.json'
+```
+Note, this will override the entry within configFilePath.
+
 ##### Supported browserStackConfig parameters
 
     username: String
     accessKey: String
     configFilePath: String # Filepath that has capabilities specifed to run the build
+
+#### Browserstack CLI task
+Acts as a wrapper around the browserstack CLI and allows the operation of the CLI directly from gradle (Available from version 3.1.0)
+
+##### Gradle command
+
+`
+gradle browserstackCLIWrapper -PcliCommand="browserstack-cli-command-goes-here"
+`
+
+Example usage
+
+```
+gradle browserstackCLIWrapper -PcliCommand="app-automate espresso run -a local-path-to-app-apk  -t local-path-to-test-suite-apk"
+```
+
+You can refer to the existing browserstack CLI documentation [here](https://www.browserstack.com/app-automate/browserstack-cli)
+
+Any Browserstack CLI command can directly be passed to the -PcliCommand parameter and it would execute the CLI command from gradle and push the output to stdout/terminal
+
 
 
 > Note: username, accessKey and configFilePath are mandatory parameters. Visit https://www.browserstack.com/app-automate/espresso/get-started to get started with Espresso Tests on BrowserStack and also to know more about the above mentioned parameters.
@@ -97,6 +124,8 @@ gradle executeDebugTestsOnBrowserstack -PskipBuildingApks=true
 > Note: List of supported devices and be found [here](https://api.browserstack.com/app-automate/espresso/devices.json) (basic auth required). For example :``` curl -u "$BROWSERSTACK_USERNAME:$BROWSERSTACK_ACCESS_KEY" https://api-cloud.browserstack.com/app-automate/devices.json ```
 
 > Note: You can also set the values of username and accessKey in environment variables with names BROWSERSTACK_USERNAME and BROWSERSTACK_ACCESS_KEY, respectively. If you do this, then there is no need to set this parameters in browserStackConfig block.
+
+> Note: From version 3.1.0 onwards, usage of the Browserstack CLI task will download and install the latest version of Browserstack CLI on your machine.
 
 ##### Internal steps
 
