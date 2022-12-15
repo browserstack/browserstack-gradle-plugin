@@ -104,18 +104,18 @@ Acts as a wrapper around the browserstack CLI and allows the operation of the CL
 ##### Gradle command
 
 `
-gradle browserstackCLIWrapper -PcliCommand="browserstack-cli-command-goes-here"
+gradle browserstackCLIWrapper -Pcommand="browserstack-cli-command-goes-here"
 `
 
 Example usage
 
 ```
-gradle browserstackCLIWrapper -PcliCommand="app-automate espresso run -a local-path-to-app-apk  -t local-path-to-test-suite-apk"
+gradle browserstackCLIWrapper -Pcommand="app-automate espresso run -a local-path-to-app-apk  -t local-path-to-test-suite-apk"
 ```
 
 You can refer to the existing browserstack CLI documentation [here](https://www.browserstack.com/app-automate/browserstack-cli)
 
-Any Browserstack CLI command can directly be passed to the -PcliCommand parameter and it would execute the CLI command from gradle and push the output to stdout/terminal
+Any Browserstack CLI command can directly be passed to the -Pcommand parameter and it would execute the CLI command from gradle and push the output to stdout/terminal
 
 
 
