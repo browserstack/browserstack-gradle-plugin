@@ -85,12 +85,12 @@ public class BrowserStackPlugin implements Plugin<Project> {
                             "For reference on Browserstack CLI please visit https://www.browserstack.com/app-automate/browserstack-cli\n" +
                             "\n" +
                             "\n" +
-                            "Any CLI command passed in the custom option  -PcliCommand will be executed and the results will be displayed on the terminal.\n" +
+                            "Any CLI command passed in the custom option  -Pcommand will be executed and the results will be displayed on the terminal.\n" +
                             "\n" +
                             "\n" +
                             "For example:\n" +
                             "\n" +
-                            "gradle browserstackCLIWrapper -PcliCommand=”app-automate apps”\n" +
+                            "gradle browserstackCLIWrapper -Pcommand=”app-automate apps”\n" +
                             "\n" +
                             "The browserstack CLI command  app-automate apps  would run and the result will be displayed on the terminal.  ");
 
