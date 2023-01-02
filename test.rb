@@ -34,6 +34,18 @@ def run_basic_espresso_test(gradle_command)
   end
 end
 
+def run_espresso_test_with_path(gradle_command)
+  puts "Running #{gradle_command} with basic config and path to main and test apk"
+  stdout = run_command(gradle_command)
+  responses = stdout.lines.select{ |line| line.match(/app_url|test_suite_url|build_id/)}
+  if responses.count != 3
+    puts "✘ #{gradle_command} failed with error: #{responses}".red
+  else
+    puts "✔ #{gradle_command} tests passed".green
+    puts responses.join("\n")
+  end
+end
+
 def run_app_live_test(gradle_command)
   puts "Running #{gradle_command}"
   stdout = run_command(gradle_command)
@@ -59,7 +71,15 @@ def run_tests_args
   puts "\nRunning new tests using ./gradlew with args"
   run_basic_espresso_test("./gradlew clean executeDebugTestsOnBrowserstack --config-file='command-line-config-browserstack.json'")
   run_basic_espresso_test("./gradlew executeDebugTestsOnBrowserstack -PskipBuildingApks=true")
+  run_basic_espresso_test("./gradlew executeDebugTestsOnBrowserstack -PskipBuildingApks=false")
   print_separator
+end
+
+def run_tests_with_path_args
+  puts "\nRunning new test using ./gradlew with APK path args"
+  mainAPKPath = __dir__ + "/test/mainApk"
+  testAPKPAth = __dir__ + "/test/testApk"
+  run_espresso_test_with_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPAth}")
 end
 
 def run_tests_with_flavors
@@ -135,6 +155,7 @@ def test
   remove_repo
   setup_repo
   run_tests_args
+  run_tests_with_path_args
   run_cli_tests
   setup_repo_with_app_variants
   run_tests_with_flavors

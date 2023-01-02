@@ -40,6 +40,14 @@ public class BrowserStackTask extends DefaultTask {
   @Optional
   public String command ;
 
+  @Input
+  @Optional
+  public String mainAPKPath;
+
+  @Input
+  @Optional
+  public String testAPKPath;
+
   public void setAppVariantBaseName(String appVariantBaseName) {
     this.appVariantBaseName = appVariantBaseName;
   }
@@ -79,6 +87,14 @@ public class BrowserStackTask extends DefaultTask {
   public String getCommand() { return command; }
 
   public void setCommand(String command) { this.command = command; }
+
+  public String getMainAPKPath() { return mainAPKPath; }
+
+  public void setMainAPKPath(String mainAPKPath) { this.mainAPKPath = mainAPKPath; }
+
+  public String getTestAPKPath() {return testAPKPath; }
+
+  public void setTestAPKPath(String testAPKPath) { this.testAPKPath = testAPKPath; }
 
   protected JSONObject constructDefaultBuildParams() { JSONObject params = new JSONObject();
 
@@ -158,12 +174,32 @@ public class BrowserStackTask extends DefaultTask {
     String dir = System.getProperty("user.dir");
     List<Path> appApkFiles = new ArrayList<>();
     List<Path> testApkFiles = new ArrayList<>();
+    boolean isMainApkFilesAlreadyAdded = false;
+    Boolean isTestApkFilesAdded = false;
+    final Boolean[] isAPKFileCreated = {false,false}; // 1st element stores true if main apk is read from path provided by client and false otherwise. 2nd element is for test apk.
+    if(mainAPKPath != null){
+      isAPKFileCreated[0] = true;
+      Files.find(Paths.get(mainAPKPath),1, (filePath, fileAttr) -> isValidAPKFile(filePath, fileAttr))
+              .forEach(f -> {
+                appApkFiles.add(f);
+              });
+    }
+    if(testAPKPath != null){
+      isAPKFileCreated[1] = true;
+      Files.find(Paths.get(testAPKPath),1, (filePath, fileAttr) -> isValidAPKFile(filePath, fileAttr))
+              .forEach(f -> {
+                testApkFiles.add(f);
+              });
+    }
+
     Files.find(Paths.get(dir), Constants.APP_SEARCH_MAX_DEPTH, (filePath, fileAttr) -> isValidFile(filePath, fileAttr))
         .forEach(f -> {
 
           if (f.toString().endsWith("-androidTest.apk")) {
-            testApkFiles.add(f);
-          } else {
+            if(!isAPKFileCreated[1]) {
+              testApkFiles.add(f);
+            }
+          } else if(!isAPKFileCreated[0]){
             appApkFiles.add(f);
           }
         });
@@ -188,7 +224,10 @@ public class BrowserStackTask extends DefaultTask {
   }
 
   private boolean isValidFile(Path filePath, BasicFileAttributes fileAttr) {
-    return fileAttr.isRegularFile() && filePath.toString().endsWith(".apk") && filePath.getFileName().toString()
+    return isValidAPKFile(filePath, fileAttr) && filePath.getFileName().toString()
         .contains(appVariantBaseName);
+  }
+  private boolean isValidAPKFile(Path filePath, BasicFileAttributes fileAttr) {
+    return fileAttr.isRegularFile() && filePath.toString().endsWith(".apk") ;
   }
 }

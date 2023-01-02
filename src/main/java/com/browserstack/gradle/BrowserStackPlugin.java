@@ -41,7 +41,7 @@ public class BrowserStackPlugin implements Plugin<Project> {
                 task.setGroup(DEFAULT_GROUP);
                 task.setDescription("Uploads app / tests to AppAutomate and executes them");
                 // Run Espresso tests without building the apk and test apk
-                if (!project.hasProperty("skipBuildingApks")) {
+                if (!project.hasProperty("skipBuildingApks") || Boolean.parseBoolean(project.property("skipBuildingApks").toString()) == false)  {
                     task.dependsOn("assemble" + appVariantName, "assemble" + appVariantName + "AndroidTest");
                 }
                 task.setAppVariantBaseName(applicationVariant.getBaseName());
@@ -51,6 +51,12 @@ public class BrowserStackPlugin implements Plugin<Project> {
                 task.setConfigFilePath(browserStackConfigExtension.getConfigFilePath());
                 task.setHost(Constants.BROWSERSTACK_API_HOST);
                 task.setDebug(browserStackConfigExtension.isDebug());
+                if(project.hasProperty("mainAPKPath")){
+                    task.setMainAPKPath(project.property("mainAPKPath").toString());
+                }
+                if(project.hasProperty("testAPKPath")){
+                    task.setTestAPKPath(project.property("testAPKPath").toString());
+                }
             });
 
             project.getTasks().create("upload" + appVariantName + "ToBrowserstackAppLive", AppLiveUploadTask.class, (task) -> {
