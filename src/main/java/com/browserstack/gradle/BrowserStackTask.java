@@ -174,8 +174,6 @@ public class BrowserStackTask extends DefaultTask {
     String dir = System.getProperty("user.dir");
     List<Path> appApkFiles = new ArrayList<>();
     List<Path> testApkFiles = new ArrayList<>();
-    boolean isMainApkFilesAlreadyAdded = false;
-    Boolean isTestApkFilesAdded = false;
     final Boolean[] isAPKFileCreated = {false,false}; // 1st element stores true if main apk is read from path provided by client and false otherwise. 2nd element is for test apk.
     if(mainAPKPath != null){
       isAPKFileCreated[0] = true;
