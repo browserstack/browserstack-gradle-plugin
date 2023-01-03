@@ -47,10 +47,22 @@ def run_espresso_test_with_path(gradle_command)
 end
 
 def run_espresso_test_with_incorrect_path(gradle_command)
-  puts "Running #{gradle_command} with basic config and path to main and test apk"
+  puts "Running #{gradle_command} with basic config and incorrect paths to both main and test apk"
   stdout = run_command(gradle_command)
   responses = stdout.lines.select{ |line| line.match(/DebugApp apk: null|TestApp apk: null/)}
   if responses.count != 2
+    puts "✘ #{gradle_command} failed with error: #{responses}".red
+  else
+    puts "✔ #{gradle_command} tests passed".green
+    puts responses.join("\n")
+  end
+end
+
+def run_espresso_test_with_either_main_or_test_apk_path(gradle_command, apk_path)
+  puts "Running #{gradle_command} with basic config and either main apk path or test apk path"
+  stdout = run_command(gradle_command)
+  responses = stdout.lines.select{ |line| line.match(/#{apk_path}|test_suite_url|build_id/)}
+  if responses.count != 3
     puts "✘ #{gradle_command} failed with error: #{responses}".red
   else
     puts "✔ #{gradle_command} tests passed".green
@@ -88,19 +100,27 @@ def run_tests_args
 end
 
 def run_tests_with_path_args
-  puts "\nRunning new test using ./gradlew with APK path args"
+  puts "\nRunning new test using ./gradlew with APK paths for main and test apk"
   mainAPKPath = __dir__ + "/test/mainApk"
   testAPKPAth = __dir__ + "/test/testApk"
   run_espresso_test_with_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPAth}")
 end
 
 def run_test_with_incorrect_path
-  puts "\nRunning new test using ./gradlew with incorrect APK path args"
+  puts "\nRunning new test using ./gradlew with incorrect main and test APK paths"
   mainAPKPath = __dir__
   testAPKPAth = __dir__
   run_espresso_test_with_incorrect_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPAth}")
 end
 
+ def run_tests_with_path_variations
+ puts "\nRunning new test using ./gradlew with mainAPKPath arg only"
+ mainAPKPath = __dir__ + "/test/mainApk"
+ run_espresso_test_with_either_main_or_test_apk_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath}", mainAPKPath);
+ puts "\nRunning new test using ./gradlew with testAPKPath arg only"
+ testAPKPAth = __dir__ + "/test/testApk"
+ run_espresso_test_with_either_main_or_test_apk_path("./gradlew executeDebugTestsOnBrowserstack -PtestAPKPath=#{testAPKPAth}", testAPKPAth);
+ end
 
 def run_tests_with_flavors
   puts "Running tests with flavors using ./gradlew"
@@ -177,6 +197,7 @@ def test
   run_tests_args
   run_tests_with_path_args
   run_test_with_incorrect_path
+  run_tests_with_path_variations
   run_cli_tests
   setup_repo_with_app_variants
   run_tests_with_flavors
