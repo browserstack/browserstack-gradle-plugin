@@ -46,6 +46,18 @@ def run_espresso_test_with_path(gradle_command)
   end
 end
 
+def run_espresso_test_with_incorrect_path(gradle_command)
+  puts "Running #{gradle_command} with basic config and path to main and test apk"
+  stdout = run_command(gradle_command)
+  responses = stdout.lines.select{ |line| line.match(/DebugApp apk: null|TestApp apk: null/)}
+  if responses.count != 2
+    puts "✘ #{gradle_command} failed with error: #{responses}".red
+  else
+    puts "✔ #{gradle_command} tests passed".green
+    puts responses.join("\n")
+  end
+end
+
 def run_app_live_test(gradle_command)
   puts "Running #{gradle_command}"
   stdout = run_command(gradle_command)
@@ -81,6 +93,14 @@ def run_tests_with_path_args
   testAPKPAth = __dir__ + "/test/testApk"
   run_espresso_test_with_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPAth}")
 end
+
+def run_test_with_incorrect_path
+  puts "\nRunning new test using ./gradlew with incorrect APK path args"
+  mainAPKPath = __dir__
+  testAPKPAth = __dir__
+  run_espresso_test_with_incorrect_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPAth}")
+end
+
 
 def run_tests_with_flavors
   puts "Running tests with flavors using ./gradlew"
@@ -156,6 +176,7 @@ def test
   setup_repo
   run_tests_args
   run_tests_with_path_args
+  run_test_with_incorrect_path
   run_cli_tests
   setup_repo_with_app_variants
   run_tests_with_flavors

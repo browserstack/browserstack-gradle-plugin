@@ -190,17 +190,17 @@ public class BrowserStackTask extends DefaultTask {
               });
     }
 
-    Files.find(Paths.get(dir), Constants.APP_SEARCH_MAX_DEPTH, (filePath, fileAttr) -> isValidFile(filePath, fileAttr))
-        .forEach(f -> {
+    if(!isAPKFileCreated[0] || !isAPKFileCreated[1]) {
+      Files.find(Paths.get(dir), Constants.APP_SEARCH_MAX_DEPTH, (filePath, fileAttr) -> isValidFile(filePath, fileAttr))
+              .forEach(f -> {
 
-          if (f.toString().endsWith("-androidTest.apk")) {
-            if(!isAPKFileCreated[1]) {
-              testApkFiles.add(f);
-            }
-          } else if(!isAPKFileCreated[0]){
-            appApkFiles.add(f);
-          }
-        });
+                if (!isAPKFileCreated[1] && f.toString().endsWith("-androidTest.apk")) {
+                    testApkFiles.add(f);
+                } else if (!isAPKFileCreated[0]) {
+                  appApkFiles.add(f);
+                }
+              });
+    }
     debugApkPath = findMostRecentPath(appApkFiles);
     testApkPath = findMostRecentPath(testApkFiles);
 
