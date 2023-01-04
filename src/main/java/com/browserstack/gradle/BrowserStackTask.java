@@ -6,6 +6,7 @@ import com.browserstack.json.JSONObject;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -189,17 +190,25 @@ public class BrowserStackTask extends DefaultTask {
     final Boolean[] isAPKFileCreated = {false,false}; // 1st element stores true if main apk is read from path provided by client and false otherwise. 2nd element is for test apk.
     if(mainAPKPath != null){
       isAPKFileCreated[0] = true;
-      Files.find(Paths.get(getAbsolutePath(mainAPKPath, dir)),1, (filePath, fileAttr) -> isValidAPKFile(filePath, fileAttr))
-              .forEach(f -> {
-                appApkFiles.add(f);
-              });
+      try {
+        Files.find(Paths.get(getAbsolutePath(mainAPKPath, dir)), 1, (filePath, fileAttr) -> isValidAPKFile(filePath, fileAttr))
+                .forEach(f -> {
+                  appApkFiles.add(f);
+                });
+      }catch (NoSuchFileException e ){
+        throw new IOException("Invalid File Path: Please provide a valid main APK path");
+      }
     }
     if(testAPKPath != null){
       isAPKFileCreated[1] = true;
-      Files.find(Paths.get(getAbsolutePath(testAPKPath, dir)),1, (filePath, fileAttr) -> isValidAPKFile(filePath, fileAttr))
-              .forEach(f -> {
-                testApkFiles.add(f);
-              });
+      try {
+        Files.find(Paths.get(getAbsolutePath(testAPKPath, dir)), 1, (filePath, fileAttr) -> isValidAPKFile(filePath, fileAttr))
+                .forEach(f -> {
+                  testApkFiles.add(f);
+                });
+      }catch(NoSuchFileException e ){
+        throw new IOException("Invalid File Path: Please provide a valid test APK path");
+      }
     }
 
     if(!isAPKFileCreated[0] || !isAPKFileCreated[1]) {

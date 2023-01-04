@@ -140,16 +140,16 @@ def run_test_with_incorrect_relative_path
 end
 
 
- def run_tests_with_path_variations
+def run_tests_with_path_variations
  puts "\nRunning new test using ./gradlew with mainAPKPath arg only"
  mainAPKPath = __dir__ + "/test/mainApk"
  run_espresso_test_with_either_main_or_test_apk_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath}", mainAPKPath);
  puts "\nRunning new test using ./gradlew with testAPKPath arg only"
  testAPKPAth = __dir__ + "/test/testApk"
  run_espresso_test_with_either_main_or_test_apk_path("./gradlew executeDebugTestsOnBrowserstack -PtestAPKPath=#{testAPKPAth}", testAPKPAth);
- end
+end
 
- def run_tests_with_relative_path_variations
+def run_tests_with_relative_path_variations
   puts "\nRunning new test using ./gradlew with mainAPKPath(relative path) arg only"
   mainAPKPath = "./test/mainApk"
   run_espresso_test_with_either_main_or_test_apk_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath}", mainAPKPath);
@@ -163,9 +163,34 @@ end
   testAPKPAth = __dir__ + "/test/testApk"
   mainAPKPath = "./test/mainApk"
   run_espresso_test_with_one_absolute_and_one_relative_apk_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPAth}", mainAPKPath, testAPKPAth)
+end
 
+def run_espresso_test_with_non_existing_apk_path(gradle_command, apk_type)
+  puts "Running #{gradle_command} with non existing path"
+  stdout = run_command(gradle_command)
+  responses = stdout.lines.select{ |line| line.match(/Invalid File Path: Please provide a valid #{apk_type} APK path/)}
+  if responses.count != 1
+    puts "✘ #{gradle_command} failed with error: #{responses}".red
+  else
+    puts "✔ #{gradle_command} tests passed".green
+    puts responses.join("\n")
   end
+end
 
+def run_test_with_non_existing_path
+   puts "\nRunning new test with non existing absolute main path"
+   mainAPKPath = "/random_path/"
+   run_espresso_test_with_non_existing_apk_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath}", "main");
+   puts "\nRunning new test with non existing relative main path"
+   mainAPKPath = "./random_path/"
+   run_espresso_test_with_non_existing_apk_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath}", "main");
+   puts "\nRunning new test with non existing absolute test path"
+   testAPKPath = "/random_path/"
+   run_espresso_test_with_non_existing_apk_path("./gradlew executeDebugTestsOnBrowserstack -PtestAPKPath=#{testAPKPath}", "test");
+   puts "\nRunning new test with non existing absolute test path"
+   testAPKPath = "./random_path/"
+   run_espresso_test_with_non_existing_apk_path("./gradlew executeDebugTestsOnBrowserstack -PtestAPKPath=#{testAPKPath}", "test");
+end
 
 def run_tests_with_flavors
   puts "Running tests with flavors using ./gradlew"
@@ -246,6 +271,7 @@ def test
   run_tests_with_relative_path
   run_test_with_incorrect_relative_path
   run_tests_with_relative_path_variations
+  run_test_with_non_existing_path
   run_cli_tests
   setup_repo_with_app_variants
   run_tests_with_flavors
