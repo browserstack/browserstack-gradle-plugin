@@ -168,6 +168,18 @@ public class BrowserStackTask extends DefaultTask {
     return mostRecentPath;
   }
 
+  private boolean isPathRelative(String apkPath){
+    if(apkPath.startsWith("./")){
+      return true;
+    }
+    return false;
+  }
+  private  String getAbsolutePath(String apkPath, String currentWorkingDirectory){
+    if(isPathRelative(apkPath)){
+      return currentWorkingDirectory + apkPath.substring(1);
+    }
+    return apkPath;
+  }
   public Map<String, Path> locateApks(boolean ignoreTestPath) throws IOException {
     Path debugApkPath;
     Path testApkPath;
@@ -177,14 +189,14 @@ public class BrowserStackTask extends DefaultTask {
     final Boolean[] isAPKFileCreated = {false,false}; // 1st element stores true if main apk is read from path provided by client and false otherwise. 2nd element is for test apk.
     if(mainAPKPath != null){
       isAPKFileCreated[0] = true;
-      Files.find(Paths.get(mainAPKPath),1, (filePath, fileAttr) -> isValidAPKFile(filePath, fileAttr))
+      Files.find(Paths.get(getAbsolutePath(mainAPKPath, dir)),1, (filePath, fileAttr) -> isValidAPKFile(filePath, fileAttr))
               .forEach(f -> {
                 appApkFiles.add(f);
               });
     }
     if(testAPKPath != null){
       isAPKFileCreated[1] = true;
-      Files.find(Paths.get(testAPKPath),1, (filePath, fileAttr) -> isValidAPKFile(filePath, fileAttr))
+      Files.find(Paths.get(getAbsolutePath(testAPKPath, dir)),1, (filePath, fileAttr) -> isValidAPKFile(filePath, fileAttr))
               .forEach(f -> {
                 testApkFiles.add(f);
               });

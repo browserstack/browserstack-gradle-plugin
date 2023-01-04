@@ -70,6 +70,18 @@ def run_espresso_test_with_either_main_or_test_apk_path(gradle_command, apk_path
   end
 end
 
+def run_espresso_test_with_one_absolute_and_one_relative_apk_path(gradle_command, main_apk_path, test_apk_path)
+  puts "Running #{gradle_command} with basic config and one of the paths as absolute and one as relative"
+  stdout = run_command(gradle_command)
+  responses = stdout.lines.select{ |line| line.match(/#{main_apk_path}|#{test_apk_path}|test_suite_url|build_id/)}
+  if responses.count != 4
+    puts "✘ #{gradle_command} failed with error: #{responses}".red
+  else
+    puts "✔ #{gradle_command} tests passed".green
+    puts responses.join("\n")
+  end
+end
+
 def run_app_live_test(gradle_command)
   puts "Running #{gradle_command}"
   stdout = run_command(gradle_command)
@@ -106,12 +118,27 @@ def run_tests_with_path_args
   run_espresso_test_with_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPAth}")
 end
 
+def run_tests_with_relative_path
+  puts "\nRunning new test using ./gradlew with relative paths for both main and test apk"
+  mainAPKPath = "./test/mainApk"
+  testAPKPAth = "./test/testApk"
+  run_espresso_test_with_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPAth}")
+end
+
 def run_test_with_incorrect_path
   puts "\nRunning new test using ./gradlew with incorrect main and test APK paths"
   mainAPKPath = __dir__
   testAPKPAth = __dir__
   run_espresso_test_with_incorrect_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPAth}")
 end
+
+def run_test_with_incorrect_relative_path
+  puts "\nRunning new test using ./gradlew with incorrect relative paths for both main and test APK "
+  mainAPKPath = "./test"
+  testAPKPAth = "./test"
+  run_espresso_test_with_incorrect_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPAth}")
+end
+
 
  def run_tests_with_path_variations
  puts "\nRunning new test using ./gradlew with mainAPKPath arg only"
@@ -121,6 +148,24 @@ end
  testAPKPAth = __dir__ + "/test/testApk"
  run_espresso_test_with_either_main_or_test_apk_path("./gradlew executeDebugTestsOnBrowserstack -PtestAPKPath=#{testAPKPAth}", testAPKPAth);
  end
+
+ def run_tests_with_relative_path_variations
+  puts "\nRunning new test using ./gradlew with mainAPKPath(relative path) arg only"
+  mainAPKPath = "./test/mainApk"
+  run_espresso_test_with_either_main_or_test_apk_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath}", mainAPKPath);
+  puts "\nRunning new test using ./gradlew with testAPKPath(relative path) arg only"
+  testAPKPAth = "./test/testApk"
+  run_espresso_test_with_either_main_or_test_apk_path("./gradlew executeDebugTestsOnBrowserstack -PtestAPKPath=#{testAPKPAth}", testAPKPAth);
+  puts "\nRunning with absolute main and relative test path"
+  mainAPKPath = __dir__ + "/test/mainApk"
+  run_espresso_test_with_one_absolute_and_one_relative_apk_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPAth}", mainAPKPath, testAPKPAth)
+  puts "\nRunning with absolute test and relative main path"
+  testAPKPAth = __dir__ + "/test/testApk"
+  mainAPKPath = "./test/mainApk"
+  run_espresso_test_with_one_absolute_and_one_relative_apk_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPAth}", mainAPKPath, testAPKPAth)
+
+  end
+
 
 def run_tests_with_flavors
   puts "Running tests with flavors using ./gradlew"
@@ -198,6 +243,9 @@ def test
   run_tests_with_path_args
   run_test_with_incorrect_path
   run_tests_with_path_variations
+  run_tests_with_relative_path
+  run_test_with_incorrect_relative_path
+  run_tests_with_relative_path_variations
   run_cli_tests
   setup_repo_with_app_variants
   run_tests_with_flavors
