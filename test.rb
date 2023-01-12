@@ -274,7 +274,7 @@ end
 def run_test_with_ipa
   puts "Running tests with ipa files"
   mainAPKPath =  $current_path + "/test/mainApk/ipa"
-  testAPKPAth =  $current_path + "/test/mainApk/ipa"
+  testAPKPAth =  $current_path + "/test/testApk/ipa"
   run_espresso_test_with_incorrect_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPAth}")
 end
 
