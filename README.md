@@ -14,7 +14,15 @@ This plugin consists of two types of tasks:
 
 ### Add to build.gradle
 
-#### Add plugin dependency to module's build.gradle
+#### Add plugin using the plugins DSL
+
+```
+plugins {
+  id("com.browserstack.gradle") version "3.1.3"
+}
+```
+
+#### Add plugin dependency using legacy plugin application
 
 ```
 buildscript {
@@ -24,7 +32,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath "gradle.plugin.com.browserstack.gradle:browserstack-gradle-plugin:3.1.0"
+    classpath "gradle.plugin.com.browserstack.gradle:browserstack-gradle-plugin:3.1.3"
   }
 }
 
