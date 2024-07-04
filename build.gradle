@@ -21,8 +21,8 @@ pluginBundle {
         }
         browserstackSDKPlugin {
             id = 'com.browserstack.gradle.sdk'
-            displayName = 'BrowserStack\'s Gradle Plugin'
-            description = 'Runs Espresso tests on BrowserStack'
+            displayName = 'BrowserStack SDK Gradle Solution'
+            description = 'Cross browser testing for Gradle based projects with BrowserStack SDK'
             tags = ['test', 'browserstack']
             version = '3.1.4'
         }
