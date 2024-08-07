@@ -2,9 +2,11 @@
 plugins {
     id 'java-gradle-plugin'
     id 'com.gradle.plugin-publish' version '0.11.0'
+    id 'maven-publish'
 }
 
-version '3.1.4'
+version '3.1.6'
+group 'com.browserstack'
 
 pluginBundle {
     website = 'https://www.browserstack.com'
@@ -17,14 +19,16 @@ pluginBundle {
             description = 'Runs Espresso tests on BrowserStack'
             tags = ['espresso', 'test', 'browserstack', 'app', 'automate',
                 'app-automate', 'appautomate', 'app-live', 'applive']
-            version = '3.1.4'
+            version = '3.1.6'
+            group = 'com.browserstack'
         }
         browserstackSDKPlugin {
-            id = 'com.browserstack.gradle.sdk'
+            id = 'com.browserstack.gradle-sdk'
             displayName = 'BrowserStack SDK Gradle Solution'
             description = 'Cross browser testing for Gradle based projects with BrowserStack SDK'
             tags = ['test', 'browserstack']
-            version = '3.1.4'
+            version = '3.1.6'
+            group = 'com.browserstack'
         }
     }
 }
