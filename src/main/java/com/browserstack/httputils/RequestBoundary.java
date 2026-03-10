@@ -6,8 +6,7 @@ import java.math.BigInteger;
 import java.util.Random;
 
 /**
- * Generates and wraps boundary
- * Useful for multipart request
+ * Generates and wraps a boundary string for multipart requests.
  */
 public class RequestBoundary {
 

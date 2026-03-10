@@ -20,11 +20,17 @@ import org.gradle.api.tasks.Input;
 import org.jetbrains.annotations.NotNull;
 import org.gradle.api.tasks.Optional;
 
-
+/**
+ * Base task for BrowserStack operations. Handles credentials, app upload, and APK path resolution.
+ * Subclasses implement specific actions (Espresso run, App Live upload, App Automate upload, CLI).
+ */
 public class BrowserStackTask extends DefaultTask {
 
+  /** Extra property key for custom_id when uploading apps. */
   public static final String KEY_EXTRA_CUSTOM_ID = "custom_id";
+  /** Map key for the main/debug APK path in locateApks result. */
   public static final String KEY_FILE_DEBUG = "debugApkPath";
+  /** Map key for the test APK path in locateApks result. */
   public static final String KEY_FILE_TEST = "testApkPath";
 
   @Input
@@ -69,6 +75,10 @@ public class BrowserStackTask extends DefaultTask {
     this.accessKey = accessKey;
   }
 
+  public String getCustomId() {
+    return customId;
+  }
+
   public void setCustomId(String customId) {
     this.customId = customId;
   }
@@ -79,6 +89,10 @@ public class BrowserStackTask extends DefaultTask {
 
   public String getHost() {
     return host;
+  }
+
+  public String getApp() {
+    return app;
   }
 
   public void setHost(String host) {
@@ -97,10 +111,15 @@ public class BrowserStackTask extends DefaultTask {
 
   public void setTestAPKPath(String testAPKPath) { this.testAPKPath = testAPKPath; }
 
+  /**
+   * Builds the default JSON params for BrowserStack API (app URL, source tag).
+   *
+   * @return params object for the build request
+   */
   protected JSONObject constructDefaultBuildParams() { JSONObject params = new JSONObject();
 
     params.put("app", app);
-    // for monitoring, not for external use
+    // For monitoring; not for external use.
     params.put("browserstack.source", "gradlePlugin");
 
     return params;
@@ -157,6 +176,12 @@ public class BrowserStackTask extends DefaultTask {
     return "Basic " + Base64.getEncoder().encodeToString((username + ":" + accessKey).getBytes());
   }
 
+  /**
+   * Returns the path with the latest modification time from the list.
+   *
+   * @param paths list of file paths
+   * @return the most recently modified path, or null if list is empty
+   */
   public static Path findMostRecentPath(List<Path> paths) {
     long mostRecentTime = 0L;
     Path mostRecentPath = null;
@@ -181,13 +206,21 @@ public class BrowserStackTask extends DefaultTask {
     }
     return apkPath;
   }
+  /**
+   * Resolves main and test APK paths from mainAPKPath/testAPKPath or by scanning the project.
+   *
+   * @param ignoreTestPath if true, test APK may be null (e.g. for App Live upload)
+   * @return map with KEY_FILE_DEBUG and KEY_FILE_TEST paths
+   * @throws IOException if required APKs cannot be found
+   */
   public Map<String, Path> locateApks(boolean ignoreTestPath) throws IOException {
     Path debugApkPath;
     Path testApkPath;
     String dir = System.getProperty("user.dir");
     List<Path> appApkFiles = new ArrayList<>();
     List<Path> testApkFiles = new ArrayList<>();
-    final Boolean[] isAPKFileCreated = {false,false}; // 1st element stores true if main apk is read from path provided by client and false otherwise. 2nd element is for test apk.
+    // First element: true if main APK was from client path. Second: true if test APK was from client path.
+    final Boolean[] isAPKFileCreated = {false, false};
     if(mainAPKPath != null){
       isAPKFileCreated[0] = true;
       try {
@@ -233,7 +266,7 @@ public class BrowserStackTask extends DefaultTask {
       throw new IOException("unable to find DebugApp apk");
     }
 
-    //Dont raise error for testApkPath if AppLive task
+    // Don't raise error for testApkPath if App Live task (ignoreTestPath true).
     if (!ignoreTestPath && testApkPath == null) {
       throw new IOException("unable to find TestApp apk");
     }

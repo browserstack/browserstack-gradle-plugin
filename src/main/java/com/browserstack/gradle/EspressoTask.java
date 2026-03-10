@@ -1,4 +1,4 @@
- package com.browserstack.gradle;
+package com.browserstack.gradle;
 
 import org.gradle.api.tasks.TaskAction;
 import java.io.FileReader;
@@ -12,6 +12,10 @@ import org.json.simple.parser.JSONParser;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.options.Option;
 
+/**
+ * Gradle task that runs Espresso tests on BrowserStack App Automate.
+ * Uses a JSON config file (default or via --config-file) and uploads app + test APKs.
+ */
 public class EspressoTask extends BrowserStackTask {
 
   @Input

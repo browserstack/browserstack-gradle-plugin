@@ -149,29 +149,29 @@ end
 def run_tests_with_path_args
   puts "\nRunning new test using ./gradlew with APK paths for main and test apk"
   mainAPKPath =  $current_path + "/test/mainApk"
-  testAPKPAth =  $current_path + "/test/testApk"
-  run_espresso_test_with_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPAth}")
+  testAPKPath =  $current_path + "/test/testApk"
+  run_espresso_test_with_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPath}")
 end
 
 def run_tests_with_relative_path
   puts "\nRunning new test using ./gradlew with relative paths for both main and test apk"
   mainAPKPath = "./test/mainApk"
-  testAPKPAth = "./test/testApk"
-  run_espresso_test_with_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPAth}")
+  testAPKPath = "./test/testApk"
+  run_espresso_test_with_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPath}")
 end
 
 def run_test_with_incorrect_path
   puts "\nRunning new test using ./gradlew with incorrect main and test APK paths"
   mainAPKPath =  $current_path
-  testAPKPAth =  $current_path
-  run_espresso_test_with_incorrect_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPAth}")
+  testAPKPath =  $current_path
+  run_espresso_test_with_incorrect_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPath}")
 end
 
 def run_test_with_incorrect_relative_path
   puts "\nRunning new test using ./gradlew with incorrect relative paths for both main and test APK "
   mainAPKPath = "./test"
-  testAPKPAth = "./test"
-  run_espresso_test_with_incorrect_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPAth}")
+  testAPKPath = "./test"
+  run_espresso_test_with_incorrect_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPath}")
 end
 
 
@@ -180,8 +180,8 @@ def run_tests_with_path_variations
  mainAPKPath =  $current_path + "/test/mainApk"
  run_espresso_test_with_either_main_or_test_apk_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath}", mainAPKPath);
  puts "\nRunning new test using ./gradlew with testAPKPath arg only"
- testAPKPAth =  $current_path + "/test/testApk"
- run_espresso_test_with_either_main_or_test_apk_path("./gradlew executeDebugTestsOnBrowserstack -PtestAPKPath=#{testAPKPAth}", testAPKPAth);
+ testAPKPath =  $current_path + "/test/testApk"
+ run_espresso_test_with_either_main_or_test_apk_path("./gradlew executeDebugTestsOnBrowserstack -PtestAPKPath=#{testAPKPath}", testAPKPath);
 end
 
 def run_tests_with_relative_path_variations
@@ -189,15 +189,15 @@ def run_tests_with_relative_path_variations
   mainAPKPath = "./test/mainApk"
   run_espresso_test_with_either_main_or_test_apk_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath}", mainAPKPath);
   puts "\nRunning new test using ./gradlew with testAPKPath(relative path) arg only"
-  testAPKPAth = "./test/testApk"
-  run_espresso_test_with_either_main_or_test_apk_path("./gradlew executeDebugTestsOnBrowserstack -PtestAPKPath=#{testAPKPAth}", testAPKPAth);
+  testAPKPath = "./test/testApk"
+  run_espresso_test_with_either_main_or_test_apk_path("./gradlew executeDebugTestsOnBrowserstack -PtestAPKPath=#{testAPKPath}", testAPKPath);
   puts "\nRunning with absolute main and relative test path"
   mainAPKPath =  $current_path + "/test/mainApk"
-  run_espresso_test_with_one_absolute_and_one_relative_apk_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPAth}", mainAPKPath, testAPKPAth)
+  run_espresso_test_with_one_absolute_and_one_relative_apk_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPath}", mainAPKPath, testAPKPath)
   puts "\nRunning with absolute test and relative main path"
-  testAPKPAth =  $current_path + "/test/testApk"
+  testAPKPath =  $current_path + "/test/testApk"
   mainAPKPath = "./test/mainApk"
-  run_espresso_test_with_one_absolute_and_one_relative_apk_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPAth}", mainAPKPath, testAPKPAth)
+  run_espresso_test_with_one_absolute_and_one_relative_apk_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPath}", mainAPKPath, testAPKPath)
 end
 
 def run_espresso_test_with_non_existing_apk_path(gradle_command, apk_type)
@@ -274,15 +274,15 @@ end
 def run_test_with_ipa
   puts "Running tests with ipa files"
   mainAPKPath =  $current_path + "/test/mainApk/ipa"
-  testAPKPAth =  $current_path + "/test/testApk/ipa"
-  run_espresso_test_with_incorrect_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPAth}")
+  testAPKPath =  $current_path + "/test/testApk/ipa"
+  run_espresso_test_with_incorrect_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPath}")
 end
 
 def run_test_with_zip
-  puts "Running tests with ipa files"
+  puts "Running tests with zip files"
   mainAPKPath =  $current_path + "/test/mainApk/"
-  testAPKPAth =  $current_path + "/test/mainApk/zip"
-  run_espresso_test_with_one_incorrect_apk_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPAth}");
+  testAPKPath =  $current_path + "/test/mainApk/zip"
+  run_espresso_test_with_one_incorrect_apk_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPath}");
 end
 
 def run_tests_with_flavors
@@ -306,8 +306,8 @@ end
 
 def validate_env
   missing_env_variables = []
-  requied_env_variables = ["ANDROID_HOME","BROWSERSTACK_USERNAME", "BROWSERSTACK_ACCESS_KEY"]
-  requied_env_variables.each do |env_variable|
+  required_env_variables = ["ANDROID_HOME","BROWSERSTACK_USERNAME", "BROWSERSTACK_ACCESS_KEY"]
+  required_env_variables.each do |env_variable|
     if ENV[env_variable].nil?
        missing_env_variables += [env_variable]
     end
@@ -352,31 +352,31 @@ end
 def run_test_with_cucumber_options
   puts "\nRunning new test using ./gradlew with absolute APK paths with cucumber options"
   mainAPKPath =  $current_path + "/test/mainApk/cucumber"
-  testAPKPAth =  $current_path + "/test/testApk/cucumber"
-  run_espresso_test_with_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPAth} --config-file=config-browserstack_cucumber.json")
+  testAPKPath =  $current_path + "/test/testApk/cucumber"
+  run_espresso_test_with_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPath} --config-file=config-browserstack_cucumber.json")
   puts "\nRunning new test using ./gradlew with absolute APK paths with invalid cucumber options"
-  run_espresso_test_with_invalid_cucumber_config("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPAth} --config-file=config-browserstack_cucumber_invalid_name.json")
+  run_espresso_test_with_invalid_cucumber_config("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPath} --config-file=config-browserstack_cucumber_invalid_name.json")
   puts "\nRunning new test using ./gradlew with relative APK paths with cucumber options"
   mainAPKPath =  "./test/mainApk/cucumber"
-  testAPKPAth =  "./test/testApk/cucumber"
-  run_espresso_test_with_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPAth} --config-file=config-browserstack_cucumber.json")
+  testAPKPath =  "./test/testApk/cucumber"
+  run_espresso_test_with_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPath} --config-file=config-browserstack_cucumber.json")
   puts "\nRunning new test using ./gradlew with relative APK paths with invalid cucumber options"
-  run_espresso_test_with_invalid_cucumber_config("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPAth} --config-file=config-browserstack_cucumber_invalid_name.json")
+  run_espresso_test_with_invalid_cucumber_config("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPath} --config-file=config-browserstack_cucumber_invalid_name.json")
 end
 
 def run_test_with_instrumentation_options
   puts "\nRunning new test using ./gradlew with absolute APK paths with instrumentation options"
   mainAPKPath =  $current_path + "/test/mainApk/cucumber"
-  testAPKPAth =  $current_path + "/test/testApk/cucumber"
-  run_espresso_test_with_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPAth} --config-file=config-browserstack_instrumentation.json")
+  testAPKPath =  $current_path + "/test/testApk/cucumber"
+  run_espresso_test_with_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPath} --config-file=config-browserstack_instrumentation.json")
   puts "\nRunning new test using ./gradlew with absolute APK paths with invalid instrumentation options"
-  run_espresso_test_with_invalid_instrumentation_config("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPAth} --config-file=config-browserstack_instrumentation_invalid.json")
+  run_espresso_test_with_invalid_instrumentation_config("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPath} --config-file=config-browserstack_instrumentation_invalid.json")
   puts "\nRunning new test using ./gradlew with relative APK paths with instrumentation options"
   mainAPKPath =  "./test/mainApk/cucumber"
-  testAPKPAth =  "./test/testApk/cucumber"
-  run_espresso_test_with_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPAth} --config-file=config-browserstack_instrumentation.json")
+  testAPKPath =  "./test/testApk/cucumber"
+  run_espresso_test_with_path("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPath} --config-file=config-browserstack_instrumentation.json")
   puts "\nRunning new test using ./gradlew with relative APK paths with invalid instrumentation options"
-  run_espresso_test_with_invalid_instrumentation_config("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPAth} --config-file=config-browserstack_instrumentation_invalid.json")
+  run_espresso_test_with_invalid_instrumentation_config("./gradlew executeDebugTestsOnBrowserstack -PmainAPKPath=#{mainAPKPath} -PtestAPKPath=#{testAPKPath} --config-file=config-browserstack_instrumentation_invalid.json")
 end
 
 def test

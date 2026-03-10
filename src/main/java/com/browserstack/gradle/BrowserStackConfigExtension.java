@@ -2,7 +2,11 @@ package com.browserstack.gradle;
 
 import java.util.HashMap;
 
-// This class is for getting browserstack configuration from gradle file.
+/**
+ * Gradle extension for BrowserStack credentials and options.
+ * Configure via the {@code browserStackConfig { ... }} block in build.gradle.
+ * Username and accessKey default to BROWSERSTACK_USERNAME and BROWSERSTACK_ACCESS_KEY env vars.
+ */
 public class BrowserStackConfigExtension {
 
   private String username = System.getenv("BROWSERSTACK_USERNAME");
@@ -11,9 +15,7 @@ public class BrowserStackConfigExtension {
   private String configFilePath;
   private String customId;
 
-  /**
-   * Enables debugging with more verbose logs
-   */
+  /** When true, enables debugging with more verbose logs. */
   private boolean isDebug = false;
 
   public String getUsername() {

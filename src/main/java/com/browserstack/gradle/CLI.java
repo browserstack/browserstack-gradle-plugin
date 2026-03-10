@@ -12,6 +12,10 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
+/**
+ * Gradle task that downloads and runs the BrowserStack CLI for the current platform.
+ * Requires username and accessKey (from extension or env).
+ */
 public class CLI extends BrowserStackTask {
 
     private Boolean isWindows;
@@ -21,6 +25,7 @@ public class CLI extends BrowserStackTask {
     private String arch;
     private String os;
 
+    /** Ensures username and accessKey are set. */
     public void verifyParams() throws Exception {
         String username = this.getUsername();
         String accessKey = this.getAccessKey();
@@ -132,7 +137,7 @@ public class CLI extends BrowserStackTask {
         List<String> list = new ArrayList<>();
         Matcher matcher = Pattern.compile("([^\"]\\S*|\".+?\")\\s*").matcher(command);
         while (matcher.find())
-            list.add(matcher.group(1).replace("\"", "")); // Adding .replace("\"", "") to remove surrounding quotes.
+            list.add(matcher.group(1).replace("\"", "")); // Strip surrounding quotes from each token.
 
         try {
             process = Runtime.getRuntime().exec(list.toArray(new String[0]), null, new File(directory));
@@ -155,8 +160,7 @@ public class CLI extends BrowserStackTask {
             FileOutputStream fos = new FileOutputStream(new File(directory + "/" + downloadedFileName));
 
             int length = -1;
-            byte[] buffer = new byte[1024];// buffer for portion of data from
-            // connection
+            byte[] buffer = new byte[1024]; // Buffer for reading from the connection.
             while ((length = in.read(buffer)) > -1) {
                 fos.write(buffer, 0, length);
             }

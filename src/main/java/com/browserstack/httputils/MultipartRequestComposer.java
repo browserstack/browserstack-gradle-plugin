@@ -1,6 +1,5 @@
 package com.browserstack.httputils;
 
-import com.android.annotations.NonNull;
 import com.browserstack.json.JSONObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -33,7 +32,7 @@ public class MultipartRequestComposer {
     }
 
     private MultipartRequestComposer() {
-        // Cannot build from empty constructor
+        // Not for use; use Builder instead.
         throw new IllegalArgumentException();
     }
 
@@ -133,7 +132,7 @@ public class MultipartRequestComposer {
         }
 
         public Builder putKeyValue(
-                @NonNull String key,
+                @NotNull String key,
                 @Nullable String value
         ) {
             if (value != null) {
@@ -143,7 +142,7 @@ public class MultipartRequestComposer {
         }
 
         public Builder putProperties(
-                @NonNull Map<String, String> properties
+                @NotNull Map<String, String> properties
         ) {
             for (Map.Entry<String, String> entry : properties.entrySet()) {
                 if (entry.getValue() != null) {
@@ -154,10 +153,10 @@ public class MultipartRequestComposer {
         }
 
         /**
-         * Indicates to either wrap all additional properties as an internal data map
-         * or use as regular properties when forming a reuqest
-         * @param isWrapEnabled is wrapping enabled
-         * @return builder
+         * When true, wraps all additional properties in an internal data map; when false, uses them as regular form fields.
+         *
+         * @param isWrapEnabled whether wrapping is enabled
+         * @return this builder
          */
         public Builder wrapProperiesAsInternalDataMap(boolean isWrapEnabled) {
             this.wrapProperiesAsInternalDataMap = isWrapEnabled;
