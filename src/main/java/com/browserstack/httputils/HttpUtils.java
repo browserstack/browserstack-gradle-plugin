@@ -1,6 +1,5 @@
 package com.browserstack.httputils;
 
-import com.android.annotations.NonNull;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,15 +14,15 @@ import java.util.Map;
 public class HttpUtils {
 
     /**
-     * Uploads a file and binds custom data
-     * @param isDebug enabled debugging logs when forming a request:
-     * @param wrapPropsAsInternalDataMap indicates extra properties to be wrapped into internal data map
-     * @param url endpoint url
+     * Uploads a file and binds custom data.
+     * @param isDebug when true, enables debug logging when forming the request
+     * @param wrapPropsAsInternalDataMap whether extra properties are wrapped into the internal data map
+     * @param url endpoint URL
      * @param authorization authorization token
-     * @param appPath raw file path
-     * @param properties extra properties bind to request
-     * @return connection
-     * @throws IOException error connecting / sending request
+     * @param appPath path to the app file
+     * @param properties extra properties to bind to the request
+     * @return the opened connection
+     * @throws IOException if connecting or sending the request fails
      */
     public static HttpURLConnection sendPostApp(
             boolean isDebug,
@@ -31,7 +30,7 @@ public class HttpUtils {
             @NotNull String url,
             @Nullable String authorization,
             @NotNull String appPath,
-            @NonNull Map<String, String> properties
+            @NotNull Map<String, String> properties
     ) throws IOException {
         final OutputWriterDebug debugWriter = OutputWriterDebug.withDebugEnabled(isDebug);
         final RequestBoundary requestBoundary = RequestBoundary.generate();

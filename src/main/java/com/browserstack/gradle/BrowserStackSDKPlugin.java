@@ -13,8 +13,18 @@ import org.gradle.api.tasks.testing.Test;
 
 import org.gradle.api.execution.TaskExecutionGraph;
 
+/**
+ * Gradle plugin for BrowserStack SDK integration. Writes gradle-m-config.json with project/task
+ * context for the SDK and disables JUnit XML/HTML test reports when running under platformIndex.
+ */
 public class BrowserStackSDKPlugin implements Plugin<Project> {
     String fileSeparator = System.getProperty("file.separator");
+
+    /**
+     * Applies the plugin: adds doFirst to all tasks to write config, and whenReady disables test reports if needed.
+     *
+     * @param project the Gradle project
+     */
     public void apply(Project project) {
         project.getTasks().withType(Task.class, task -> {
             task.doFirst(new Action<Task>() {
@@ -58,8 +68,8 @@ public class BrowserStackSDKPlugin implements Plugin<Project> {
                 @Override
                 public void execute(Test test) {
                   try {
-                    test.getReports().getJunitXml().setEnabled(false);
-                    test.getReports().getHtml().setEnabled(false);
+                    test.getReports().getJunitXml().getRequired().set(false);
+                    test.getReports().getHtml().getRequired().set(false);
                   } catch (Throwable e) {}
                 }
               });

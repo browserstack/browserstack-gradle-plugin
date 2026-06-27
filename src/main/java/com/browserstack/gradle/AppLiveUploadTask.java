@@ -5,6 +5,9 @@ import com.browserstack.gradle.Constants;
 import java.util.Map;
 import java.nio.file.Path;
 
+/**
+ * Gradle task that uploads the debug APK to BrowserStack App Live and prints the test URL.
+ */
 public class AppLiveUploadTask extends BrowserStackTask {
 
   private void displayTestURL(String app_url) {
@@ -12,6 +15,7 @@ public class AppLiveUploadTask extends BrowserStackTask {
     System.out.println("Start testing at " + Constants.APP_LIVE_HOST + "/#app_hashed_id=" + app_hashed_id);
   }
 
+  /** Ensures username and accessKey are set (from extension or env). */
   public void verifyParams() throws Exception {
     String username = this.getUsername();
     String accessKey = this.getAccessKey();
@@ -20,6 +24,7 @@ public class AppLiveUploadTask extends BrowserStackTask {
     }
   }
 
+  /** Uploads the debug APK to App Live and prints the session URL. */
   @TaskAction
   void uploadAndExecuteTest() throws Exception {
     verifyParams();

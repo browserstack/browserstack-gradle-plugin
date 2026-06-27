@@ -1,14 +1,14 @@
 
 plugins {
     id 'java-gradle-plugin'
-    id 'com.gradle.plugin-publish' version '0.11.0'
+    id 'com.gradle.plugin-publish' version '2.1.0'
     id 'maven-publish'
 }
 
 version '3.1.6'
 group 'com.browserstack'
 
-pluginBundle {
+gradlePlugin {
     website = 'https://www.browserstack.com'
     vcsUrl = 'https://github.com/browserstack/browserstack-gradle-plugin'
 
@@ -17,31 +17,32 @@ pluginBundle {
             id = 'com.browserstack.gradle'
             displayName = 'BrowserStack\'s Gradle Plugin'
             description = 'Runs Espresso tests on BrowserStack'
-            tags = ['espresso', 'test', 'browserstack', 'app', 'automate',
-                'app-automate', 'appautomate', 'app-live', 'applive']
-            version = '3.1.6'
-            group = 'com.browserstack'
+            tags.set(['espresso', 'test', 'browserstack', 'app', 'automate',
+                'app-automate', 'appautomate', 'app-live', 'applive'])
+            implementationClass = 'com.browserstack.gradle.BrowserStackPlugin'
         }
         browserstackSDKPlugin {
             id = 'com.browserstack.gradle-sdk'
             displayName = 'BrowserStack SDK Gradle Solution'
             description = 'Cross browser testing for Gradle based projects with BrowserStack SDK'
-            tags = ['test', 'browserstack']
-            version = '3.1.6'
-            group = 'com.browserstack'
+            tags.set(['test', 'browserstack'])
+            implementationClass = 'com.browserstack.gradle.BrowserStackSDKPlugin'
         }
     }
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
 repositories {
     maven { url 'https://maven.google.com' }
-   // google()
-    jcenter()
     mavenCentral()
 }
 
 dependencies {
-    // https://mvnrepository.com/artifact/com.android.tools.build/gradle
-    implementation group: 'com.android.tools.build', name: 'gradle', version: '2.3.0'
+    implementation group: 'com.android.tools.build', name: 'gradle', version: '9.0.1'
     implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+    compileOnly group: 'org.jetbrains', name: 'annotations', version: '26.0.2'
 }

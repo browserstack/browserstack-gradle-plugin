@@ -2,6 +2,8 @@
 
 This repository contains the source code for BrowserStack's Gradle plugin.
 
+**Compatibility:** Android Gradle Plugin (AGP) 9.x, Gradle 9.1+. The plugin uses the `androidComponents.onVariants()` API required by AGP 9. For AGP 2.x–6.x, use plugin version 3.1.6 or earlier.
+
 
 ## PURPOSE
 

@@ -1,5 +1,6 @@
 package com.browserstack.gradle;
 
+/** BrowserStack API hosts, URL paths, CLI version, and default option constants. */
 public class Constants {
 
     public static final String BROWSERSTACK_API_HOST = "https://api-cloud.browserstack.com",
