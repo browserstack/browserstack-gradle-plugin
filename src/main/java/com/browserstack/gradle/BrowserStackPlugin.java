@@ -49,7 +49,7 @@ public class BrowserStackPlugin implements Plugin<Project> {
                 task.setAccessKey(browserStackConfigExtension.getAccessKey());
                 task.setCustomId(browserStackConfigExtension.getCustomId());
                 task.setConfigFilePath(browserStackConfigExtension.getConfigFilePath());
-                task.setHost(Constants.BROWSERSTACK_API_HOST);
+                task.setHost(browserStackConfigExtension.getHost());
                 task.setDebug(browserStackConfigExtension.isDebug());
                 if(project.hasProperty("mainAPKPath")){
                     task.setMainAPKPath(project.property("mainAPKPath").toString());
@@ -64,7 +64,7 @@ public class BrowserStackPlugin implements Plugin<Project> {
                 task.setDescription("Uploads app to AppLive");
                 task.dependsOn("assemble" + appVariantName);
                 task.setAppVariantBaseName(applicationVariant.getBaseName());
-                task.setHost(Constants.BROWSERSTACK_API_HOST);
+                task.setHost(browserStackConfigExtension.getHost());
                 task.setUsername(browserStackConfigExtension.getUsername());
                 task.setAccessKey(browserStackConfigExtension.getAccessKey());
                 task.setCustomId(browserStackConfigExtension.getCustomId());
@@ -76,7 +76,7 @@ public class BrowserStackPlugin implements Plugin<Project> {
                 task.setDescription("Uploads app to AppAutomate");
                 task.dependsOn("assemble" + appVariantName);
                 task.setAppVariantBaseName(applicationVariant.getBaseName());
-                task.setHost(Constants.BROWSERSTACK_API_HOST);
+                task.setHost(browserStackConfigExtension.getHost());
                 task.setUsername(browserStackConfigExtension.getUsername());
                 task.setAccessKey(browserStackConfigExtension.getAccessKey());
                 task.setCustomId(browserStackConfigExtension.getCustomId());
@@ -102,7 +102,7 @@ public class BrowserStackPlugin implements Plugin<Project> {
 
                     task.dependsOn("assemble" + appVariantName);
                     task.setAppVariantBaseName(applicationVariant.getBaseName());
-                    task.setHost(Constants.BROWSERSTACK_API_HOST);
+                    task.setHost(browserStackConfigExtension.getHost());
                     task.setUsername(browserStackConfigExtension.getUsername());
                     task.setAccessKey(browserStackConfigExtension.getAccessKey());
                     task.setCustomId(browserStackConfigExtension.getCustomId());
